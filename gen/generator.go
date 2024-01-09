@@ -560,7 +560,7 @@ func parseProfileParcelAttribute(attr *YamlConfigAttribute, model gjson.Result) 
 	if r.Get("type").String() == "object" {
 		t := r.Get("oneOf.#(properties.optionType.enum.0=\"global\")")
 		if t.Exists() {
-			if t.Get("properties.value.type").String() == "string" {
+			if t.Get("properties.value.type").String() == "string" || t.Get("properties.value.oneOf").Exists() {
 				attr.Type = "String"
 				if value := t.Get("properties.value.minLength"); value.Exists() {
 					attr.StringMinLength = value.Int()

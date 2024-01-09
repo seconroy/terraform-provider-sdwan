@@ -2,6 +2,7 @@
 
 - Add `sdwan_switchport_feature_template` resource and data source
 - Add `sdwan_vpn_interface_svi_feature_template` resource and data source
+- Add `sdwan_system_mrf_profile_parcel` resource and data source
 
 ## 0.3.3
 
