@@ -29,6 +29,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -94,11 +95,13 @@ func (r *DNSSecurityPolicyDefinitionResource) Schema(ctx context.Context, req re
 				Optional:            true,
 			},
 			"match_all_vpn": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Should use match all VPN").String,
-				Required:            true,
+				MarkdownDescription: helpers.NewAttributeDescription("Should use match all VPN").AddDefaultValueDescription("true").String,
+				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(true),
 			},
 			"target_vpns": schema.ListAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Only relevant when `match_all_vpn` is `false`").String,
+				MarkdownDescription: helpers.NewAttributeDescription("List of VPN IDs (Only required if `match_all_vpn` is `false`)").String,
 				ElementType:         types.StringType,
 				Optional:            true,
 			},

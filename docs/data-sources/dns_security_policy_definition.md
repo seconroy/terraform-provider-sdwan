@@ -37,6 +37,6 @@ data "sdwan_dns_security_policy_definition" "example" {
 - `local_domain_bypass_enabled` (Boolean) Should the local domain bypass list be enabled
 - `match_all_vpn` (Boolean) Should use match all VPN
 - `name` (String) The name of the policy definition.
-- `target_vpns` (List of String) Only relevant when `match_all_vpn` is `false`
+- `target_vpns` (List of String) List of VPN IDs (Only required if `match_all_vpn` is `false`)
 - `umbrella_dns_default` (Boolean) Should use umbrella as DNS Server
 - `version` (Number) The version of the object

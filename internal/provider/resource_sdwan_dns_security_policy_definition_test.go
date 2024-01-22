@@ -39,7 +39,7 @@ func TestAccSdwanDNSSecurityPolicyDefinition(t *testing.T) {
 					resource.TestCheckResourceAttr("sdwan_dns_security_policy_definition.test", "match_all_vpn", "true"),
 					resource.TestCheckResourceAttr("sdwan_dns_security_policy_definition.test", "dnscrypt", "true"),
 					resource.TestCheckResourceAttr("sdwan_dns_security_policy_definition.test", "umbrella_dns_default", "true"),
-					resource.TestCheckResourceAttr("sdwan_dns_security_policy_definition.test", "cisco_sig_credentials_feature_template_id", "0e7bb009-3603-441b-a24e-d5187679e800"),
+					resource.TestCheckResourceAttr("sdwan_dns_security_policy_definition.test", "cisco_sig_credentials_feature_template_id", "841d700a-c5a3-4d49-9de1-4f5fd1478932"),
 				),
 			},
 		},
@@ -65,6 +65,6 @@ resource "sdwan_dns_security_policy_definition" "test" {
 	match_all_vpn = true
 	dnscrypt = true
 	umbrella_dns_default = true
-	cisco_sig_credentials_feature_template_id = "0e7bb009-3603-441b-a24e-d5187679e800"
+	cisco_sig_credentials_feature_template_id = "841d700a-c5a3-4d49-9de1-4f5fd1478932"
 }
 `

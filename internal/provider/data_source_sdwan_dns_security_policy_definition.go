@@ -87,7 +87,7 @@ func (d *DNSSecurityPolicyDefinitionDataSource) Schema(ctx context.Context, req 
 				Computed:            true,
 			},
 			"target_vpns": schema.ListAttribute{
-				MarkdownDescription: "Only relevant when `match_all_vpn` is `false`",
+				MarkdownDescription: "List of VPN IDs (Only required if `match_all_vpn` is `false`)",
 				ElementType:         types.StringType,
 				Computed:            true,
 			},

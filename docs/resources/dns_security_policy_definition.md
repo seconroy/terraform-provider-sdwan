@@ -21,7 +21,7 @@ resource "sdwan_dns_security_policy_definition" "example" {
   match_all_vpn                             = true
   dnscrypt                                  = true
   umbrella_dns_default                      = true
-  cisco_sig_credentials_feature_template_id = "0e7bb009-3603-441b-a24e-d5187679e800"
+  cisco_sig_credentials_feature_template_id = "841d700a-c5a3-4d49-9de1-4f5fd1478932"
 }
 ```
 
@@ -32,7 +32,6 @@ resource "sdwan_dns_security_policy_definition" "example" {
 
 - `cisco_sig_credentials_feature_template_id` (String) Credentials feature template ID
 - `description` (String) The description of the policy definition.
-- `match_all_vpn` (Boolean) Should use match all VPN
 - `name` (String) The name of the policy definition.
 - `umbrella_dns_default` (Boolean) Should use umbrella as DNS Server
 
@@ -44,7 +43,9 @@ resource "sdwan_dns_security_policy_definition" "example" {
 - `domain_list_id` (String) Local domain bypass list ID
 - `domain_list_version` (Number) Local domain bypass list version
 - `local_domain_bypass_enabled` (Boolean) Should the local domain bypass list be enabled
-- `target_vpns` (List of String) Only relevant when `match_all_vpn` is `false`
+- `match_all_vpn` (Boolean) Should use match all VPN
+  - Default value: `true`
+- `target_vpns` (List of String) List of VPN IDs (Only required if `match_all_vpn` is `false`)
 
 ### Read-Only
 

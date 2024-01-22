@@ -43,14 +43,14 @@ attributes:
     data_path: [definition]
     tf_name: match_all_vpn
     type: Bool
-    mandatory: true
+    default_value: true
     description: Should use match all VPN
     example: true
   - model_name: targetVpns
     data_path: [definition]
     tf_name: target_vpns
     type: StringList
-    description: Only relevant when `match_all_vpn` is `false` 
+    description: List of VPN IDs (Only required if `match_all_vpn` is `false`)
     example: 1
     exclude_test: true
     attributes:
@@ -62,6 +62,7 @@ attributes:
       - model_name: umbrellaDefault
         tf_name: umbrella_dns_default
         type: Bool
+        default_value: true
         description: Should use umbrella as DNS Server
         example: true
       - model_name: dnsServerIP
@@ -101,7 +102,7 @@ attributes:
     id: true
     mandatory: true
     description: Credentials feature template ID
-    example: "0e7bb009-3603-441b-a24e-d5187679e800"
+    example: "841d700a-c5a3-4d49-9de1-4f5fd1478932"
   - tf_name: cisco_sig_credentials_feature_template_version
     tf_only: true
     type: Version
