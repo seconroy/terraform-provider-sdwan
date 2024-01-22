@@ -77,7 +77,7 @@ func (data URLFilteringPolicyDefinition) toBody(ctx context.Context) string {
 	if !data.WebReputation.IsNull() {
 		body, _ = sjson.Set(body, "definition.webReputation", data.WebReputation.ValueString())
 	}
-	if !data.TargetVpns.IsNull() {
+	if !data.TargetVpns.IsNull() && data.Mode.ValueString() == "security" {
 		var values []string
 		data.TargetVpns.ElementsAs(ctx, &values, false)
 		body, _ = sjson.Set(body, "definition.targetVpns", values)
@@ -134,7 +134,7 @@ func (data *URLFilteringPolicyDefinition) fromBody(ctx context.Context, res gjso
 	} else {
 		data.WebReputation = types.StringNull()
 	}
-	if value := res.Get("definition.targetVpns"); value.Exists() {
+	if value := res.Get("definition.targetVpns"); value.Exists() && data.Mode.ValueString() == "security" {
 		data.TargetVpns = helpers.GetStringList(value.Array())
 	} else {
 		data.TargetVpns = types.ListNull(types.StringType)

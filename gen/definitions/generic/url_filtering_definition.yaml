@@ -24,7 +24,8 @@ attributes:
     tf_name: mode
     type: String
     enum_values: [security, unified]
-    default_value: 
+    requires_replace: true
+    default_value: security
     description: The policy mode
     example: security
   - model_name: alerts
@@ -37,12 +38,14 @@ attributes:
     data_path: [definition]
     tf_name: web_categories
     type: StringList
+    mandatory: true
     description: List of categories to block or allow
     example: alcohol-and-tobacco
   - model_name: webCategoriesAction
     data_path: [definition]
     tf_name: web_categories_action
     type: String
+    mandatory: true
     enum_values: [block, allow]
     description: whether the selected web categories should be blocked or allowed.
     example: allow
@@ -50,6 +53,7 @@ attributes:
     data_path: [definition]
     tf_name: web_reputation
     type: String
+    mandatory: true
     enum_values: [high-risk, suspicious, moderate-risk, low-risk, trustworthy]
     description: The web reputation of the policy definition
     example: moderate-risk
@@ -57,6 +61,9 @@ attributes:
     data_path: [definition]
     tf_name: target_vpns
     type: StringList
+    conditional_attribute:
+      name: mode
+      value: security
     description: List of VPN IDs
     example: 1
   - model_name: ref
@@ -87,6 +94,7 @@ attributes:
     data_path: [definition]
     tf_name: block_page_action
     type: String
+    mandatory: true
     enum_values: [text, redirectUrl]
     description: Redirect to a URL or display a message when a blocked page is accessed.
     example: text
@@ -94,5 +102,6 @@ attributes:
     data_path: [definition]
     tf_name: block_page_contents
     type: String
+    mandatory: true
     description: The message displayed or URL redirected to when a blocked page is accessed.
     example: Access to the requested page has been denied. Please contact your Network Administrator

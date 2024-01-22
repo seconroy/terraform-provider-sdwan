@@ -31,6 +31,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -81,11 +82,16 @@ func (r *URLFilteringPolicyDefinitionResource) Schema(ctx context.Context, req r
 				Required:            true,
 			},
 			"mode": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("The policy mode").AddStringEnumDescription("security", "unified").String,
+				MarkdownDescription: helpers.NewAttributeDescription("The policy mode").AddStringEnumDescription("security", "unified").AddDefaultValueDescription("security").String,
 				Optional:            true,
+				Computed:            true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplace(),
+				},
 				Validators: []validator.String{
 					stringvalidator.OneOf("security", "unified"),
 				},
+				Default: stringdefault.StaticString("security"),
 			},
 			"alerts": schema.ListAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("List of alerts options that will be exported as syslog messages").String,
@@ -95,18 +101,18 @@ func (r *URLFilteringPolicyDefinitionResource) Schema(ctx context.Context, req r
 			"web_categories": schema.ListAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("List of categories to block or allow").String,
 				ElementType:         types.StringType,
-				Optional:            true,
+				Required:            true,
 			},
 			"web_categories_action": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("whether the selected web categories should be blocked or allowed.").AddStringEnumDescription("block", "allow").String,
-				Optional:            true,
+				Required:            true,
 				Validators: []validator.String{
 					stringvalidator.OneOf("block", "allow"),
 				},
 			},
 			"web_reputation": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("The web reputation of the policy definition").AddStringEnumDescription("high-risk", "suspicious", "moderate-risk", "low-risk", "trustworthy").String,
-				Optional:            true,
+				Required:            true,
 				Validators: []validator.String{
 					stringvalidator.OneOf("high-risk", "suspicious", "moderate-risk", "low-risk", "trustworthy"),
 				},
@@ -134,14 +140,14 @@ func (r *URLFilteringPolicyDefinitionResource) Schema(ctx context.Context, req r
 			},
 			"block_page_action": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Redirect to a URL or display a message when a blocked page is accessed.").AddStringEnumDescription("text", "redirectUrl").String,
-				Optional:            true,
+				Required:            true,
 				Validators: []validator.String{
 					stringvalidator.OneOf("text", "redirectUrl"),
 				},
 			},
 			"block_page_contents": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("The message displayed or URL redirected to when a blocked page is accessed.").String,
-				Optional:            true,
+				Required:            true,
 			},
 		},
 	}

@@ -240,6 +240,7 @@ type YamlConfigAttribute struct {
 	StringMaxLength      int64                          `yaml:"string_max_length"`
 	DefaultValue         string                         `yaml:"default_value"`
 	DefaultValuePresent  bool                           `yaml:"default_value_present"`
+	RequiresReplace      bool                           `yaml:"requires_replace"`
 	Value                string                         `yaml:"value"`
 	TestValue            string                         `yaml:"test_value"`
 	AlwaysInclude        bool                           `yaml:"always_include"`

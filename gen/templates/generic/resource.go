@@ -107,6 +107,11 @@ func (r *{{camelCase .Name}}Resource) Schema(ctx context.Context, req resource.S
 				{{- if len .DefaultValue}}
 				Computed:            true,
 				{{- end}}
+				{{- if or .Id .Reference .RequiresReplace}}
+				PlanModifiers: []planmodifier.{{.Type}}{
+					{{snakeCase .Type}}planmodifier.RequiresReplace(),
+				},
+				{{- end}}
 				{{- if len .EnumValues}}
 				Validators: []validator.String{
 					stringvalidator.OneOf({{range .EnumValues}}"{{.}}", {{end}}),

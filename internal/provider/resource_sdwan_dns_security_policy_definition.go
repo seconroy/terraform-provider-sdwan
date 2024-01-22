@@ -81,6 +81,9 @@ func (r *DNSSecurityPolicyDefinitionResource) Schema(ctx context.Context, req re
 			"domain_list_id": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Local domain bypass list ID").String,
 				Optional:            true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplace(),
+				},
 			},
 			"domain_list_version": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Local domain bypass list version").String,
@@ -114,6 +117,9 @@ func (r *DNSSecurityPolicyDefinitionResource) Schema(ctx context.Context, req re
 			"cisco_sig_credentials_feature_template_id": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Credentials feature template ID").String,
 				Required:            true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplace(),
+				},
 			},
 			"cisco_sig_credentials_feature_template_version": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Credentials feature template version").String,
