@@ -83,6 +83,9 @@ func (r *TLSSSLProfilePolicyDefinitionResource) Schema(ctx context.Context, req 
 			"mode": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("The policy mode").AddStringEnumDescription("security", "unified").String,
 				Optional:            true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplace(),
+				},
 				Validators: []validator.String{
 					stringvalidator.OneOf("security", "unified"),
 				},

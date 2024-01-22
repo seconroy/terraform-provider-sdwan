@@ -83,6 +83,9 @@ func (r *TLSSSLDecryptionPolicyDefinitionResource) Schema(ctx context.Context, r
 			"mode": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("The policy mode").AddStringEnumDescription("security", "unified").String,
 				Optional:            true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplace(),
+				},
 				Validators: []validator.String{
 					stringvalidator.OneOf("security", "unified"),
 				},

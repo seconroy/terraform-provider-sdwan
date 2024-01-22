@@ -23,6 +23,7 @@ attributes:
     tf_name: mode
     type: String
     enum_values: [security, unified]
+    requires_replace: true
     description: The policy mode
     example: security
   - model_name: type
