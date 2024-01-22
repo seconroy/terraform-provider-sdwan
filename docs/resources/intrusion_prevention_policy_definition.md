@@ -30,20 +30,21 @@ resource "sdwan_intrusion_prevention_policy_definition" "example" {
 ### Required
 
 - `description` (String) The description of the policy definition
+- `inspection_mode` (String) The inspection mode
+  - Choices: `protection`, `detection`
+- `log_level` (String) Log level
+  - Choices: `emergency`, `alert`, `critical`, `error`, `warning`, `notice`, `info`, `debug`
 - `name` (String) The name of the policy definition
+- `signature_set` (String) Signature set
+  - Choices: `balanced`, `connectivity`, `security`
 
 ### Optional
 
-- `inspection_mode` (String) The inspection mode
-  - Choices: `protection`, `detection`
 - `ips_signature_list_id` (String) IPS signature list ID
 - `ips_signature_list_version` (Number) IPS signature list version
-- `log_level` (String) Log level
-  - Choices: `emergency`, `alert`, `critical`, `error`, `warning`, `notice`, `info`, `debug`
 - `mode` (String) The policy mode
   - Choices: `security`, `unified`
-- `signature_set` (String) Signature set
-  - Choices: `balanced`, `connectivity`, `security`
+  - Default value: `security`
 - `target_vpns` (List of String) List of VPN IDs
 
 ### Read-Only

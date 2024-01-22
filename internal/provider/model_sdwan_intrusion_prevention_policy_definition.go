@@ -68,7 +68,7 @@ func (data IntrusionPreventionPolicyDefinition) toBody(ctx context.Context) stri
 	if !data.IpsSignatureListId.IsNull() {
 		body, _ = sjson.Set(body, "definition.signatureWhiteList.ref", data.IpsSignatureListId.ValueString())
 	}
-	if !data.TargetVpns.IsNull() {
+	if !data.TargetVpns.IsNull() && data.Mode.ValueString() == "security" {
 		var values []string
 		data.TargetVpns.ElementsAs(ctx, &values, false)
 		body, _ = sjson.Set(body, "definition.targetVpns", values)
@@ -113,7 +113,7 @@ func (data *IntrusionPreventionPolicyDefinition) fromBody(ctx context.Context, r
 	} else {
 		data.IpsSignatureListId = types.StringNull()
 	}
-	if value := res.Get("definition.targetVpns"); value.Exists() {
+	if value := res.Get("definition.targetVpns"); value.Exists() && data.Mode.ValueString() == "security" {
 		data.TargetVpns = helpers.GetStringList(value.Array())
 	} else {
 		data.TargetVpns = types.ListNull(types.StringType)

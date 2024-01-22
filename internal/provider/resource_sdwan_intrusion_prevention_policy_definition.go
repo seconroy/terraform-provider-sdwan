@@ -31,6 +31,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -81,29 +82,34 @@ func (r *IntrusionPreventionPolicyDefinitionResource) Schema(ctx context.Context
 				Required:            true,
 			},
 			"mode": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("The policy mode").AddStringEnumDescription("security", "unified").String,
+				MarkdownDescription: helpers.NewAttributeDescription("The policy mode").AddStringEnumDescription("security", "unified").AddDefaultValueDescription("security").String,
 				Optional:            true,
+				Computed:            true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplace(),
+				},
 				Validators: []validator.String{
 					stringvalidator.OneOf("security", "unified"),
 				},
+				Default: stringdefault.StaticString("security"),
 			},
 			"inspection_mode": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("The inspection mode").AddStringEnumDescription("protection", "detection").String,
-				Optional:            true,
+				Required:            true,
 				Validators: []validator.String{
 					stringvalidator.OneOf("protection", "detection"),
 				},
 			},
 			"log_level": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Log level").AddStringEnumDescription("emergency", "alert", "critical", "error", "warning", "notice", "info", "debug").String,
-				Optional:            true,
+				Required:            true,
 				Validators: []validator.String{
 					stringvalidator.OneOf("emergency", "alert", "critical", "error", "warning", "notice", "info", "debug"),
 				},
 			},
 			"signature_set": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Signature set").AddStringEnumDescription("balanced", "connectivity", "security").String,
-				Optional:            true,
+				Required:            true,
 				Validators: []validator.String{
 					stringvalidator.OneOf("balanced", "connectivity", "security"),
 				},

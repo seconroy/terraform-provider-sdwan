@@ -24,13 +24,15 @@ attributes:
     tf_name: mode
     type: String
     enum_values: [security, unified]
-    default_value: 
+    requires_replace: true
+    default_value: security
     description: The policy mode
     example: security
   - model_name: inspectionMode
     data_path: [definition]
     tf_name: inspection_mode
     type: String
+    mandatory: true
     enum_values: [protection, detection]
     description: The inspection mode
     example: protection
@@ -38,6 +40,7 @@ attributes:
     data_path: [definition]
     tf_name: log_level
     type: String
+    mandatory: true
     enum_values: [emergency, alert, critical, error, warning, notice, info, debug]
     description: Log level
     example: alert
@@ -45,6 +48,7 @@ attributes:
     data_path: [definition]
     tf_name: signature_set
     type: String
+    mandatory: true
     enum_values: [balanced, connectivity, security]
     description: Signature set
     example: connectivity
@@ -64,5 +68,8 @@ attributes:
     data_path: [definition]
     tf_name: target_vpns
     type: StringList
+    conditional_attribute:
+      name: mode
+      value: security
     description: List of VPN IDs
     example: 1
