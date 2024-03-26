@@ -32,6 +32,7 @@ description: |-
 - Add `sdwan_cellular_controller_feature_template` resource and data source
 - Add `sdwan_logging_feature_template` resource and data source
 - Add `sdwan_mode_feature_template` resource and data source
+- Add `sdwan_multicast_feature_template` resource and data source
 
 ## 0.3.6
 

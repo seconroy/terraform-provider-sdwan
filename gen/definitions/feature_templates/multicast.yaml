@@ -1,0 +1,7 @@
+name: multicast
+minimum_version: 15.0.0
+attributes:
+  - model_name: local
+    example: false
+  - model_name: threshold
+    example: 123
