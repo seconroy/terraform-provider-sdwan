@@ -1,0 +1,22 @@
+---
+name: pim
+minimum_version: 15.0.0
+attributes:
+  - model_name: shutdown
+    example: false
+  - model_name: auto-rp
+    example: false
+  - model_name: spt-threshold
+    example: 64
+  - model_name: replicator-selection
+    tf_name: replicator
+    example: random
+  - model_name: interface
+    attributes:
+      - model_name: name
+        tf_name: interface_name
+        example: example
+      - model_name: hello-interval
+        example: 1200
+      - model_name: join-prune-interval
+        example: 123
