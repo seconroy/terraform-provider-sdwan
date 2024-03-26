@@ -1,0 +1,10 @@
+---
+name: banner
+minimum_version: 15.0.0
+attributes:
+  - model_name: login
+    tf_name: login_banner
+    example: My login banner
+  - model_name: motd
+    tf_name: motd_banner
+    example: My motd banner

@@ -242,6 +242,7 @@ func (p *SdwanProvider) Configure(ctx context.Context, req provider.ConfigureReq
 func (p *SdwanProvider) Resources(ctx context.Context) []func() resource.Resource {
 	return []func() resource.Resource{
 		NewArchiveFeatureTemplateResource,
+		NewBannerFeatureTemplateResource,
 		NewCEdgeAAAFeatureTemplateResource,
 		NewCEdgeGlobalFeatureTemplateResource,
 		NewCEdgeIGMPFeatureTemplateResource,
@@ -363,6 +364,7 @@ func (p *SdwanProvider) Resources(ctx context.Context) []func() resource.Resourc
 func (p *SdwanProvider) DataSources(ctx context.Context) []func() datasource.DataSource {
 	return []func() datasource.DataSource{
 		NewArchiveFeatureTemplateDataSource,
+		NewBannerFeatureTemplateDataSource,
 		NewCEdgeAAAFeatureTemplateDataSource,
 		NewCEdgeGlobalFeatureTemplateDataSource,
 		NewCEdgeIGMPFeatureTemplateDataSource,
