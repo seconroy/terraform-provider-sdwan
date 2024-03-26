@@ -1,0 +1,32 @@
+name: ntp
+minimum_version: 15.0.0
+attributes:
+  - model_name: server
+    tf_name: ntp_servers
+    attributes:
+      - model_name: name
+        tf_name: hostname_ip_address
+        example: example
+      - model_name: key
+        tf_name: authentication_key
+        example: 12345
+      - model_name: vpn
+        tf_name: vpn_id
+        example: 1
+      - model_name: version
+        example: 3
+      - model_name: source-interface
+        example: 18
+      - model_name: prefer
+        example: false
+  - model_name: authentication
+    attributes:
+      - model_name: number
+        tf_name: md5_authentication_key_id
+        example: 23456
+      - model_name: md5
+        tf_name: authentication_value
+        example: MyPassword
+  - model_name: trusted
+    tf_name: trusted_keys
+    example: 1234
