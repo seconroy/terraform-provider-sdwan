@@ -1,0 +1,39 @@
+name: logging
+minimum_version: 15.0.0
+attributes:
+  - model_name: enable
+    example: true
+  - model_name: size
+    tf_name: maximum_file_size
+    example: 18
+  - model_name: rotate
+    tf_name: rotation
+    example: 10
+  - model_name: priority
+    example: information
+  - model_name: server
+    tf_name: remote_hosts
+    attributes:
+      - model_name: name
+        tf_name: hostname_ipv4_address
+        example: example
+      - model_name: vpn
+        tf_name: vpn_id
+        example: 1
+      - model_name: source-interface
+        example: 22
+      - model_name: priority
+        example: information
+  - model_name: ipv6-server
+    tf_name: remote_ipv6_hosts
+    attributes:
+      - model_name: name
+        tf_name: ipv6_hostname_ipv6_address
+        example: example
+      - model_name: vpn
+        tf_name: vpn_id
+        example: 1
+      - model_name: source-interface
+        example: 18
+      - model_name: priority
+        example: alert
