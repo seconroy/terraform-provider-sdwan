@@ -1,0 +1,11 @@
+name: mode
+minimum_version: 15.0.0
+attributes:
+  - model_name: mode
+    tf_name: bay_1
+    data_path: [subslot, bay1]
+    example: 100
+  - model_name: mode
+    tf_name: bay_2
+    data_path: [subslot, bay2]
+    example: 40
