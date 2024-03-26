@@ -1,0 +1,16 @@
+---
+name: archive
+minimum_version: 15.0.0
+attributes:
+  - model_name: path
+    tf_name: path_to_archive_file_directory
+    example: ftp://file-path
+  - model_name: interval
+    tf_name: archival_interval
+    example: 52560
+  - model_name: ssh-id-file
+    tf_name: ssh_key_file
+    example: id_rsa
+  - model_name: vpn
+    tf_name: vpn_id
+    example: 1
