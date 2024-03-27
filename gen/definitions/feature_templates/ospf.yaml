@@ -1,0 +1,121 @@
+---
+name: ospf
+minimum_version: 15.0.0
+attributes:
+  - model_name: router-id
+    example: 1.2.3.4
+  - model_name: reference-bandwidth
+    example: 429496
+  - model_name: rfc1583
+    tf_name: rfc_1583_compatible
+    example: true
+  - model_name: originate
+    tf_name: originate_default_route
+    example: false
+  - model_name: always
+    example: false
+  - model_name: metric
+    tf_name: default_metric
+    example: 16777
+  - model_name: metric-type
+    example: type2
+  - model_name: external
+    tf_name: distance_for_external_routes
+    example: 110
+  - model_name: inter-area
+    tf_name: distance_for_inter_area_routes
+    example: 110
+  - model_name: intra-area
+    tf_name: distance_for_intra_area_routes
+    example: 110
+  - model_name: delay
+    tf_name: spf_calculation_delay
+    example: 200
+  - model_name: initial-hold
+    tf_name: initial_hold_time
+    example: 1000
+  - model_name: max-hold
+    tf_name: max_hold_time
+    example: 1000
+  - model_name: redistribute
+    tf_name: redistribute_routes
+    attributes:
+      - model_name: protocol
+        example: static
+      - model_name: route-policy
+        example: example
+  - model_name: router-lsa
+    attributes:
+      - model_name: ad-type
+        tf_name: type
+        example: administrative
+      - model_name: time
+        tf_name: advertizement_time
+        example: 1234
+  - model_name: route-policy
+    tf_name: route_policies
+    attributes:
+      - model_name: direction
+        example: in
+      - model_name: pol-name
+        tf_name: policy_name
+        example: example
+  - model_name: area
+    tf_name: ospf_area
+    attributes:
+      - model_name: a-num
+        tf_name: area_number
+        example: 42949672
+      - model_name: no-summary
+        tf_name: stub_no_summary
+        data_path: [stub]
+        example: false
+      - model_name: translate
+        example: candidate
+      - model_name: no-summary
+        tf_name: nssa_no_summary
+        data_path: [nssa]
+        example: false
+      - model_name: interface
+        tf_name: ospf_interface
+        attributes:
+          - model_name: name
+            tf_name: interface_name
+            example: interface_example
+          - model_name: hello-interval
+            example: 10
+          - model_name: dead-interval
+            example: 40
+          - model_name: retransmit-interval
+            example: 5
+          - model_name: cost
+            tf_name: interface_cost
+            example: 1234
+          - model_name: priority
+            tf_name: designated_router_priority
+            example: 1
+          - model_name: network
+            tf_name: ospf_network_type
+            example: broadcast
+          - model_name: passive-interface
+            example: false
+          - model_name: type
+            tf_name: authentication_type
+            example: simple
+          - model_name: authentication-key
+            example: example
+          - model_name: message-digest-key
+            tf_name: message_digest_key_id
+            example: 1
+          - model_name: md5
+            tf_name: message_digest_key
+            example: MyMD5Key
+      - model_name: range
+        tf_name: summarize_routes
+        attributes:
+          - model_name: address
+            example: 1.2.3.4/24
+          - model_name: cost
+            example: 167215
+          - model_name: no-advertise
+            example: false

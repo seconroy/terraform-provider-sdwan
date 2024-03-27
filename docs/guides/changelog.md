@@ -40,6 +40,7 @@ description: |-
 - Add `sdwan_pim_feature_template` resource and data source
 - Add `sdwan_bridge_feature_template` resource and data source
 - Add `sdwan_igmp_feature_template` resource and data source
+- Add `sdwan_ospf_feature_template` resource and data source
 
 ## 0.3.6
 
