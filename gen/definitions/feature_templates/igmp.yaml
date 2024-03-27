@@ -1,0 +1,16 @@
+---
+name: igmp
+minimum_version: 15.0.0
+attributes:
+  - model_name: shutdown
+    example: false
+  - model_name: interface
+    attributes:
+      - model_name: name
+        tf_name: interface_name
+        example: example
+      - model_name: join-group
+        tf_name: static_joins
+        attributes:
+          - model_name: group-address
+            example: 1.2.3.4
