@@ -1,0 +1,34 @@
+---
+name: Bridge
+minimum_version: 15.0.0
+attributes:
+  - model_name: name
+    tf_name: bridge_name
+    example: example
+  - model_name: age-time
+    tf_name: age_out_time
+    example: 300
+  - model_name: max-macs
+    tf_name: maximum_mac_addresses
+    example: 1234
+  - model_name: vlan
+    tf_name: vlan_id
+    example: 1
+  - model_name: interface
+    tf_name: interface_to_bind_to_bridging_domain
+    attributes:
+      - model_name: if-name
+        tf_name: interface_name
+        example: interface_example
+      - model_name: description
+        example: My Description
+      - model_name: native-vlan
+        tf_name: native_vlan_support
+        example: false
+      - model_name: static-mac-address
+        attributes:
+          - model_name: macaddr
+            tf_name: mac_address
+            example: 0000.00000.0000
+      - model_name: shutdown
+        example: true

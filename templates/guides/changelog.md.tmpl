@@ -38,6 +38,7 @@ description: |-
 - Add `sdwan_banner_feature_template` resource and data source
 - Add `sdwan_tenant_feature_template` resource and data source
 - Add `sdwan_pim_feature_template` resource and data source
+- Add `sdwan_bridge_feature_template` resource and data source
 
 ## 0.3.6
 

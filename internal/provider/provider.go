@@ -243,6 +243,7 @@ func (p *SdwanProvider) Resources(ctx context.Context) []func() resource.Resourc
 	return []func() resource.Resource{
 		NewArchiveFeatureTemplateResource,
 		NewBannerFeatureTemplateResource,
+		NewBridgeFeatureTemplateResource,
 		NewCEdgeAAAFeatureTemplateResource,
 		NewCEdgeGlobalFeatureTemplateResource,
 		NewCEdgeIGMPFeatureTemplateResource,
@@ -367,6 +368,7 @@ func (p *SdwanProvider) DataSources(ctx context.Context) []func() datasource.Dat
 	return []func() datasource.DataSource{
 		NewArchiveFeatureTemplateDataSource,
 		NewBannerFeatureTemplateDataSource,
+		NewBridgeFeatureTemplateDataSource,
 		NewCEdgeAAAFeatureTemplateDataSource,
 		NewCEdgeGlobalFeatureTemplateDataSource,
 		NewCEdgeIGMPFeatureTemplateDataSource,
