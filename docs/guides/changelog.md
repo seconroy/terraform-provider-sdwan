@@ -19,6 +19,7 @@ description: |-
 - Add `sdwan_application_priority_qos_policy_profile_parcel` resource and data source
 - Add `sdwan_transport_wan_vpn_interface_ethernet_profile_parcel` resource and data source
 - Add `sdwan_policy_object_feature_profile` resource and data source
+- Add `sdwan_policy_object_class_map` resource and data source
 
 ## 0.3.9
 
