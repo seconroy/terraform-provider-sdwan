@@ -14,6 +14,7 @@
 - Add `sdwan_policy_object_color_profile_parcel` resource and data source
 - Add `sdwan_policy_object_data_ipv6_prefix_profile_parcel` resource and data source
 - Add `sdwan_policy_object_data_prefix_profile_parcel` resource and data source
+- Add `sdwan_policy_object_tloc_profile_parcel` resource and data source
 
 ## 0.3.9
 
