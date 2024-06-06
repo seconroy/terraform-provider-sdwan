@@ -26,6 +26,7 @@ description: |-
 - Add `sdwan_policy_object_tloc_profile_parcel` resource and data source
 - Add `sdwan_policy_object_expanded_community_profile_parcel` resource and data source
 - Add `sdwan_policy_object_extended_community_profile_parcel` resource and data source
+- Add `sdwan_policy_object_mirror_profile_parcel` resource and data source
 
 ## 0.3.9
 
