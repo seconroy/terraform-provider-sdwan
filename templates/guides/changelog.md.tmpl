@@ -22,6 +22,7 @@ description: |-
 - Add `sdwan_policy_object_class_map_profile_parcel` resource and data source
 - Add `sdwan_policy_object_color_profile_parcel` resource and data source
 - Add `sdwan_policy_object_data_ipv6_prefix_profile_parcel` resource and data source
+- Add `sdwan_policy_object_data_prefix_profile_parcel` resource and data source
 
 ## 0.3.9
 
