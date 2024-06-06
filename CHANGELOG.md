@@ -19,6 +19,8 @@
 - Add `sdwan_policy_object_extended_community_profile_parcel` resource and data source
 - Add `sdwan_policy_object_mirror_profile_parcel` resource and data source
 - Add `sdwan_policy_object_policer_profile_parcel` resource and data source
+- Add `sdwan_policy_object_prefix_profile_parcel` resource and data source
+- Add `sdwan_policy_object_ipv6_prefix_profile_parcel` resource and data source
 
 ## 0.3.9
 
