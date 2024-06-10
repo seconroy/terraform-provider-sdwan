@@ -68,9 +68,18 @@ type ApplicationPriorityTrafficPolicySequencesMatches struct {
 	DestinationDataIpv6PrefixListId types.String `tfsdk:"destination_data_ipv6_prefix_list_id"`
 	DestinationPort                 types.Set    `tfsdk:"destination_port"`
 	DestinationRegion               types.String `tfsdk:"destination_region"`
+	SaasApplicationListId           types.String `tfsdk:"saas_application_list_id"`
 	Tcp                             types.String `tfsdk:"tcp"`
 	TrafficTo                       types.String `tfsdk:"traffic_to"`
 	TrafficClass                    types.String `tfsdk:"traffic_class"`
+	Ipv4IcmpMessage                 types.Set    `tfsdk:"ipv4_icmp_message"`
+	Ipv6IcmpMessage                 types.Set    `tfsdk:"ipv6_icmp_message"`
+	ServiceArea                     types.Set    `tfsdk:"service_area"`
+	TrafficCategory                 types.String `tfsdk:"traffic_category"`
+	SourceIpv4                      types.String `tfsdk:"source_ipv4"`
+	SourceIpv6                      types.String `tfsdk:"source_ipv6"`
+	DestinationIpv4                 types.String `tfsdk:"destination_ipv4"`
+	DestinationIpv6                 types.String `tfsdk:"destination_ipv6"`
 }
 type ApplicationPriorityTrafficPolicySequencesActions struct {
 	Counter                   types.String                                               `tfsdk:"counter"`
@@ -85,6 +94,8 @@ type ApplicationPriorityTrafficPolicySequencesActions struct {
 	ServiceNodeGroup          types.String                                               `tfsdk:"service_node_group"`
 	LossCorrectionType        types.String                                               `tfsdk:"loss_correction_type"`
 	LossCorrectFecThreshold   types.Int64                                                `tfsdk:"loss_correct_fec_threshold"`
+	CloudSaas                 types.Bool                                                 `tfsdk:"cloud_saas"`
+	CloudProbe                types.Bool                                                 `tfsdk:"cloud_probe"`
 	Cflowd                    types.Bool                                                 `tfsdk:"cflowd"`
 	NatPool                   types.Int64                                                `tfsdk:"nat_pool"`
 	NatVpn                    types.Bool                                                 `tfsdk:"nat_vpn"`
@@ -260,6 +271,10 @@ func (data ApplicationPriorityTrafficPolicy) toBody(ctx context.Context) string 
 				itemChildBody, _ = sjson.Set(itemChildBody, "destinationRegion.optionType", "global")
 				itemChildBody, _ = sjson.Set(itemChildBody, "destinationRegion.value", childItem.DestinationRegion.ValueString())
 			}
+			if !childItem.SaasApplicationListId.IsNull() {
+				itemChildBody, _ = sjson.Set(itemChildBody, "saasAppList.refId.optionType", "global")
+				itemChildBody, _ = sjson.Set(itemChildBody, "saasAppList.refId.value", childItem.SaasApplicationListId.ValueString())
+			}
 			if !childItem.Tcp.IsNull() {
 				itemChildBody, _ = sjson.Set(itemChildBody, "tcp.optionType", "global")
 				itemChildBody, _ = sjson.Set(itemChildBody, "tcp.value", childItem.Tcp.ValueString())
@@ -271,6 +286,44 @@ func (data ApplicationPriorityTrafficPolicy) toBody(ctx context.Context) string 
 			if !childItem.TrafficClass.IsNull() {
 				itemChildBody, _ = sjson.Set(itemChildBody, "trafficClass.optionType", "global")
 				itemChildBody, _ = sjson.Set(itemChildBody, "trafficClass.value", childItem.TrafficClass.ValueString())
+			}
+			if !childItem.Ipv4IcmpMessage.IsNull() {
+				itemChildBody, _ = sjson.Set(itemChildBody, "icmpMessage.optionType", "global")
+				var values []string
+				childItem.Ipv4IcmpMessage.ElementsAs(ctx, &values, false)
+				itemChildBody, _ = sjson.Set(itemChildBody, "icmpMessage.value", values)
+			}
+			if !childItem.Ipv6IcmpMessage.IsNull() {
+				itemChildBody, _ = sjson.Set(itemChildBody, "icmp6Message.optionType", "global")
+				var values []string
+				childItem.Ipv6IcmpMessage.ElementsAs(ctx, &values, false)
+				itemChildBody, _ = sjson.Set(itemChildBody, "icmp6Message.value", values)
+			}
+			if !childItem.ServiceArea.IsNull() {
+				itemChildBody, _ = sjson.Set(itemChildBody, "serviceArea.optionType", "global")
+				var values []string
+				childItem.ServiceArea.ElementsAs(ctx, &values, false)
+				itemChildBody, _ = sjson.Set(itemChildBody, "serviceArea.value", values)
+			}
+			if !childItem.TrafficCategory.IsNull() {
+				itemChildBody, _ = sjson.Set(itemChildBody, "trafficCategory.optionType", "global")
+				itemChildBody, _ = sjson.Set(itemChildBody, "trafficCategory.value", childItem.TrafficCategory.ValueString())
+			}
+			if !childItem.SourceIpv4.IsNull() {
+				itemChildBody, _ = sjson.Set(itemChildBody, "sourceIp.optionType", "global")
+				itemChildBody, _ = sjson.Set(itemChildBody, "sourceIp.value", childItem.SourceIpv4.ValueString())
+			}
+			if !childItem.SourceIpv6.IsNull() {
+				itemChildBody, _ = sjson.Set(itemChildBody, "sourceIpv6.optionType", "global")
+				itemChildBody, _ = sjson.Set(itemChildBody, "sourceIpv6.value", childItem.SourceIpv6.ValueString())
+			}
+			if !childItem.DestinationIpv4.IsNull() {
+				itemChildBody, _ = sjson.Set(itemChildBody, "destinationIp.optionType", "global")
+				itemChildBody, _ = sjson.Set(itemChildBody, "destinationIp.value", childItem.DestinationIpv4.ValueString())
+			}
+			if !childItem.DestinationIpv6.IsNull() {
+				itemChildBody, _ = sjson.Set(itemChildBody, "destinationIpv6.optionType", "global")
+				itemChildBody, _ = sjson.Set(itemChildBody, "destinationIpv6.value", childItem.DestinationIpv6.ValueString())
 			}
 			itemBody, _ = sjson.SetRaw(itemBody, "match.entries.-1", itemChildBody)
 		}
@@ -490,6 +543,14 @@ func (data ApplicationPriorityTrafficPolicy) toBody(ctx context.Context) string 
 			if !childItem.LossCorrectFecThreshold.IsNull() {
 				itemChildBody, _ = sjson.Set(itemChildBody, "lossCorrection.lossCorrectFec.optionType", "global")
 				itemChildBody, _ = sjson.Set(itemChildBody, "lossCorrection.lossCorrectFec.value", childItem.LossCorrectFecThreshold.ValueInt64())
+			}
+			if !childItem.CloudSaas.IsNull() {
+				itemChildBody, _ = sjson.Set(itemChildBody, "cloudSaas.optionType", "global")
+				itemChildBody, _ = sjson.Set(itemChildBody, "cloudSaas.value", childItem.CloudSaas.ValueBool())
+			}
+			if !childItem.CloudProbe.IsNull() {
+				itemChildBody, _ = sjson.Set(itemChildBody, "cloudProbe.optionType", "global")
+				itemChildBody, _ = sjson.Set(itemChildBody, "cloudProbe.value", childItem.CloudProbe.ValueBool())
 			}
 			if !childItem.Cflowd.IsNull() {
 				itemChildBody, _ = sjson.Set(itemChildBody, "cflowd.optionType", "global")
@@ -733,6 +794,14 @@ func (data *ApplicationPriorityTrafficPolicy) fromBody(ctx context.Context, res 
 							cItem.DestinationRegion = types.StringValue(va.String())
 						}
 					}
+					cItem.SaasApplicationListId = types.StringNull()
+
+					if t := cv.Get("saasAppList.refId.optionType"); t.Exists() {
+						va := cv.Get("saasAppList.refId.value")
+						if t.String() == "global" {
+							cItem.SaasApplicationListId = types.StringValue(va.String())
+						}
+					}
 					cItem.Tcp = types.StringNull()
 
 					if t := cv.Get("tcp.optionType"); t.Exists() {
@@ -755,6 +824,70 @@ func (data *ApplicationPriorityTrafficPolicy) fromBody(ctx context.Context, res 
 						va := cv.Get("trafficClass.value")
 						if t.String() == "global" {
 							cItem.TrafficClass = types.StringValue(va.String())
+						}
+					}
+					cItem.Ipv4IcmpMessage = types.SetNull(types.StringType)
+
+					if t := cv.Get("icmpMessage.optionType"); t.Exists() {
+						va := cv.Get("icmpMessage.value")
+						if t.String() == "global" {
+							cItem.Ipv4IcmpMessage = helpers.GetStringSet(va.Array())
+						}
+					}
+					cItem.Ipv6IcmpMessage = types.SetNull(types.StringType)
+
+					if t := cv.Get("icmp6Message.optionType"); t.Exists() {
+						va := cv.Get("icmp6Message.value")
+						if t.String() == "global" {
+							cItem.Ipv6IcmpMessage = helpers.GetStringSet(va.Array())
+						}
+					}
+					cItem.ServiceArea = types.SetNull(types.StringType)
+
+					if t := cv.Get("serviceArea.optionType"); t.Exists() {
+						va := cv.Get("serviceArea.value")
+						if t.String() == "global" {
+							cItem.ServiceArea = helpers.GetStringSet(va.Array())
+						}
+					}
+					cItem.TrafficCategory = types.StringNull()
+
+					if t := cv.Get("trafficCategory.optionType"); t.Exists() {
+						va := cv.Get("trafficCategory.value")
+						if t.String() == "global" {
+							cItem.TrafficCategory = types.StringValue(va.String())
+						}
+					}
+					cItem.SourceIpv4 = types.StringNull()
+
+					if t := cv.Get("sourceIp.optionType"); t.Exists() {
+						va := cv.Get("sourceIp.value")
+						if t.String() == "global" {
+							cItem.SourceIpv4 = types.StringValue(va.String())
+						}
+					}
+					cItem.SourceIpv6 = types.StringNull()
+
+					if t := cv.Get("sourceIpv6.optionType"); t.Exists() {
+						va := cv.Get("sourceIpv6.value")
+						if t.String() == "global" {
+							cItem.SourceIpv6 = types.StringValue(va.String())
+						}
+					}
+					cItem.DestinationIpv4 = types.StringNull()
+
+					if t := cv.Get("destinationIp.optionType"); t.Exists() {
+						va := cv.Get("destinationIp.value")
+						if t.String() == "global" {
+							cItem.DestinationIpv4 = types.StringValue(va.String())
+						}
+					}
+					cItem.DestinationIpv6 = types.StringNull()
+
+					if t := cv.Get("destinationIpv6.optionType"); t.Exists() {
+						va := cv.Get("destinationIpv6.value")
+						if t.String() == "global" {
+							cItem.DestinationIpv6 = types.StringValue(va.String())
 						}
 					}
 					item.Matches = append(item.Matches, cItem)
@@ -1157,6 +1290,22 @@ func (data *ApplicationPriorityTrafficPolicy) fromBody(ctx context.Context, res 
 							cItem.LossCorrectFecThreshold = types.Int64Value(va.Int())
 						}
 					}
+					cItem.CloudSaas = types.BoolNull()
+
+					if t := cv.Get("cloudSaas.optionType"); t.Exists() {
+						va := cv.Get("cloudSaas.value")
+						if t.String() == "global" {
+							cItem.CloudSaas = types.BoolValue(va.Bool())
+						}
+					}
+					cItem.CloudProbe = types.BoolNull()
+
+					if t := cv.Get("cloudProbe.optionType"); t.Exists() {
+						va := cv.Get("cloudProbe.value")
+						if t.String() == "global" {
+							cItem.CloudProbe = types.BoolValue(va.Bool())
+						}
+					}
 					cItem.Cflowd = types.BoolNull()
 
 					if t := cv.Get("cflowd.optionType"); t.Exists() {
@@ -1486,6 +1635,14 @@ func (data *ApplicationPriorityTrafficPolicy) updateFromBody(ctx context.Context
 					data.Sequences[i].Matches[ci].DestinationRegion = types.StringValue(va.String())
 				}
 			}
+			data.Sequences[i].Matches[ci].SaasApplicationListId = types.StringNull()
+
+			if t := cr.Get("saasAppList.refId.optionType"); t.Exists() {
+				va := cr.Get("saasAppList.refId.value")
+				if t.String() == "global" {
+					data.Sequences[i].Matches[ci].SaasApplicationListId = types.StringValue(va.String())
+				}
+			}
 			data.Sequences[i].Matches[ci].Tcp = types.StringNull()
 
 			if t := cr.Get("tcp.optionType"); t.Exists() {
@@ -1508,6 +1665,70 @@ func (data *ApplicationPriorityTrafficPolicy) updateFromBody(ctx context.Context
 				va := cr.Get("trafficClass.value")
 				if t.String() == "global" {
 					data.Sequences[i].Matches[ci].TrafficClass = types.StringValue(va.String())
+				}
+			}
+			data.Sequences[i].Matches[ci].Ipv4IcmpMessage = types.SetNull(types.StringType)
+
+			if t := cr.Get("icmpMessage.optionType"); t.Exists() {
+				va := cr.Get("icmpMessage.value")
+				if t.String() == "global" {
+					data.Sequences[i].Matches[ci].Ipv4IcmpMessage = helpers.GetStringSet(va.Array())
+				}
+			}
+			data.Sequences[i].Matches[ci].Ipv6IcmpMessage = types.SetNull(types.StringType)
+
+			if t := cr.Get("icmp6Message.optionType"); t.Exists() {
+				va := cr.Get("icmp6Message.value")
+				if t.String() == "global" {
+					data.Sequences[i].Matches[ci].Ipv6IcmpMessage = helpers.GetStringSet(va.Array())
+				}
+			}
+			data.Sequences[i].Matches[ci].ServiceArea = types.SetNull(types.StringType)
+
+			if t := cr.Get("serviceArea.optionType"); t.Exists() {
+				va := cr.Get("serviceArea.value")
+				if t.String() == "global" {
+					data.Sequences[i].Matches[ci].ServiceArea = helpers.GetStringSet(va.Array())
+				}
+			}
+			data.Sequences[i].Matches[ci].TrafficCategory = types.StringNull()
+
+			if t := cr.Get("trafficCategory.optionType"); t.Exists() {
+				va := cr.Get("trafficCategory.value")
+				if t.String() == "global" {
+					data.Sequences[i].Matches[ci].TrafficCategory = types.StringValue(va.String())
+				}
+			}
+			data.Sequences[i].Matches[ci].SourceIpv4 = types.StringNull()
+
+			if t := cr.Get("sourceIp.optionType"); t.Exists() {
+				va := cr.Get("sourceIp.value")
+				if t.String() == "global" {
+					data.Sequences[i].Matches[ci].SourceIpv4 = types.StringValue(va.String())
+				}
+			}
+			data.Sequences[i].Matches[ci].SourceIpv6 = types.StringNull()
+
+			if t := cr.Get("sourceIpv6.optionType"); t.Exists() {
+				va := cr.Get("sourceIpv6.value")
+				if t.String() == "global" {
+					data.Sequences[i].Matches[ci].SourceIpv6 = types.StringValue(va.String())
+				}
+			}
+			data.Sequences[i].Matches[ci].DestinationIpv4 = types.StringNull()
+
+			if t := cr.Get("destinationIp.optionType"); t.Exists() {
+				va := cr.Get("destinationIp.value")
+				if t.String() == "global" {
+					data.Sequences[i].Matches[ci].DestinationIpv4 = types.StringValue(va.String())
+				}
+			}
+			data.Sequences[i].Matches[ci].DestinationIpv6 = types.StringNull()
+
+			if t := cr.Get("destinationIpv6.optionType"); t.Exists() {
+				va := cr.Get("destinationIpv6.value")
+				if t.String() == "global" {
+					data.Sequences[i].Matches[ci].DestinationIpv6 = types.StringValue(va.String())
 				}
 			}
 		}
@@ -1965,6 +2186,22 @@ func (data *ApplicationPriorityTrafficPolicy) updateFromBody(ctx context.Context
 				va := cr.Get("lossCorrection.lossCorrectFec.value")
 				if t.String() == "global" {
 					data.Sequences[i].Actions[ci].LossCorrectFecThreshold = types.Int64Value(va.Int())
+				}
+			}
+			data.Sequences[i].Actions[ci].CloudSaas = types.BoolNull()
+
+			if t := cr.Get("cloudSaas.optionType"); t.Exists() {
+				va := cr.Get("cloudSaas.value")
+				if t.String() == "global" {
+					data.Sequences[i].Actions[ci].CloudSaas = types.BoolValue(va.Bool())
+				}
+			}
+			data.Sequences[i].Actions[ci].CloudProbe = types.BoolNull()
+
+			if t := cr.Get("cloudProbe.optionType"); t.Exists() {
+				va := cr.Get("cloudProbe.value")
+				if t.String() == "global" {
+					data.Sequences[i].Actions[ci].CloudProbe = types.BoolValue(va.Bool())
 				}
 			}
 			data.Sequences[i].Actions[ci].Cflowd = types.BoolNull()

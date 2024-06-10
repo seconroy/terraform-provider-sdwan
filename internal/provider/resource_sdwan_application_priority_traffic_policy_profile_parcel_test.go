@@ -56,9 +56,6 @@ func TestAccSdwanApplicationPriorityTrafficPolicyProfileParcel(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("sdwan_application_priority_traffic_policy_profile_parcel.test", "sequences.0.actions.0.sets.0.service_type", "FW"))
 	checks = append(checks, resource.TestCheckResourceAttr("sdwan_application_priority_traffic_policy_profile_parcel.test", "sequences.0.actions.0.sets.0.service_encapsulation", "ipsec"))
 	checks = append(checks, resource.TestCheckResourceAttr("sdwan_application_priority_traffic_policy_profile_parcel.test", "sequences.0.actions.0.sets.0.service_tloc_ip", "1.2.3.4"))
-	checks = append(checks, resource.TestCheckResourceAttr("sdwan_application_priority_traffic_policy_profile_parcel.test", "sequences.0.actions.0.sets.0.service_vpn", "1"))
-	checks = append(checks, resource.TestCheckResourceAttr("sdwan_application_priority_traffic_policy_profile_parcel.test", "sequences.0.actions.0.sets.0.service_chain_type", "SC1"))
-	checks = append(checks, resource.TestCheckResourceAttr("sdwan_application_priority_traffic_policy_profile_parcel.test", "sequences.0.actions.0.sets.0.service_chain_vpn", "1"))
 	checks = append(checks, resource.TestCheckResourceAttr("sdwan_application_priority_traffic_policy_profile_parcel.test", "sequences.0.actions.0.sets.0.service_chain_local", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("sdwan_application_priority_traffic_policy_profile_parcel.test", "sequences.0.actions.0.sets.0.service_chain_fallback_to_routing", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("sdwan_application_priority_traffic_policy_profile_parcel.test", "sequences.0.actions.0.sets.0.service_chain_encapsulation", "ipsec"))
@@ -68,19 +65,13 @@ func TestAccSdwanApplicationPriorityTrafficPolicyProfileParcel(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("sdwan_application_priority_traffic_policy_profile_parcel.test", "sequences.0.actions.0.sets.0.vpn", "1"))
 	checks = append(checks, resource.TestCheckResourceAttr("sdwan_application_priority_traffic_policy_profile_parcel.test", "sequences.0.actions.0.redirect_dns_field", "redirectDns"))
 	checks = append(checks, resource.TestCheckResourceAttr("sdwan_application_priority_traffic_policy_profile_parcel.test", "sequences.0.actions.0.redirect_dns_value", "umbrella"))
-	checks = append(checks, resource.TestCheckResourceAttr("sdwan_application_priority_traffic_policy_profile_parcel.test", "sequences.0.actions.0.tcp_optimization", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("sdwan_application_priority_traffic_policy_profile_parcel.test", "sequences.0.actions.0.dre_optimization", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("sdwan_application_priority_traffic_policy_profile_parcel.test", "sequences.0.actions.0.service_node_group", "SNG-APPQOE1"))
-	checks = append(checks, resource.TestCheckResourceAttr("sdwan_application_priority_traffic_policy_profile_parcel.test", "sequences.0.actions.0.loss_correction_type", "fecAdaptive"))
-	checks = append(checks, resource.TestCheckResourceAttr("sdwan_application_priority_traffic_policy_profile_parcel.test", "sequences.0.actions.0.loss_correct_fec_threshold", "1"))
 	checks = append(checks, resource.TestCheckResourceAttr("sdwan_application_priority_traffic_policy_profile_parcel.test", "sequences.0.actions.0.cflowd", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("sdwan_application_priority_traffic_policy_profile_parcel.test", "sequences.0.actions.0.nat_pool", "2"))
-	checks = append(checks, resource.TestCheckResourceAttr("sdwan_application_priority_traffic_policy_profile_parcel.test", "sequences.0.actions.0.nat_vpn", "0"))
+	checks = append(checks, resource.TestCheckResourceAttr("sdwan_application_priority_traffic_policy_profile_parcel.test", "sequences.0.actions.0.nat_vpn", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("sdwan_application_priority_traffic_policy_profile_parcel.test", "sequences.0.actions.0.nat_fallback", "false"))
-	checks = append(checks, resource.TestCheckResourceAttr("sdwan_application_priority_traffic_policy_profile_parcel.test", "sequences.0.actions.0.nat_bypass", "false"))
-	checks = append(checks, resource.TestCheckResourceAttr("sdwan_application_priority_traffic_policy_profile_parcel.test", "sequences.0.actions.0.secure_internet_gateway", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("sdwan_application_priority_traffic_policy_profile_parcel.test", "sequences.0.actions.0.fallback_to_routing", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("sdwan_application_priority_traffic_policy_profile_parcel.test", "sequences.0.actions.0.secure_service_edge_instance", "zScaler"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -104,6 +95,218 @@ resource "sdwan_application_priority_feature_profile" "test" {
   name        = "TF_TEST"
   description = "Terraform test"
 }
+
+resource "sdwan_cisco_vpn_feature_template" "test" {
+  name                    = "TF_TEST"
+  description             = "Terraform test"
+  device_types            = ["vedge-C8000V"]
+  vpn_id                  = 1
+  vpn_name                = "VPN1"
+  tenant_vpn_id           = 1
+  organization_name       = "org1"
+  omp_admin_distance_ipv4 = 10
+  omp_admin_distance_ipv6 = 10
+  enhance_ecmp_keying     = true
+  dns_ipv4_servers = [
+    {
+      address = "9.9.9.9"
+      role    = "primary"
+    }
+  ]
+  dns_ipv6_servers = [
+    {
+      address = "2001::9"
+      role    = "primary"
+    }
+  ]
+  dns_hosts = [
+    {
+      hostname = "abc1"
+      ip       = ["7.7.7.7"]
+    }
+  ]
+  services = [
+    {
+      service_types = "FW"
+      address       = ["8.8.8.8"]
+      interface     = "e1"
+      track_enable  = true
+    }
+  ]
+  ipv4_static_service_routes = [
+    {
+      prefix  = "2.2.2.0/24"
+      vpn_id  = 2
+      service = "sig"
+    }
+  ]
+  ipv4_static_routes = [
+    {
+      prefix   = "3.3.3.0/24"
+      null0    = false
+      distance = 10
+      vpn_id   = 5
+      dhcp     = false
+      next_hops = [
+        {
+          address  = "11.1.1.1"
+          distance = 20
+        }
+      ]
+      track_next_hops = [
+        {
+          address  = "12.1.1.1"
+          distance = 20
+          tracker  = "tracker1"
+        }
+      ]
+    }
+  ]
+  ipv6_static_routes = [
+    {
+      prefix = "2001::/48"
+      null0  = false
+      vpn_id = 5
+      nat    = "NAT64"
+      next_hops = [
+        {
+          address  = "2001::11"
+          distance = 20
+        }
+      ]
+    }
+  ]
+  ipv4_static_gre_routes = [
+    {
+      prefix    = "3.3.3.0/24"
+      vpn_id    = 2
+      interface = ["e1"]
+    }
+  ]
+  ipv4_static_ipsec_routes = [
+    {
+      prefix    = "4.4.4.0/24"
+      vpn_id    = 2
+      interface = ["e1"]
+    }
+  ]
+  omp_advertise_ipv4_routes = [
+    {
+      protocol          = "bgp"
+      route_policy      = "rp1"
+      protocol_sub_type = ["external"]
+      prefixes = [
+        {
+          prefix_entry   = "1.1.1.0/24"
+          aggregate_only = true
+        }
+      ]
+    }
+  ]
+  omp_advertise_ipv6_routes = [
+    {
+      protocol          = "bgp"
+      route_policy      = "rp1"
+      protocol_sub_type = ["external"]
+      prefixes = [
+        {
+          prefix_entry   = "2001:2::/48"
+          aggregate_only = true
+        }
+      ]
+    }
+  ]
+  nat64_pools = [
+    {
+      name                      = "POOL1"
+      start_address             = "100.1.1.1"
+      end_address               = "100.1.2.255"
+      overload                  = true
+      leak_from_global          = true
+      leak_from_global_protocol = "rip"
+      leak_to_global            = true
+    }
+  ]
+  nat_pools = [
+    {
+      name          = 1
+      prefix_length = 24
+      range_start   = "101.1.1.1"
+      range_end     = "101.1.2.255"
+      overload      = true
+      direction     = "inside"
+      tracker_id    = 10
+    }
+  ]
+  static_nat_rules = [
+    {
+      pool_name            = 1
+      source_ip            = "10.1.1.1"
+      translate_ip         = "105.1.1.1"
+      static_nat_direction = "inside"
+      tracker_id           = 10
+    }
+  ]
+  static_nat_subnet_rules = [
+    {
+      source_ip_subnet     = "10.2.1.0"
+      translate_ip_subnet  = "105.2.1.0"
+      prefix_length        = 24
+      static_nat_direction = "inside"
+      tracker_id           = 10
+    }
+  ]
+  port_forward_rules = [
+    {
+      pool_name      = 1
+      source_port    = 5000
+      translate_port = 6000
+      source_ip      = "10.3.1.1"
+      translate_ip   = "120.3.1.1"
+      protocol       = "tcp"
+    }
+  ]
+  route_global_imports = [
+    {
+      protocol          = "ospf"
+      protocol_sub_type = ["external"]
+      route_policy      = "policy1"
+      redistributes = [
+        {
+          protocol     = "bgp"
+          route_policy = "policy1"
+        }
+      ]
+    }
+  ]
+  route_vpn_imports = [
+    {
+      source_vpn_id     = 5
+      protocol          = "ospf"
+      protocol_sub_type = ["external"]
+      route_policy      = "policy1"
+      redistributes = [
+        {
+          protocol     = "bgp"
+          route_policy = "policy1"
+        }
+      ]
+    }
+  ]
+  route_global_exports = [
+    {
+      protocol          = "ospf"
+      protocol_sub_type = ["external"]
+      route_policy      = "policy1"
+      redistributes = [
+        {
+          protocol     = "bgp"
+          route_policy = "policy1"
+        }
+      ]
+    }
+  ]
+}
 `
 
 // End of section. //template:end testPrerequisites
@@ -116,7 +319,7 @@ func testAccSdwanApplicationPriorityTrafficPolicyProfileParcelConfig_minimum() s
 	config += `	feature_profile_id = sdwan_application_priority_feature_profile.test.id` + "\n"
 	config += `	default_action = "accept"` + "\n"
 	config += `	simple_flow = false` + "\n"
-	config += `	vpn = ["1"]` + "\n"
+	config += `	vpn = sdwan_cisco_vpn_feature_template.test.id` + "\n"
 	config += `	target_direction = "all"` + "\n"
 	config += `}` + "\n"
 	return config
@@ -132,7 +335,7 @@ func testAccSdwanApplicationPriorityTrafficPolicyProfileParcelConfig_all() strin
 	config += `	feature_profile_id = sdwan_application_priority_feature_profile.test.id` + "\n"
 	config += `	default_action = "accept"` + "\n"
 	config += `	simple_flow = false` + "\n"
-	config += `	vpn = ["1"]` + "\n"
+	config += `	vpn = sdwan_cisco_vpn_feature_template.test.id` + "\n"
 	config += `	target_direction = "all"` + "\n"
 	config += `	sequences = [{` + "\n"
 	config += `	  sequence_id = 1` + "\n"
@@ -167,9 +370,6 @@ func testAccSdwanApplicationPriorityTrafficPolicyProfileParcelConfig_all() strin
 	config += `			service_color = ["default"]` + "\n"
 	config += `			service_encapsulation = "ipsec"` + "\n"
 	config += `			service_tloc_ip = "1.2.3.4"` + "\n"
-	config += `			service_vpn = "1"` + "\n"
-	config += `			service_chain_type = "SC1"` + "\n"
-	config += `			service_chain_vpn = 1` + "\n"
 	config += `			service_chain_local = false` + "\n"
 	config += `			service_chain_fallback_to_routing = false` + "\n"
 	config += `			service_chain_tloc = ["default"]` + "\n"
@@ -181,21 +381,13 @@ func testAccSdwanApplicationPriorityTrafficPolicyProfileParcelConfig_all() strin
 	config += `		}]` + "\n"
 	config += `		redirect_dns_field = "redirectDns"` + "\n"
 	config += `		redirect_dns_value = "umbrella"` + "\n"
-	config += `		tcp_optimization = true` + "\n"
 	config += `		dre_optimization = true` + "\n"
 	config += `		service_node_group = "SNG-APPQOE1"` + "\n"
-	config += `		loss_correction_type = "fecAdaptive"` + "\n"
-	config += `		loss_correct_fec_threshold = 1` + "\n"
 	config += `		cflowd = true` + "\n"
 	config += `		nat_pool = 2` + "\n"
-	config += `		nat_vpn = 0` + "\n"
+	config += `		nat_vpn = false` + "\n"
 	config += `		nat_fallback = false` + "\n"
-	config += `		nat_bypass = false` + "\n"
-	config += `		nat_dia_pool = [1]` + "\n"
-	config += `		nat_dia_interface = ["ethernet"]` + "\n"
-	config += `		secure_internet_gateway = true` + "\n"
 	config += `		fallback_to_routing = true` + "\n"
-	config += `		secure_service_edge_instance = "zScaler"` + "\n"
 	config += `	}]` + "\n"
 	config += `	}]` + "\n"
 	config += `}` + "\n"

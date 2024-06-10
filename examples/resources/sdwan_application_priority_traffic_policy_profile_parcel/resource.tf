@@ -46,9 +46,6 @@ resource "sdwan_application_priority_traffic_policy_profile_parcel" "example" {
               service_color                     = ["default"]
               service_encapsulation             = "ipsec"
               service_tloc_ip                   = "1.2.3.4"
-              service_vpn                       = "1"
-              service_chain_type                = "SC1"
-              service_chain_vpn                 = 1
               service_chain_local               = false
               service_chain_fallback_to_routing = false
               service_chain_tloc                = ["default"]
@@ -59,23 +56,15 @@ resource "sdwan_application_priority_traffic_policy_profile_parcel" "example" {
               vpn                               = "1"
             }
           ]
-          redirect_dns_field           = "redirectDns"
-          redirect_dns_value           = "umbrella"
-          tcp_optimization             = true
-          dre_optimization             = true
-          service_node_group           = "SNG-APPQOE1"
-          loss_correction_type         = "fecAdaptive"
-          loss_correct_fec_threshold   = 1
-          cflowd                       = true
-          nat_pool                     = 2
-          nat_vpn                      = 0
-          nat_fallback                 = false
-          nat_bypass                   = false
-          nat_dia_pool                 = [1]
-          nat_dia_interface            = ["ethernet"]
-          secure_internet_gateway      = true
-          fallback_to_routing          = true
-          secure_service_edge_instance = "zScaler"
+          redirect_dns_field  = "redirectDns"
+          redirect_dns_value  = "umbrella"
+          dre_optimization    = true
+          service_node_group  = "SNG-APPQOE1"
+          cflowd              = true
+          nat_pool            = 2
+          nat_vpn             = false
+          nat_fallback        = false
+          fallback_to_routing = true
         }
       ]
     }

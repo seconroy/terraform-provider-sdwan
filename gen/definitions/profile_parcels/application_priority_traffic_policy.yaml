@@ -14,15 +14,14 @@ attributes:
   - model_name: dataDefaultAction
     tf_name: default_action
     example: accept
-    
   - model_name: simpleFlow
     example: false
+    # ==== Not supported in 20.12 ====
   # - model_name: hasCorViaSig
-    # tf_name: 
     # example: false
-
   - model_name: vpn
     data_path: [target]
+    test_value: sdwan_cisco_vpn_feature_template.test.id
     example: 1
   - model_name: direction
     tf_name: target_direction
@@ -76,7 +75,6 @@ attributes:
       - model_name: sourcePort
         exclude_test: true
         example: 1234
-
       - model_name: refId
         tf_name: destination_data_prefix_list_id
         data_path: [destinationDataPrefixList]
@@ -93,13 +91,11 @@ attributes:
       - model_name: destinationRegion
         exclude_test: true
         example: primary-region
-
-      # - model_name: refId
-      #   tf_name: saas_application_list_id
-      #   data_path: [saasAppList]
-      #   exclude_test: true
-      #   example: exchange
-
+      - model_name: refId
+        tf_name: saas_application_list_id
+        data_path: [saasAppList]
+        exclude_test: true
+        example: a509839f-33aa-492a-ab8e-6a6fe70d7d79
       - model_name: tcp 
         example: gre
       - model_name: trafficTo 
@@ -107,39 +103,44 @@ attributes:
       - model_name: trafficClass
         exclude_test: true
         example: silver
-
-      # - model_name: icmpMessage
-        # tf_name: 
-        # example: administratively-prohibited
-      # - model_name: icmp6Message
-        # tf_name: 
-        # example: beyond-scope
-
-      # - model_name: serviceArea
-        # tf_name: 
-        # example: common
-      # - model_name: trafficCategory
-        # tf_name: 
-        # example: optimize-allow
-
-      # - model_name: sourceIp
-        # tf_name: 
-        # data_path: 
-        # example: 
-      # - model_name: sourceIpv6
-        # tf_name: 
-        # data_path: 
-        # example: 
-
-      # - model_name: destinationIp
-        # tf_name: 
-        # data_path: 
-        # example: 
-      # - model_name: destinationIpv6
-        # tf_name: 
-        # data_path: 
-        # example: 
-
+        # ==== Unable to find in UI in 20.12 ====
+      - model_name: icmpMessage
+        tf_name: ipv4_icmp_message
+        exclude_test: true
+        example: administratively-prohibited
+        # ==== Unable to find in UI in 20.12 ====
+      - model_name: icmp6Message
+        tf_name: ipv6_icmp_message
+        exclude_test: true
+        example: beyond-scope
+        # ==== Unable to find in UI in 20.12 ====
+      - model_name: serviceArea
+        exclude_test: true
+        example: common
+        # ==== Unable to find in UI in 20.12 ====
+      - model_name: trafficCategory
+        exclude_test: true
+        example: optimize-allow
+        # ==== Unable to find in UI in 20.12 ====
+      - model_name: sourceIp
+        tf_name: source_ipv4
+        exclude_test: true
+        example: 1.2.3.4
+        # ==== Unable to find in UI in 20.12 ====
+      - model_name: sourceIpv6
+        tf_name: source_ipv6
+        exclude_test: true
+        example: 2001:0:0:1::/64
+        # ==== Unable to find in UI in 20.12 ====
+      - model_name: destinationIp
+        tf_name: destination_ipv4
+        exclude_test: true
+        example: 2.3.4.5
+        # ==== Unable to find in UI in 20.12 ====
+      - model_name: destinationIpv6
+        tf_name: destination_ipv6
+        exclude_test: true
+        example: 2001:0:0:2::/64
     - model_name: actions
       attributes: 
       - model_name: count
@@ -252,20 +253,22 @@ attributes:
         - model_name: vpn
           tf_name: service_vpn
           data_path: [service]
+          exclude_test: true
           example: 1
         - model_name: refId
           tf_name: service_tloc_list_id
           data_path: [service, tlocList]
           exclude_test: true
           example: a509839f-33aa-492a-ab8e-6a6fe70d7d79
-        # ==== 20.14 ====
         - model_name: type
           tf_name: service_chain_type
           data_path: [serviceChain]
+          exclude_test: true
           example: SC1
         - model_name: vpn
           tf_name: service_chain_vpn
           data_path: [serviceChain]
+          exclude_test: true
           example: 1
         - model_name: local
           tf_name: service_chain_local
@@ -306,9 +309,9 @@ attributes:
         tf_name: redirect_dns_value
         data_path: [redirectDns]
         example: umbrella
-      # ==== 20.14 ====
       - model_name: tcpOptimization
         data_path: [appqoeOptimization]
+        exclude_test: true
         example: true
       - model_name: dreOptimization
         data_path: [appqoeOptimization]
@@ -316,22 +319,23 @@ attributes:
       - model_name: serviceNodeGroup
         data_path: [appqoeOptimization]
         example: SNG-APPQOE1
-      # ==== 20.14 ====
       - model_name: lossCorrectionType
         data_path: [lossCorrection]
+        exclude_test: true
         example: fecAdaptive
       - model_name: lossCorrectFec
         tf_name: loss_correct_fec_threshold
         data_path: [lossCorrection]
+        exclude_test: true
         example: 1
-
-      # - model_name: cloudSaas
-      #   # tf_name: 
-      #   # example: false
-      # - model_name: cloudProbe
-      #   # tf_name: 
-      #   # example: false
-
+        # ==== Unable to find in UI in 20.12 ====
+      - model_name: cloudSaas
+        exclude_test: true
+        example: false
+        # ==== Unable to find in UI in 20.12 ====
+      - model_name: cloudProbe
+        exclude_test: true
+        example: false
       - model_name: cflowd
         example: true
       - model_name: natPool
@@ -339,40 +343,255 @@ attributes:
       - model_name: useVpn
         tf_name: nat_vpn
         data_path: [nat]
-        example: 0
+        example: false
       - model_name: fallback
         tf_name: nat_fallback
         data_path: [nat]
         example: false
-      # ==== 20.14 ====
       - model_name: bypass
         tf_name: nat_bypass
         data_path: [nat]
+        exclude_test: true
         example: false
       - model_name: diaPool
         tf_name: nat_dia_pool
         data_path: [nat]
+        exclude_test: true
         example: 1
       - model_name: diaInterface
         tf_name: nat_dia_interface
         data_path: [nat]
+        exclude_test: true
         example: ethernet
       - model_name: sig
         tf_name: secure_internet_gateway
+        exclude_test: true
         example: true
       - model_name: fallbackToRouting
         example: true
-        # ==== 20.14 ====
       - model_name: secureServiceEdge
         data_path: [sse]
         exclude_test: true
         example: true
       - model_name: secureServiceEdgeInstance
         data_path: [sse]
+        exclude_test: true
         example: zScaler
 
 test_prerequisites: |
   resource "sdwan_application_priority_feature_profile" "test" {
     name        = "TF_TEST"
     description = "Terraform test"
+  }
+
+  resource "sdwan_cisco_vpn_feature_template" "test" {
+    name                    = "TF_TEST"
+    description             = "Terraform test"
+    device_types            = ["vedge-C8000V"]
+    vpn_id                  = 1
+    vpn_name                = "VPN1"
+    tenant_vpn_id           = 1
+    organization_name       = "org1"
+    omp_admin_distance_ipv4 = 10
+    omp_admin_distance_ipv6 = 10
+    enhance_ecmp_keying     = true
+    dns_ipv4_servers = [
+      {
+        address = "9.9.9.9"
+        role    = "primary"
+      }
+    ]
+    dns_ipv6_servers = [
+      {
+        address = "2001::9"
+        role    = "primary"
+      }
+    ]
+    dns_hosts = [
+      {
+        hostname = "abc1"
+        ip       = ["7.7.7.7"]
+      }
+    ]
+    services = [
+      {
+        service_types = "FW"
+        address       = ["8.8.8.8"]
+        interface     = "e1"
+        track_enable  = true
+      }
+    ]
+    ipv4_static_service_routes = [
+      {
+        prefix  = "2.2.2.0/24"
+        vpn_id  = 2
+        service = "sig"
+      }
+    ]
+    ipv4_static_routes = [
+      {
+        prefix   = "3.3.3.0/24"
+        null0    = false
+        distance = 10
+        vpn_id   = 5
+        dhcp     = false
+        next_hops = [
+          {
+            address  = "11.1.1.1"
+            distance = 20
+          }
+        ]
+        track_next_hops = [
+          {
+            address  = "12.1.1.1"
+            distance = 20
+            tracker  = "tracker1"
+          }
+        ]
+      }
+    ]
+    ipv6_static_routes = [
+      {
+        prefix = "2001::/48"
+        null0  = false
+        vpn_id = 5
+        nat    = "NAT64"
+        next_hops = [
+          {
+            address  = "2001::11"
+            distance = 20
+          }
+        ]
+      }
+    ]
+    ipv4_static_gre_routes = [
+      {
+        prefix    = "3.3.3.0/24"
+        vpn_id    = 2
+        interface = ["e1"]
+      }
+    ]
+    ipv4_static_ipsec_routes = [
+      {
+        prefix    = "4.4.4.0/24"
+        vpn_id    = 2
+        interface = ["e1"]
+      }
+    ]
+    omp_advertise_ipv4_routes = [
+      {
+        protocol          = "bgp"
+        route_policy      = "rp1"
+        protocol_sub_type = ["external"]
+        prefixes = [
+          {
+            prefix_entry   = "1.1.1.0/24"
+            aggregate_only = true
+          }
+        ]
+      }
+    ]
+    omp_advertise_ipv6_routes = [
+      {
+        protocol          = "bgp"
+        route_policy      = "rp1"
+        protocol_sub_type = ["external"]
+        prefixes = [
+          {
+            prefix_entry   = "2001:2::/48"
+            aggregate_only = true
+          }
+        ]
+      }
+    ]
+    nat64_pools = [
+      {
+        name                      = "POOL1"
+        start_address             = "100.1.1.1"
+        end_address               = "100.1.2.255"
+        overload                  = true
+        leak_from_global          = true
+        leak_from_global_protocol = "rip"
+        leak_to_global            = true
+      }
+    ]
+    nat_pools = [
+      {
+        name          = 1
+        prefix_length = 24
+        range_start   = "101.1.1.1"
+        range_end     = "101.1.2.255"
+        overload      = true
+        direction     = "inside"
+        tracker_id    = 10
+      }
+    ]
+    static_nat_rules = [
+      {
+        pool_name            = 1
+        source_ip            = "10.1.1.1"
+        translate_ip         = "105.1.1.1"
+        static_nat_direction = "inside"
+        tracker_id           = 10
+      }
+    ]
+    static_nat_subnet_rules = [
+      {
+        source_ip_subnet     = "10.2.1.0"
+        translate_ip_subnet  = "105.2.1.0"
+        prefix_length        = 24
+        static_nat_direction = "inside"
+        tracker_id           = 10
+      }
+    ]
+    port_forward_rules = [
+      {
+        pool_name      = 1
+        source_port    = 5000
+        translate_port = 6000
+        source_ip      = "10.3.1.1"
+        translate_ip   = "120.3.1.1"
+        protocol       = "tcp"
+      }
+    ]
+    route_global_imports = [
+      {
+        protocol          = "ospf"
+        protocol_sub_type = ["external"]
+        route_policy      = "policy1"
+        redistributes = [
+          {
+            protocol     = "bgp"
+            route_policy = "policy1"
+          }
+        ]
+      }
+    ]
+    route_vpn_imports = [
+      {
+        source_vpn_id     = 5
+        protocol          = "ospf"
+        protocol_sub_type = ["external"]
+        route_policy      = "policy1"
+        redistributes = [
+          {
+            protocol     = "bgp"
+            route_policy = "policy1"
+          }
+        ]
+      }
+    ]
+    route_global_exports = [
+      {
+        protocol          = "ospf"
+        protocol_sub_type = ["external"]
+        route_policy      = "policy1"
+        redistributes = [
+          {
+            protocol     = "bgp"
+            route_policy = "policy1"
+          }
+        ]
+      }
+    ]
   }

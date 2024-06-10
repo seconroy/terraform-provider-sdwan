@@ -63,9 +63,6 @@ resource "sdwan_application_priority_traffic_policy_profile_parcel" "example" {
               service_color                     = ["default"]
               service_encapsulation             = "ipsec"
               service_tloc_ip                   = "1.2.3.4"
-              service_vpn                       = "1"
-              service_chain_type                = "SC1"
-              service_chain_vpn                 = 1
               service_chain_local               = false
               service_chain_fallback_to_routing = false
               service_chain_tloc                = ["default"]
@@ -76,23 +73,15 @@ resource "sdwan_application_priority_traffic_policy_profile_parcel" "example" {
               vpn                               = "1"
             }
           ]
-          redirect_dns_field           = "redirectDns"
-          redirect_dns_value           = "umbrella"
-          tcp_optimization             = true
-          dre_optimization             = true
-          service_node_group           = "SNG-APPQOE1"
-          loss_correction_type         = "fecAdaptive"
-          loss_correct_fec_threshold   = 1
-          cflowd                       = true
-          nat_pool                     = 2
-          nat_vpn                      = 0
-          nat_fallback                 = false
-          nat_bypass                   = false
-          nat_dia_pool                 = [1]
-          nat_dia_interface            = ["ethernet"]
-          secure_internet_gateway      = true
-          fallback_to_routing          = true
-          secure_service_edge_instance = "zScaler"
+          redirect_dns_field  = "redirectDns"
+          redirect_dns_value  = "umbrella"
+          dre_optimization    = true
+          service_node_group  = "SNG-APPQOE1"
+          cflowd              = true
+          nat_pool            = 2
+          nat_vpn             = false
+          nat_fallback        = false
+          fallback_to_routing = true
         }
       ]
     }
@@ -144,6 +133,8 @@ Optional:
 
 - `backup_sla_preferred_color` (Set of String) Backup SLA perferred color
 - `cflowd` (Boolean)
+- `cloud_probe` (Boolean)
+- `cloud_saas` (Boolean)
 - `counter` (String)
 - `dre_optimization` (Boolean)
 - `fallback_to_routing` (Boolean)
@@ -226,6 +217,8 @@ Optional:
 - `application_list_id` (String)
 - `destination_data_ipv6_prefix_list_id` (String)
 - `destination_data_prefix_list_id` (String)
+- `destination_ipv4` (String) Destination Data IP Prefix
+- `destination_ipv6` (String) Destination Data IP Prefix
 - `destination_port` (Set of String) Destination Port (0-65535) range or individual number separated by space
 - `destination_region` (String) Destination Region
   - Choices: `primary-region`, `secondary-region`, `other-region`
@@ -234,13 +227,21 @@ Optional:
 - `dns_application_list_id` (String)
 - `dscp` (Number) DSCP number
   - Range: `0`-`63`
+- `ipv4_icmp_message` (Set of String) ICMP Message
+- `ipv6_icmp_message` (Set of String) ICMP6 Message
 - `packet_length` (String) Packet Length
 - `protocol` (Set of String) protocol (0-255) range or individual number separated by space
+- `saas_application_list_id` (String)
+- `service_area` (Set of String) M365 Service Area
 - `source_data_ipv6_prefix_list_id` (String)
 - `source_data_prefix_list_id` (String)
+- `source_ipv4` (String) Source Data IP Prefix
+- `source_ipv6` (String) Source Data IP Prefix
 - `source_port` (Set of String) Source Port (0-65535) range or individual number separated by space
 - `tcp` (String) TCP States
   - Choices: `syn`
+- `traffic_category` (String) M365 Traffic Category
+  - Choices: `optimize-allow`, `optimize`, `all`
 - `traffic_class` (String) Traffic Class
   - Choices: `gold-voip-telephony`, `gold-broadcast-video`, `gold-real-time-interactive`, `gold-multimedia-conferencing`, `gold-multimedia-streaming`, `gold-network-control`, `gold-signaling`, `gold-ops-admin-mgmt`, `gold-transactional-data`, `gold-bulk-data`, `silver`, `bronze`
 - `traffic_to` (String) Traffic to

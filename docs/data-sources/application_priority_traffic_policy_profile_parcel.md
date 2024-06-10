@@ -57,6 +57,8 @@ Read-Only:
 
 - `backup_sla_preferred_color` (Set of String) Backup SLA perferred color
 - `cflowd` (Boolean)
+- `cloud_probe` (Boolean)
+- `cloud_saas` (Boolean)
 - `counter` (String)
 - `dre_optimization` (Boolean)
 - `fallback_to_routing` (Boolean)
@@ -139,16 +141,25 @@ Read-Only:
 - `application_list_id` (String)
 - `destination_data_ipv6_prefix_list_id` (String)
 - `destination_data_prefix_list_id` (String)
+- `destination_ipv4` (String) Destination Data IP Prefix
+- `destination_ipv6` (String) Destination Data IP Prefix
 - `destination_port` (Set of String) Destination Port (0-65535) range or individual number separated by space
 - `destination_region` (String) Destination Region
 - `dns` (String) Dns
 - `dns_application_list_id` (String)
 - `dscp` (Number) DSCP number
+- `ipv4_icmp_message` (Set of String) ICMP Message
+- `ipv6_icmp_message` (Set of String) ICMP6 Message
 - `packet_length` (String) Packet Length
 - `protocol` (Set of String) protocol (0-255) range or individual number separated by space
+- `saas_application_list_id` (String)
+- `service_area` (Set of String) M365 Service Area
 - `source_data_ipv6_prefix_list_id` (String)
 - `source_data_prefix_list_id` (String)
+- `source_ipv4` (String) Source Data IP Prefix
+- `source_ipv6` (String) Source Data IP Prefix
 - `source_port` (Set of String) Source Port (0-65535) range or individual number separated by space
 - `tcp` (String) TCP States
+- `traffic_category` (String) M365 Traffic Category
 - `traffic_class` (String) Traffic Class
 - `traffic_to` (String) Traffic to

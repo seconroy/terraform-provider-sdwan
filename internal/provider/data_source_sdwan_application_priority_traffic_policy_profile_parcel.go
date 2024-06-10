@@ -176,6 +176,10 @@ func (d *ApplicationPriorityTrafficPolicyProfileParcelDataSource) Schema(ctx con
 										MarkdownDescription: "Destination Region",
 										Computed:            true,
 									},
+									"saas_application_list_id": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
 									"tcp": schema.StringAttribute{
 										MarkdownDescription: "TCP States",
 										Computed:            true,
@@ -186,6 +190,41 @@ func (d *ApplicationPriorityTrafficPolicyProfileParcelDataSource) Schema(ctx con
 									},
 									"traffic_class": schema.StringAttribute{
 										MarkdownDescription: "Traffic Class",
+										Computed:            true,
+									},
+									"ipv4_icmp_message": schema.SetAttribute{
+										MarkdownDescription: "ICMP Message",
+										ElementType:         types.StringType,
+										Computed:            true,
+									},
+									"ipv6_icmp_message": schema.SetAttribute{
+										MarkdownDescription: "ICMP6 Message",
+										ElementType:         types.StringType,
+										Computed:            true,
+									},
+									"service_area": schema.SetAttribute{
+										MarkdownDescription: "M365 Service Area",
+										ElementType:         types.StringType,
+										Computed:            true,
+									},
+									"traffic_category": schema.StringAttribute{
+										MarkdownDescription: "M365 Traffic Category",
+										Computed:            true,
+									},
+									"source_ipv4": schema.StringAttribute{
+										MarkdownDescription: "Source Data IP Prefix",
+										Computed:            true,
+									},
+									"source_ipv6": schema.StringAttribute{
+										MarkdownDescription: "Source Data IP Prefix",
+										Computed:            true,
+									},
+									"destination_ipv4": schema.StringAttribute{
+										MarkdownDescription: "Destination Data IP Prefix",
+										Computed:            true,
+									},
+									"destination_ipv6": schema.StringAttribute{
+										MarkdownDescription: "Destination Data IP Prefix",
 										Computed:            true,
 									},
 								},
@@ -405,6 +444,14 @@ func (d *ApplicationPriorityTrafficPolicyProfileParcelDataSource) Schema(ctx con
 										Computed:            true,
 									},
 									"loss_correct_fec_threshold": schema.Int64Attribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"cloud_saas": schema.BoolAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"cloud_probe": schema.BoolAttribute{
 										MarkdownDescription: "",
 										Computed:            true,
 									},

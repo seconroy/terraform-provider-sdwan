@@ -229,6 +229,13 @@ func (r *ApplicationPriorityTrafficPolicyProfileParcelResource) Schema(ctx conte
 											stringvalidator.OneOf("primary-region", "secondary-region", "other-region"),
 										},
 									},
+									"saas_application_list_id": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("").String,
+										Optional:            true,
+										Validators: []validator.String{
+											stringvalidator.RegexMatches(regexp.MustCompile(`[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}`), ""),
+										},
+									},
 									"tcp": schema.StringAttribute{
 										MarkdownDescription: helpers.NewAttributeDescription("TCP States").AddStringEnumDescription("syn").String,
 										Optional:            true,
@@ -249,6 +256,44 @@ func (r *ApplicationPriorityTrafficPolicyProfileParcelResource) Schema(ctx conte
 										Validators: []validator.String{
 											stringvalidator.OneOf("gold-voip-telephony", "gold-broadcast-video", "gold-real-time-interactive", "gold-multimedia-conferencing", "gold-multimedia-streaming", "gold-network-control", "gold-signaling", "gold-ops-admin-mgmt", "gold-transactional-data", "gold-bulk-data", "silver", "bronze"),
 										},
+									},
+									"ipv4_icmp_message": schema.SetAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("ICMP Message").String,
+										ElementType:         types.StringType,
+										Optional:            true,
+									},
+									"ipv6_icmp_message": schema.SetAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("ICMP6 Message").String,
+										ElementType:         types.StringType,
+										Optional:            true,
+									},
+									"service_area": schema.SetAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("M365 Service Area").String,
+										ElementType:         types.StringType,
+										Optional:            true,
+									},
+									"traffic_category": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("M365 Traffic Category").AddStringEnumDescription("optimize-allow", "optimize", "all").String,
+										Optional:            true,
+										Validators: []validator.String{
+											stringvalidator.OneOf("optimize-allow", "optimize", "all"),
+										},
+									},
+									"source_ipv4": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Source Data IP Prefix").String,
+										Optional:            true,
+									},
+									"source_ipv6": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Source Data IP Prefix").String,
+										Optional:            true,
+									},
+									"destination_ipv4": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Destination Data IP Prefix").String,
+										Optional:            true,
+									},
+									"destination_ipv6": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Destination Data IP Prefix").String,
+										Optional:            true,
 									},
 								},
 							},
@@ -541,6 +586,14 @@ func (r *ApplicationPriorityTrafficPolicyProfileParcelResource) Schema(ctx conte
 										Validators: []validator.Int64{
 											int64validator.Between(1, 5),
 										},
+									},
+									"cloud_saas": schema.BoolAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("").String,
+										Optional:            true,
+									},
+									"cloud_probe": schema.BoolAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("").String,
+										Optional:            true,
 									},
 									"cflowd": schema.BoolAttribute{
 										MarkdownDescription: helpers.NewAttributeDescription("").String,
