@@ -33,7 +33,6 @@ data "sdwan_application_priority_traffic_policy_profile_parcel" "example" {
 - `description` (String) The description of the profile parcel
 - `name` (String) The name of the profile parcel
 - `sequences` (Attributes List) Traffic policy sequence list (see [below for nested schema](#nestedatt--sequences))
-- `simple_flow` (Boolean)
 - `target_direction` (String)
 - `version` (Number) The version of the profile parcel
 - `vpn` (Set of String)
@@ -55,31 +54,17 @@ Read-Only:
 
 Read-Only:
 
-- `backup_sla_preferred_color` (Set of String) Backup SLA perferred color
-- `cflowd` (Boolean)
-- `cloud_probe` (Boolean)
-- `cloud_saas` (Boolean)
 - `counter` (String)
-- `dre_optimization` (Boolean)
 - `fallback_to_routing` (Boolean)
 - `log` (Boolean)
-- `loss_correct_fec_threshold` (Number)
-- `loss_correction_type` (String)
-- `nat_bypass` (Boolean)
-- `nat_dia_interface` (Set of String)
-- `nat_dia_pool` (Set of Number)
 - `nat_fallback` (Boolean)
 - `nat_pool` (Number)
 - `nat_vpn` (Boolean)
 - `redirect_dns_field` (String)
 - `redirect_dns_value` (String)
 - `secure_internet_gateway` (Boolean)
-- `secure_service_edge` (String)
-- `secure_service_edge_instance` (String)
-- `service_node_group` (String)
 - `sets` (Attributes List) (see [below for nested schema](#nestedatt--sequences--actions--sets))
 - `sla_class` (Attributes List) slaClass (see [below for nested schema](#nestedatt--sequences--actions--sla_class))
-- `tcp_optimization` (Boolean)
 
 <a id="nestedatt--sequences--actions--sets"></a>
 ### Nested Schema for `sequences.actions.sets`
@@ -92,30 +77,17 @@ Read-Only:
 - `local_tloc_list_encapsulation` (String)
 - `local_tloc_restrict` (String)
 - `next_hop` (String)
-- `next_hop_ipv6` (String)
 - `policer_id` (String)
 - `preferred_color_group_id` (String)
-- `preferred_remote_color_id` (Set of String)
-- `preferred_remote_color_restrict` (String)
-- `service_chain_encapsulation` (String)
-- `service_chain_fallback_to_routing` (Boolean)
-- `service_chain_id` (String)
-- `service_chain_local` (Boolean)
-- `service_chain_tloc` (Set of String)
-- `service_chain_tloc_list_id` (String)
-- `service_chain_type` (String)
-- `service_chain_vpn` (Number)
 - `service_color` (Set of String)
 - `service_encapsulation` (String)
 - `service_tloc_ip` (String)
-- `service_tloc_list_id` (String)
 - `service_type` (String)
 - `service_vpn` (String)
 - `tloc_color` (Set of String)
 - `tloc_encapsulation` (String)
 - `tloc_ip` (String)
 - `tloc_list_id` (String)
-- `vpn` (String)
 
 
 <a id="nestedatt--sequences--actions--sla_class"></a>
@@ -123,13 +95,8 @@ Read-Only:
 
 Read-Only:
 
-- `fallback_to_best_path` (Boolean)
 - `preferred_color` (Set of String)
-- `preferred_color_group_id` (String)
-- `preferred_remote_color` (Set of String)
-- `remote_color_restrict` (Boolean)
 - `sla_class_list_id` (String)
-- `strict_drop` (Boolean)
 
 
 
@@ -139,27 +106,15 @@ Read-Only:
 Read-Only:
 
 - `application_list_id` (String)
-- `destination_data_ipv6_prefix_list_id` (String)
 - `destination_data_prefix_list_id` (String)
-- `destination_ipv4` (String) Destination Data IP Prefix
-- `destination_ipv6` (String) Destination Data IP Prefix
 - `destination_port` (Set of String) Destination Port (0-65535) range or individual number separated by space
 - `destination_region` (String) Destination Region
 - `dns` (String) Dns
 - `dns_application_list_id` (String)
 - `dscp` (Number) DSCP number
-- `ipv4_icmp_message` (Set of String) ICMP Message
-- `ipv6_icmp_message` (Set of String) ICMP6 Message
 - `packet_length` (String) Packet Length
 - `protocol` (Set of String) protocol (0-255) range or individual number separated by space
-- `saas_application_list_id` (String)
-- `service_area` (Set of String) M365 Service Area
-- `source_data_ipv6_prefix_list_id` (String)
 - `source_data_prefix_list_id` (String)
-- `source_ipv4` (String) Source Data IP Prefix
-- `source_ipv6` (String) Source Data IP Prefix
 - `source_port` (Set of String) Source Port (0-65535) range or individual number separated by space
 - `tcp` (String) TCP States
-- `traffic_category` (String) M365 Traffic Category
-- `traffic_class` (String) Traffic Class
 - `traffic_to` (String) Traffic to

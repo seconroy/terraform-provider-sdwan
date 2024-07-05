@@ -34,20 +34,17 @@ func TestAccSdwanApplicationPriorityTrafficPolicyProfileParcel(t *testing.T) {
 	}
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("sdwan_application_priority_traffic_policy_profile_parcel.test", "default_action", "accept"))
-	checks = append(checks, resource.TestCheckResourceAttr("sdwan_application_priority_traffic_policy_profile_parcel.test", "simple_flow", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("sdwan_application_priority_traffic_policy_profile_parcel.test", "target_direction", "all"))
 	checks = append(checks, resource.TestCheckResourceAttr("sdwan_application_priority_traffic_policy_profile_parcel.test", "sequences.0.sequence_id", "1"))
 	checks = append(checks, resource.TestCheckResourceAttr("sdwan_application_priority_traffic_policy_profile_parcel.test", "sequences.0.name", "RULE_1"))
-	checks = append(checks, resource.TestCheckResourceAttr("sdwan_application_priority_traffic_policy_profile_parcel.test", "sequences.0.base_action", "accept"))
 	checks = append(checks, resource.TestCheckResourceAttr("sdwan_application_priority_traffic_policy_profile_parcel.test", "sequences.0.protocol", "ipv4"))
+	checks = append(checks, resource.TestCheckResourceAttr("sdwan_application_priority_traffic_policy_profile_parcel.test", "sequences.0.base_action", "accept"))
 	checks = append(checks, resource.TestCheckResourceAttr("sdwan_application_priority_traffic_policy_profile_parcel.test", "sequences.0.matches.0.dscp", "1"))
 	checks = append(checks, resource.TestCheckResourceAttr("sdwan_application_priority_traffic_policy_profile_parcel.test", "sequences.0.matches.0.packet_length", "123"))
 	checks = append(checks, resource.TestCheckResourceAttr("sdwan_application_priority_traffic_policy_profile_parcel.test", "sequences.0.matches.0.tcp", "gre"))
 	checks = append(checks, resource.TestCheckResourceAttr("sdwan_application_priority_traffic_policy_profile_parcel.test", "sequences.0.matches.0.traffic_to", "core"))
 	checks = append(checks, resource.TestCheckResourceAttr("sdwan_application_priority_traffic_policy_profile_parcel.test", "sequences.0.actions.0.counter", "COUNTER_1"))
 	checks = append(checks, resource.TestCheckResourceAttr("sdwan_application_priority_traffic_policy_profile_parcel.test", "sequences.0.actions.0.log", "false"))
-	checks = append(checks, resource.TestCheckResourceAttr("sdwan_application_priority_traffic_policy_profile_parcel.test", "sequences.0.actions.0.sla_class.0.strict_drop", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("sdwan_application_priority_traffic_policy_profile_parcel.test", "sequences.0.actions.0.sla_class.0.fallback_to_best_path", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("sdwan_application_priority_traffic_policy_profile_parcel.test", "sequences.0.actions.0.sets.0.dscp", "1"))
 	checks = append(checks, resource.TestCheckResourceAttr("sdwan_application_priority_traffic_policy_profile_parcel.test", "sequences.0.actions.0.sets.0.local_tloc_restrict", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("sdwan_application_priority_traffic_policy_profile_parcel.test", "sequences.0.actions.0.sets.0.local_tloc_list_encapsulation", "gre"))
@@ -56,18 +53,9 @@ func TestAccSdwanApplicationPriorityTrafficPolicyProfileParcel(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("sdwan_application_priority_traffic_policy_profile_parcel.test", "sequences.0.actions.0.sets.0.service_type", "FW"))
 	checks = append(checks, resource.TestCheckResourceAttr("sdwan_application_priority_traffic_policy_profile_parcel.test", "sequences.0.actions.0.sets.0.service_encapsulation", "ipsec"))
 	checks = append(checks, resource.TestCheckResourceAttr("sdwan_application_priority_traffic_policy_profile_parcel.test", "sequences.0.actions.0.sets.0.service_tloc_ip", "1.2.3.4"))
-	checks = append(checks, resource.TestCheckResourceAttr("sdwan_application_priority_traffic_policy_profile_parcel.test", "sequences.0.actions.0.sets.0.service_chain_local", "false"))
-	checks = append(checks, resource.TestCheckResourceAttr("sdwan_application_priority_traffic_policy_profile_parcel.test", "sequences.0.actions.0.sets.0.service_chain_fallback_to_routing", "false"))
-	checks = append(checks, resource.TestCheckResourceAttr("sdwan_application_priority_traffic_policy_profile_parcel.test", "sequences.0.actions.0.sets.0.service_chain_encapsulation", "ipsec"))
-	checks = append(checks, resource.TestCheckResourceAttr("sdwan_application_priority_traffic_policy_profile_parcel.test", "sequences.0.actions.0.sets.0.service_chain_id", "1.2.3.4"))
 	checks = append(checks, resource.TestCheckResourceAttr("sdwan_application_priority_traffic_policy_profile_parcel.test", "sequences.0.actions.0.sets.0.next_hop", "1.2.3.4"))
-	checks = append(checks, resource.TestCheckResourceAttr("sdwan_application_priority_traffic_policy_profile_parcel.test", "sequences.0.actions.0.sets.0.next_hop_ipv6", "2001:0:0:1::/64"))
-	checks = append(checks, resource.TestCheckResourceAttr("sdwan_application_priority_traffic_policy_profile_parcel.test", "sequences.0.actions.0.sets.0.vpn", "1"))
 	checks = append(checks, resource.TestCheckResourceAttr("sdwan_application_priority_traffic_policy_profile_parcel.test", "sequences.0.actions.0.redirect_dns_field", "redirectDns"))
 	checks = append(checks, resource.TestCheckResourceAttr("sdwan_application_priority_traffic_policy_profile_parcel.test", "sequences.0.actions.0.redirect_dns_value", "umbrella"))
-	checks = append(checks, resource.TestCheckResourceAttr("sdwan_application_priority_traffic_policy_profile_parcel.test", "sequences.0.actions.0.dre_optimization", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("sdwan_application_priority_traffic_policy_profile_parcel.test", "sequences.0.actions.0.service_node_group", "SNG-APPQOE1"))
-	checks = append(checks, resource.TestCheckResourceAttr("sdwan_application_priority_traffic_policy_profile_parcel.test", "sequences.0.actions.0.cflowd", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("sdwan_application_priority_traffic_policy_profile_parcel.test", "sequences.0.actions.0.nat_pool", "2"))
 	checks = append(checks, resource.TestCheckResourceAttr("sdwan_application_priority_traffic_policy_profile_parcel.test", "sequences.0.actions.0.nat_vpn", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("sdwan_application_priority_traffic_policy_profile_parcel.test", "sequences.0.actions.0.nat_fallback", "false"))
@@ -318,8 +306,7 @@ func testAccSdwanApplicationPriorityTrafficPolicyProfileParcelConfig_minimum() s
 	config += ` description = "Terraform integration test"` + "\n"
 	config += `	feature_profile_id = sdwan_application_priority_feature_profile.test.id` + "\n"
 	config += `	default_action = "accept"` + "\n"
-	config += `	simple_flow = false` + "\n"
-	config += `	vpn = sdwan_cisco_vpn_feature_template.test.id` + "\n"
+	config += `	vpn = sdwan_cisco_vpn_feature_template.test.name` + "\n"
 	config += `	target_direction = "all"` + "\n"
 	config += `}` + "\n"
 	return config
@@ -334,14 +321,13 @@ func testAccSdwanApplicationPriorityTrafficPolicyProfileParcelConfig_all() strin
 	config += ` description = "Terraform integration test"` + "\n"
 	config += `	feature_profile_id = sdwan_application_priority_feature_profile.test.id` + "\n"
 	config += `	default_action = "accept"` + "\n"
-	config += `	simple_flow = false` + "\n"
-	config += `	vpn = sdwan_cisco_vpn_feature_template.test.id` + "\n"
+	config += `	vpn = sdwan_cisco_vpn_feature_template.test.name` + "\n"
 	config += `	target_direction = "all"` + "\n"
 	config += `	sequences = [{` + "\n"
 	config += `	  sequence_id = 1` + "\n"
 	config += `	  name = "RULE_1"` + "\n"
-	config += `	  base_action = "accept"` + "\n"
 	config += `	  protocol = "ipv4"` + "\n"
+	config += `	  base_action = "accept"` + "\n"
 	config += `	  matches = [{` + "\n"
 	config += `		dscp = 1` + "\n"
 	config += `		packet_length = "123"` + "\n"
@@ -354,10 +340,7 @@ func testAccSdwanApplicationPriorityTrafficPolicyProfileParcelConfig_all() strin
 	config += `		log = false` + "\n"
 	config += `      sla_class = [{` + "\n"
 	config += `			preferred_color = ["default"]` + "\n"
-	config += `			strict_drop = true` + "\n"
-	config += `			fallback_to_best_path = false` + "\n"
 	config += `		}]` + "\n"
-	config += `		backup_sla_preferred_color = ["default"]` + "\n"
 	config += `      sets = [{` + "\n"
 	config += `			dscp = 1` + "\n"
 	config += `			local_tloc_list_color = ["default"]` + "\n"
@@ -370,20 +353,10 @@ func testAccSdwanApplicationPriorityTrafficPolicyProfileParcelConfig_all() strin
 	config += `			service_color = ["default"]` + "\n"
 	config += `			service_encapsulation = "ipsec"` + "\n"
 	config += `			service_tloc_ip = "1.2.3.4"` + "\n"
-	config += `			service_chain_local = false` + "\n"
-	config += `			service_chain_fallback_to_routing = false` + "\n"
-	config += `			service_chain_tloc = ["default"]` + "\n"
-	config += `			service_chain_encapsulation = "ipsec"` + "\n"
-	config += `			service_chain_id = "1.2.3.4"` + "\n"
 	config += `			next_hop = "1.2.3.4"` + "\n"
-	config += `			next_hop_ipv6 = "2001:0:0:1::/64"` + "\n"
-	config += `			vpn = "1"` + "\n"
 	config += `		}]` + "\n"
 	config += `		redirect_dns_field = "redirectDns"` + "\n"
 	config += `		redirect_dns_value = "umbrella"` + "\n"
-	config += `		dre_optimization = true` + "\n"
-	config += `		service_node_group = "SNG-APPQOE1"` + "\n"
-	config += `		cflowd = true` + "\n"
 	config += `		nat_pool = 2` + "\n"
 	config += `		nat_vpn = false` + "\n"
 	config += `		nat_fallback = false` + "\n"

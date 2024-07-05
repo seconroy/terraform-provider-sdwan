@@ -96,10 +96,6 @@ func (r *ApplicationPriorityTrafficPolicyProfileParcelResource) Schema(ctx conte
 					stringvalidator.OneOf("drop", "accept"),
 				},
 			},
-			"simple_flow": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
-				Required:            true,
-			},
 			"vpn": schema.SetAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				ElementType:         types.StringType,
@@ -128,18 +124,18 @@ func (r *ApplicationPriorityTrafficPolicyProfileParcelResource) Schema(ctx conte
 							MarkdownDescription: helpers.NewAttributeDescription("Sequence Name").String,
 							Optional:            true,
 						},
-						"base_action": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Base Action").AddStringEnumDescription("drop", "accept").String,
-							Optional:            true,
-							Validators: []validator.String{
-								stringvalidator.OneOf("drop", "accept"),
-							},
-						},
 						"protocol": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Sequence IP Type").AddStringEnumDescription("ipv4", "ipv6", "all").String,
 							Optional:            true,
 							Validators: []validator.String{
 								stringvalidator.OneOf("ipv4", "ipv6", "all"),
+							},
+						},
+						"base_action": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Base Action").AddStringEnumDescription("drop", "accept").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.OneOf("drop", "accept"),
 							},
 						},
 						"matches": schema.ListNestedAttribute{
@@ -191,26 +187,12 @@ func (r *ApplicationPriorityTrafficPolicyProfileParcelResource) Schema(ctx conte
 											stringvalidator.RegexMatches(regexp.MustCompile(`[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}`), ""),
 										},
 									},
-									"source_data_ipv6_prefix_list_id": schema.StringAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("").String,
-										Optional:            true,
-										Validators: []validator.String{
-											stringvalidator.RegexMatches(regexp.MustCompile(`[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}`), ""),
-										},
-									},
 									"source_port": schema.SetAttribute{
 										MarkdownDescription: helpers.NewAttributeDescription("Source Port (0-65535) range or individual number separated by space").String,
 										ElementType:         types.StringType,
 										Optional:            true,
 									},
 									"destination_data_prefix_list_id": schema.StringAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("").String,
-										Optional:            true,
-										Validators: []validator.String{
-											stringvalidator.RegexMatches(regexp.MustCompile(`[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}`), ""),
-										},
-									},
-									"destination_data_ipv6_prefix_list_id": schema.StringAttribute{
 										MarkdownDescription: helpers.NewAttributeDescription("").String,
 										Optional:            true,
 										Validators: []validator.String{
@@ -229,13 +211,6 @@ func (r *ApplicationPriorityTrafficPolicyProfileParcelResource) Schema(ctx conte
 											stringvalidator.OneOf("primary-region", "secondary-region", "other-region"),
 										},
 									},
-									"saas_application_list_id": schema.StringAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("").String,
-										Optional:            true,
-										Validators: []validator.String{
-											stringvalidator.RegexMatches(regexp.MustCompile(`[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}`), ""),
-										},
-									},
 									"tcp": schema.StringAttribute{
 										MarkdownDescription: helpers.NewAttributeDescription("TCP States").AddStringEnumDescription("syn").String,
 										Optional:            true,
@@ -249,51 +224,6 @@ func (r *ApplicationPriorityTrafficPolicyProfileParcelResource) Schema(ctx conte
 										Validators: []validator.String{
 											stringvalidator.OneOf("core", "service", "access"),
 										},
-									},
-									"traffic_class": schema.StringAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("Traffic Class").AddStringEnumDescription("gold-voip-telephony", "gold-broadcast-video", "gold-real-time-interactive", "gold-multimedia-conferencing", "gold-multimedia-streaming", "gold-network-control", "gold-signaling", "gold-ops-admin-mgmt", "gold-transactional-data", "gold-bulk-data", "silver", "bronze").String,
-										Optional:            true,
-										Validators: []validator.String{
-											stringvalidator.OneOf("gold-voip-telephony", "gold-broadcast-video", "gold-real-time-interactive", "gold-multimedia-conferencing", "gold-multimedia-streaming", "gold-network-control", "gold-signaling", "gold-ops-admin-mgmt", "gold-transactional-data", "gold-bulk-data", "silver", "bronze"),
-										},
-									},
-									"ipv4_icmp_message": schema.SetAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("ICMP Message").String,
-										ElementType:         types.StringType,
-										Optional:            true,
-									},
-									"ipv6_icmp_message": schema.SetAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("ICMP6 Message").String,
-										ElementType:         types.StringType,
-										Optional:            true,
-									},
-									"service_area": schema.SetAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("M365 Service Area").String,
-										ElementType:         types.StringType,
-										Optional:            true,
-									},
-									"traffic_category": schema.StringAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("M365 Traffic Category").AddStringEnumDescription("optimize-allow", "optimize", "all").String,
-										Optional:            true,
-										Validators: []validator.String{
-											stringvalidator.OneOf("optimize-allow", "optimize", "all"),
-										},
-									},
-									"source_ipv4": schema.StringAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("Source Data IP Prefix").String,
-										Optional:            true,
-									},
-									"source_ipv6": schema.StringAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("Source Data IP Prefix").String,
-										Optional:            true,
-									},
-									"destination_ipv4": schema.StringAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("Destination Data IP Prefix").String,
-										Optional:            true,
-									},
-									"destination_ipv6": schema.StringAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("Destination Data IP Prefix").String,
-										Optional:            true,
 									},
 								},
 							},
@@ -331,37 +261,8 @@ func (r *ApplicationPriorityTrafficPolicyProfileParcelResource) Schema(ctx conte
 													ElementType:         types.StringType,
 													Optional:            true,
 												},
-												"preferred_color_group_id": schema.StringAttribute{
-													MarkdownDescription: helpers.NewAttributeDescription("").String,
-													Optional:            true,
-													Validators: []validator.String{
-														stringvalidator.RegexMatches(regexp.MustCompile(`[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}`), ""),
-													},
-												},
-												"strict_drop": schema.BoolAttribute{
-													MarkdownDescription: helpers.NewAttributeDescription("").String,
-													Optional:            true,
-												},
-												"fallback_to_best_path": schema.BoolAttribute{
-													MarkdownDescription: helpers.NewAttributeDescription("").String,
-													Optional:            true,
-												},
-												"preferred_remote_color": schema.SetAttribute{
-													MarkdownDescription: helpers.NewAttributeDescription("").String,
-													ElementType:         types.StringType,
-													Optional:            true,
-												},
-												"remote_color_restrict": schema.BoolAttribute{
-													MarkdownDescription: helpers.NewAttributeDescription("").String,
-													Optional:            true,
-												},
 											},
 										},
-									},
-									"backup_sla_preferred_color": schema.SetAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("Backup SLA perferred color").String,
-										ElementType:         types.StringType,
-										Optional:            true,
 									},
 									"sets": schema.ListNestedAttribute{
 										MarkdownDescription: helpers.NewAttributeDescription("").String,
@@ -411,15 +312,6 @@ func (r *ApplicationPriorityTrafficPolicyProfileParcelResource) Schema(ctx conte
 													Validators: []validator.String{
 														stringvalidator.OneOf("ipsec", "gre"),
 													},
-												},
-												"preferred_remote_color_id": schema.SetAttribute{
-													MarkdownDescription: helpers.NewAttributeDescription("").String,
-													ElementType:         types.StringType,
-													Optional:            true,
-												},
-												"preferred_remote_color_restrict": schema.StringAttribute{
-													MarkdownDescription: helpers.NewAttributeDescription("").String,
-													Optional:            true,
 												},
 												"tloc_ip": schema.StringAttribute{
 													MarkdownDescription: helpers.NewAttributeDescription("").String,
@@ -475,73 +367,9 @@ func (r *ApplicationPriorityTrafficPolicyProfileParcelResource) Schema(ctx conte
 														stringvalidator.RegexMatches(regexp.MustCompile(`^\{\{[./\[\]a-zA-Z0-9_-]+\}\}$`), ""),
 													},
 												},
-												"service_tloc_list_id": schema.StringAttribute{
-													MarkdownDescription: helpers.NewAttributeDescription("").String,
-													Optional:            true,
-													Validators: []validator.String{
-														stringvalidator.RegexMatches(regexp.MustCompile(`[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}`), ""),
-													},
-												},
-												"service_chain_type": schema.StringAttribute{
-													MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("SC1", "SC2", "SC4", "SC5", "SC6", "SC7", "SC8", "SC9", "SC10", "SC11", "SC12", "SC13", "SC14", "SC15", "SC16").String,
-													Optional:            true,
-													Validators: []validator.String{
-														stringvalidator.OneOf("SC1", "SC2", "SC4", "SC5", "SC6", "SC7", "SC8", "SC9", "SC10", "SC11", "SC12", "SC13", "SC14", "SC15", "SC16"),
-													},
-												},
-												"service_chain_vpn": schema.Int64Attribute{
-													MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(0, 65530).String,
-													Optional:            true,
-													Validators: []validator.Int64{
-														int64validator.AtMost(65530),
-													},
-												},
-												"service_chain_local": schema.BoolAttribute{
-													MarkdownDescription: helpers.NewAttributeDescription("").String,
-													Optional:            true,
-												},
-												"service_chain_fallback_to_routing": schema.BoolAttribute{
-													MarkdownDescription: helpers.NewAttributeDescription("").String,
-													Optional:            true,
-												},
-												"service_chain_tloc": schema.SetAttribute{
-													MarkdownDescription: helpers.NewAttributeDescription("").String,
-													ElementType:         types.StringType,
-													Optional:            true,
-												},
-												"service_chain_encapsulation": schema.StringAttribute{
-													MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("ipsec", "gre").String,
-													Optional:            true,
-													Validators: []validator.String{
-														stringvalidator.OneOf("ipsec", "gre"),
-													},
-												},
-												"service_chain_id": schema.StringAttribute{
-													MarkdownDescription: helpers.NewAttributeDescription("").String,
-													Optional:            true,
-												},
-												"service_chain_tloc_list_id": schema.StringAttribute{
-													MarkdownDescription: helpers.NewAttributeDescription("").String,
-													Optional:            true,
-													Validators: []validator.String{
-														stringvalidator.RegexMatches(regexp.MustCompile(`[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}`), ""),
-													},
-												},
 												"next_hop": schema.StringAttribute{
 													MarkdownDescription: helpers.NewAttributeDescription("").String,
 													Optional:            true,
-												},
-												"next_hop_ipv6": schema.StringAttribute{
-													MarkdownDescription: helpers.NewAttributeDescription("").String,
-													Optional:            true,
-												},
-												"vpn": schema.StringAttribute{
-													MarkdownDescription: helpers.NewAttributeDescription("").String,
-													Optional:            true,
-													Validators: []validator.String{
-														stringvalidator.LengthBetween(1, 64),
-														stringvalidator.RegexMatches(regexp.MustCompile(`^\{\{[./\[\]a-zA-Z0-9_-]+\}\}$`), ""),
-													},
 												},
 											},
 										},
@@ -554,48 +382,6 @@ func (r *ApplicationPriorityTrafficPolicyProfileParcelResource) Schema(ctx conte
 										},
 									},
 									"redirect_dns_value": schema.StringAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("").String,
-										Optional:            true,
-									},
-									"tcp_optimization": schema.BoolAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("").String,
-										Optional:            true,
-									},
-									"dre_optimization": schema.BoolAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("").String,
-										Optional:            true,
-									},
-									"service_node_group": schema.StringAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("").String,
-										Optional:            true,
-										Validators: []validator.String{
-											stringvalidator.LengthBetween(1, 12),
-											stringvalidator.RegexMatches(regexp.MustCompile(`(SNG-APPQOE|(SNG-APPQOE([1-9]|[1-2][0-9]|3[0-1])))`), ""),
-										},
-									},
-									"loss_correction_type": schema.StringAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("fecAdaptive", "fecAlways", "packetDuplication").String,
-										Optional:            true,
-										Validators: []validator.String{
-											stringvalidator.OneOf("fecAdaptive", "fecAlways", "packetDuplication"),
-										},
-									},
-									"loss_correct_fec_threshold": schema.Int64Attribute{
-										MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(1, 5).String,
-										Optional:            true,
-										Validators: []validator.Int64{
-											int64validator.Between(1, 5),
-										},
-									},
-									"cloud_saas": schema.BoolAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("").String,
-										Optional:            true,
-									},
-									"cloud_probe": schema.BoolAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("").String,
-										Optional:            true,
-									},
-									"cflowd": schema.BoolAttribute{
 										MarkdownDescription: helpers.NewAttributeDescription("").String,
 										Optional:            true,
 									},
@@ -614,20 +400,6 @@ func (r *ApplicationPriorityTrafficPolicyProfileParcelResource) Schema(ctx conte
 										MarkdownDescription: helpers.NewAttributeDescription("").String,
 										Optional:            true,
 									},
-									"nat_bypass": schema.BoolAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("").String,
-										Optional:            true,
-									},
-									"nat_dia_pool": schema.SetAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("").String,
-										ElementType:         types.Int64Type,
-										Optional:            true,
-									},
-									"nat_dia_interface": schema.SetAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("").String,
-										ElementType:         types.StringType,
-										Optional:            true,
-									},
 									"secure_internet_gateway": schema.BoolAttribute{
 										MarkdownDescription: helpers.NewAttributeDescription("").String,
 										Optional:            true,
@@ -635,17 +407,6 @@ func (r *ApplicationPriorityTrafficPolicyProfileParcelResource) Schema(ctx conte
 									"fallback_to_routing": schema.BoolAttribute{
 										MarkdownDescription: helpers.NewAttributeDescription("").String,
 										Optional:            true,
-									},
-									"secure_service_edge": schema.StringAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("").String,
-										Optional:            true,
-									},
-									"secure_service_edge_instance": schema.StringAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("Cisco-Secure-Access", "zScaler").String,
-										Optional:            true,
-										Validators: []validator.String{
-											stringvalidator.OneOf("Cisco-Secure-Access", "zScaler"),
-										},
 									},
 								},
 							},

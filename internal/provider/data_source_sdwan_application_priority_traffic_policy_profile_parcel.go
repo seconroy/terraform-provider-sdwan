@@ -82,10 +82,6 @@ func (d *ApplicationPriorityTrafficPolicyProfileParcelDataSource) Schema(ctx con
 				MarkdownDescription: "",
 				Computed:            true,
 			},
-			"simple_flow": schema.BoolAttribute{
-				MarkdownDescription: "",
-				Computed:            true,
-			},
 			"vpn": schema.SetAttribute{
 				MarkdownDescription: "",
 				ElementType:         types.StringType,
@@ -108,12 +104,12 @@ func (d *ApplicationPriorityTrafficPolicyProfileParcelDataSource) Schema(ctx con
 							MarkdownDescription: "Sequence Name",
 							Computed:            true,
 						},
-						"base_action": schema.StringAttribute{
-							MarkdownDescription: "Base Action",
-							Computed:            true,
-						},
 						"protocol": schema.StringAttribute{
 							MarkdownDescription: "Sequence IP Type",
+							Computed:            true,
+						},
+						"base_action": schema.StringAttribute{
+							MarkdownDescription: "Base Action",
 							Computed:            true,
 						},
 						"matches": schema.ListNestedAttribute{
@@ -150,20 +146,12 @@ func (d *ApplicationPriorityTrafficPolicyProfileParcelDataSource) Schema(ctx con
 										MarkdownDescription: "",
 										Computed:            true,
 									},
-									"source_data_ipv6_prefix_list_id": schema.StringAttribute{
-										MarkdownDescription: "",
-										Computed:            true,
-									},
 									"source_port": schema.SetAttribute{
 										MarkdownDescription: "Source Port (0-65535) range or individual number separated by space",
 										ElementType:         types.StringType,
 										Computed:            true,
 									},
 									"destination_data_prefix_list_id": schema.StringAttribute{
-										MarkdownDescription: "",
-										Computed:            true,
-									},
-									"destination_data_ipv6_prefix_list_id": schema.StringAttribute{
 										MarkdownDescription: "",
 										Computed:            true,
 									},
@@ -176,55 +164,12 @@ func (d *ApplicationPriorityTrafficPolicyProfileParcelDataSource) Schema(ctx con
 										MarkdownDescription: "Destination Region",
 										Computed:            true,
 									},
-									"saas_application_list_id": schema.StringAttribute{
-										MarkdownDescription: "",
-										Computed:            true,
-									},
 									"tcp": schema.StringAttribute{
 										MarkdownDescription: "TCP States",
 										Computed:            true,
 									},
 									"traffic_to": schema.StringAttribute{
 										MarkdownDescription: "Traffic to",
-										Computed:            true,
-									},
-									"traffic_class": schema.StringAttribute{
-										MarkdownDescription: "Traffic Class",
-										Computed:            true,
-									},
-									"ipv4_icmp_message": schema.SetAttribute{
-										MarkdownDescription: "ICMP Message",
-										ElementType:         types.StringType,
-										Computed:            true,
-									},
-									"ipv6_icmp_message": schema.SetAttribute{
-										MarkdownDescription: "ICMP6 Message",
-										ElementType:         types.StringType,
-										Computed:            true,
-									},
-									"service_area": schema.SetAttribute{
-										MarkdownDescription: "M365 Service Area",
-										ElementType:         types.StringType,
-										Computed:            true,
-									},
-									"traffic_category": schema.StringAttribute{
-										MarkdownDescription: "M365 Traffic Category",
-										Computed:            true,
-									},
-									"source_ipv4": schema.StringAttribute{
-										MarkdownDescription: "Source Data IP Prefix",
-										Computed:            true,
-									},
-									"source_ipv6": schema.StringAttribute{
-										MarkdownDescription: "Source Data IP Prefix",
-										Computed:            true,
-									},
-									"destination_ipv4": schema.StringAttribute{
-										MarkdownDescription: "Destination Data IP Prefix",
-										Computed:            true,
-									},
-									"destination_ipv6": schema.StringAttribute{
-										MarkdownDescription: "Destination Data IP Prefix",
 										Computed:            true,
 									},
 								},
@@ -257,34 +202,8 @@ func (d *ApplicationPriorityTrafficPolicyProfileParcelDataSource) Schema(ctx con
 													ElementType:         types.StringType,
 													Computed:            true,
 												},
-												"preferred_color_group_id": schema.StringAttribute{
-													MarkdownDescription: "",
-													Computed:            true,
-												},
-												"strict_drop": schema.BoolAttribute{
-													MarkdownDescription: "",
-													Computed:            true,
-												},
-												"fallback_to_best_path": schema.BoolAttribute{
-													MarkdownDescription: "",
-													Computed:            true,
-												},
-												"preferred_remote_color": schema.SetAttribute{
-													MarkdownDescription: "",
-													ElementType:         types.StringType,
-													Computed:            true,
-												},
-												"remote_color_restrict": schema.BoolAttribute{
-													MarkdownDescription: "",
-													Computed:            true,
-												},
 											},
 										},
-									},
-									"backup_sla_preferred_color": schema.SetAttribute{
-										MarkdownDescription: "Backup SLA perferred color",
-										ElementType:         types.StringType,
-										Computed:            true,
 									},
 									"sets": schema.ListNestedAttribute{
 										MarkdownDescription: "",
@@ -317,15 +236,6 @@ func (d *ApplicationPriorityTrafficPolicyProfileParcelDataSource) Schema(ctx con
 													Computed:            true,
 												},
 												"local_tloc_list_encapsulation": schema.StringAttribute{
-													MarkdownDescription: "",
-													Computed:            true,
-												},
-												"preferred_remote_color_id": schema.SetAttribute{
-													MarkdownDescription: "",
-													ElementType:         types.StringType,
-													Computed:            true,
-												},
-												"preferred_remote_color_restrict": schema.StringAttribute{
 													MarkdownDescription: "",
 													Computed:            true,
 												},
@@ -367,52 +277,7 @@ func (d *ApplicationPriorityTrafficPolicyProfileParcelDataSource) Schema(ctx con
 													MarkdownDescription: "",
 													Computed:            true,
 												},
-												"service_tloc_list_id": schema.StringAttribute{
-													MarkdownDescription: "",
-													Computed:            true,
-												},
-												"service_chain_type": schema.StringAttribute{
-													MarkdownDescription: "",
-													Computed:            true,
-												},
-												"service_chain_vpn": schema.Int64Attribute{
-													MarkdownDescription: "",
-													Computed:            true,
-												},
-												"service_chain_local": schema.BoolAttribute{
-													MarkdownDescription: "",
-													Computed:            true,
-												},
-												"service_chain_fallback_to_routing": schema.BoolAttribute{
-													MarkdownDescription: "",
-													Computed:            true,
-												},
-												"service_chain_tloc": schema.SetAttribute{
-													MarkdownDescription: "",
-													ElementType:         types.StringType,
-													Computed:            true,
-												},
-												"service_chain_encapsulation": schema.StringAttribute{
-													MarkdownDescription: "",
-													Computed:            true,
-												},
-												"service_chain_id": schema.StringAttribute{
-													MarkdownDescription: "",
-													Computed:            true,
-												},
-												"service_chain_tloc_list_id": schema.StringAttribute{
-													MarkdownDescription: "",
-													Computed:            true,
-												},
 												"next_hop": schema.StringAttribute{
-													MarkdownDescription: "",
-													Computed:            true,
-												},
-												"next_hop_ipv6": schema.StringAttribute{
-													MarkdownDescription: "",
-													Computed:            true,
-												},
-												"vpn": schema.StringAttribute{
 													MarkdownDescription: "",
 													Computed:            true,
 												},
@@ -424,38 +289,6 @@ func (d *ApplicationPriorityTrafficPolicyProfileParcelDataSource) Schema(ctx con
 										Computed:            true,
 									},
 									"redirect_dns_value": schema.StringAttribute{
-										MarkdownDescription: "",
-										Computed:            true,
-									},
-									"tcp_optimization": schema.BoolAttribute{
-										MarkdownDescription: "",
-										Computed:            true,
-									},
-									"dre_optimization": schema.BoolAttribute{
-										MarkdownDescription: "",
-										Computed:            true,
-									},
-									"service_node_group": schema.StringAttribute{
-										MarkdownDescription: "",
-										Computed:            true,
-									},
-									"loss_correction_type": schema.StringAttribute{
-										MarkdownDescription: "",
-										Computed:            true,
-									},
-									"loss_correct_fec_threshold": schema.Int64Attribute{
-										MarkdownDescription: "",
-										Computed:            true,
-									},
-									"cloud_saas": schema.BoolAttribute{
-										MarkdownDescription: "",
-										Computed:            true,
-									},
-									"cloud_probe": schema.BoolAttribute{
-										MarkdownDescription: "",
-										Computed:            true,
-									},
-									"cflowd": schema.BoolAttribute{
 										MarkdownDescription: "",
 										Computed:            true,
 									},
@@ -471,33 +304,11 @@ func (d *ApplicationPriorityTrafficPolicyProfileParcelDataSource) Schema(ctx con
 										MarkdownDescription: "",
 										Computed:            true,
 									},
-									"nat_bypass": schema.BoolAttribute{
-										MarkdownDescription: "",
-										Computed:            true,
-									},
-									"nat_dia_pool": schema.SetAttribute{
-										MarkdownDescription: "",
-										ElementType:         types.Int64Type,
-										Computed:            true,
-									},
-									"nat_dia_interface": schema.SetAttribute{
-										MarkdownDescription: "",
-										ElementType:         types.StringType,
-										Computed:            true,
-									},
 									"secure_internet_gateway": schema.BoolAttribute{
 										MarkdownDescription: "",
 										Computed:            true,
 									},
 									"fallback_to_routing": schema.BoolAttribute{
-										MarkdownDescription: "",
-										Computed:            true,
-									},
-									"secure_service_edge": schema.StringAttribute{
-										MarkdownDescription: "",
-										Computed:            true,
-									},
-									"secure_service_edge_instance": schema.StringAttribute{
 										MarkdownDescription: "",
 										Computed:            true,
 									},

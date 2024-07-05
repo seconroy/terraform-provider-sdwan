@@ -20,15 +20,14 @@ resource "sdwan_application_priority_traffic_policy_profile_parcel" "example" {
   description        = "My Example"
   feature_profile_id = "f6dd22c8-0b4f-496c-9a0b-6813d1f8b8ac"
   default_action     = "accept"
-  simple_flow        = false
   vpn                = ["1"]
   target_direction   = "all"
   sequences = [
     {
       sequence_id = 1
       name        = "RULE_1"
-      base_action = "accept"
       protocol    = "ipv4"
+      base_action = "accept"
       matches = [
         {
           dscp          = 1
@@ -44,40 +43,27 @@ resource "sdwan_application_priority_traffic_policy_profile_parcel" "example" {
           log     = false
           sla_class = [
             {
-              preferred_color       = ["default"]
-              strict_drop           = true
-              fallback_to_best_path = false
+              preferred_color = ["default"]
             }
           ]
-          backup_sla_preferred_color = ["default"]
           sets = [
             {
-              dscp                              = 1
-              local_tloc_list_color             = ["default"]
-              local_tloc_restrict               = "false"
-              local_tloc_list_encapsulation     = "gre"
-              tloc_ip                           = "1.2.3.4"
-              tloc_color                        = ["default"]
-              tloc_encapsulation                = "gre"
-              service_type                      = "FW"
-              service_color                     = ["default"]
-              service_encapsulation             = "ipsec"
-              service_tloc_ip                   = "1.2.3.4"
-              service_chain_local               = false
-              service_chain_fallback_to_routing = false
-              service_chain_tloc                = ["default"]
-              service_chain_encapsulation       = "ipsec"
-              service_chain_id                  = "1.2.3.4"
-              next_hop                          = "1.2.3.4"
-              next_hop_ipv6                     = "2001:0:0:1::/64"
-              vpn                               = "1"
+              dscp                          = 1
+              local_tloc_list_color         = ["default"]
+              local_tloc_restrict           = "false"
+              local_tloc_list_encapsulation = "gre"
+              tloc_ip                       = "1.2.3.4"
+              tloc_color                    = ["default"]
+              tloc_encapsulation            = "gre"
+              service_type                  = "FW"
+              service_color                 = ["default"]
+              service_encapsulation         = "ipsec"
+              service_tloc_ip               = "1.2.3.4"
+              next_hop                      = "1.2.3.4"
             }
           ]
           redirect_dns_field  = "redirectDns"
           redirect_dns_value  = "umbrella"
-          dre_optimization    = true
-          service_node_group  = "SNG-APPQOE1"
-          cflowd              = true
           nat_pool            = 2
           nat_vpn             = false
           nat_fallback        = false
@@ -97,7 +83,6 @@ resource "sdwan_application_priority_traffic_policy_profile_parcel" "example" {
 - `default_action` (String) - Choices: `drop`, `accept`
 - `feature_profile_id` (String) Feature Profile ID
 - `name` (String) The name of the profile parcel
-- `simple_flow` (Boolean)
 - `target_direction` (String) - Choices: `service`, `tunnel`, `all`
 - `vpn` (Set of String)
 
@@ -131,31 +116,17 @@ Optional:
 
 Optional:
 
-- `backup_sla_preferred_color` (Set of String) Backup SLA perferred color
-- `cflowd` (Boolean)
-- `cloud_probe` (Boolean)
-- `cloud_saas` (Boolean)
 - `counter` (String)
-- `dre_optimization` (Boolean)
 - `fallback_to_routing` (Boolean)
 - `log` (Boolean)
-- `loss_correct_fec_threshold` (Number) - Range: `1`-`5`
-- `loss_correction_type` (String) - Choices: `fecAdaptive`, `fecAlways`, `packetDuplication`
-- `nat_bypass` (Boolean)
-- `nat_dia_interface` (Set of String)
-- `nat_dia_pool` (Set of Number)
 - `nat_fallback` (Boolean)
 - `nat_pool` (Number) - Range: `1`-`31`
 - `nat_vpn` (Boolean)
 - `redirect_dns_field` (String) - Choices: `ipAddress`, `redirectDns`
 - `redirect_dns_value` (String)
 - `secure_internet_gateway` (Boolean)
-- `secure_service_edge` (String)
-- `secure_service_edge_instance` (String) - Choices: `Cisco-Secure-Access`, `zScaler`
-- `service_node_group` (String)
 - `sets` (Attributes List) (see [below for nested schema](#nestedatt--sequences--actions--sets))
 - `sla_class` (Attributes List) slaClass (see [below for nested schema](#nestedatt--sequences--actions--sla_class))
-- `tcp_optimization` (Boolean)
 
 <a id="nestedatt--sequences--actions--sets"></a>
 ### Nested Schema for `sequences.actions.sets`
@@ -168,30 +139,17 @@ Optional:
 - `local_tloc_list_encapsulation` (String) - Choices: `ipsec`, `gre`
 - `local_tloc_restrict` (String)
 - `next_hop` (String)
-- `next_hop_ipv6` (String)
 - `policer_id` (String)
 - `preferred_color_group_id` (String)
-- `preferred_remote_color_id` (Set of String)
-- `preferred_remote_color_restrict` (String)
-- `service_chain_encapsulation` (String) - Choices: `ipsec`, `gre`
-- `service_chain_fallback_to_routing` (Boolean)
-- `service_chain_id` (String)
-- `service_chain_local` (Boolean)
-- `service_chain_tloc` (Set of String)
-- `service_chain_tloc_list_id` (String)
-- `service_chain_type` (String) - Choices: `SC1`, `SC2`, `SC4`, `SC5`, `SC6`, `SC7`, `SC8`, `SC9`, `SC10`, `SC11`, `SC12`, `SC13`, `SC14`, `SC15`, `SC16`
-- `service_chain_vpn` (Number) - Range: `0`-`65530`
 - `service_color` (Set of String)
 - `service_encapsulation` (String) - Choices: `ipsec`, `gre`
 - `service_tloc_ip` (String)
-- `service_tloc_list_id` (String)
 - `service_type` (String) - Choices: `FW`, `IDS`, `IDP`, `netsvc1`, `netsvc2`, `netsvc3`, `netsvc4`, `appqoe`
 - `service_vpn` (String)
 - `tloc_color` (Set of String)
 - `tloc_encapsulation` (String) - Choices: `ipsec`, `gre`
 - `tloc_ip` (String)
 - `tloc_list_id` (String)
-- `vpn` (String)
 
 
 <a id="nestedatt--sequences--actions--sla_class"></a>
@@ -199,13 +157,8 @@ Optional:
 
 Optional:
 
-- `fallback_to_best_path` (Boolean)
 - `preferred_color` (Set of String)
-- `preferred_color_group_id` (String)
-- `preferred_remote_color` (Set of String)
-- `remote_color_restrict` (Boolean)
 - `sla_class_list_id` (String)
-- `strict_drop` (Boolean)
 
 
 
@@ -215,10 +168,7 @@ Optional:
 Optional:
 
 - `application_list_id` (String)
-- `destination_data_ipv6_prefix_list_id` (String)
 - `destination_data_prefix_list_id` (String)
-- `destination_ipv4` (String) Destination Data IP Prefix
-- `destination_ipv6` (String) Destination Data IP Prefix
 - `destination_port` (Set of String) Destination Port (0-65535) range or individual number separated by space
 - `destination_region` (String) Destination Region
   - Choices: `primary-region`, `secondary-region`, `other-region`
@@ -227,23 +177,12 @@ Optional:
 - `dns_application_list_id` (String)
 - `dscp` (Number) DSCP number
   - Range: `0`-`63`
-- `ipv4_icmp_message` (Set of String) ICMP Message
-- `ipv6_icmp_message` (Set of String) ICMP6 Message
 - `packet_length` (String) Packet Length
 - `protocol` (Set of String) protocol (0-255) range or individual number separated by space
-- `saas_application_list_id` (String)
-- `service_area` (Set of String) M365 Service Area
-- `source_data_ipv6_prefix_list_id` (String)
 - `source_data_prefix_list_id` (String)
-- `source_ipv4` (String) Source Data IP Prefix
-- `source_ipv6` (String) Source Data IP Prefix
 - `source_port` (Set of String) Source Port (0-65535) range or individual number separated by space
 - `tcp` (String) TCP States
   - Choices: `syn`
-- `traffic_category` (String) M365 Traffic Category
-  - Choices: `optimize-allow`, `optimize`, `all`
-- `traffic_class` (String) Traffic Class
-  - Choices: `gold-voip-telephony`, `gold-broadcast-video`, `gold-real-time-interactive`, `gold-multimedia-conferencing`, `gold-multimedia-streaming`, `gold-network-control`, `gold-signaling`, `gold-ops-admin-mgmt`, `gold-transactional-data`, `gold-bulk-data`, `silver`, `bronze`
 - `traffic_to` (String) Traffic to
   - Choices: `core`, `service`, `access`
 

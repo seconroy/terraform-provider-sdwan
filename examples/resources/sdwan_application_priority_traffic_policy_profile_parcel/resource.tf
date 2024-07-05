@@ -3,15 +3,14 @@ resource "sdwan_application_priority_traffic_policy_profile_parcel" "example" {
   description        = "My Example"
   feature_profile_id = "f6dd22c8-0b4f-496c-9a0b-6813d1f8b8ac"
   default_action     = "accept"
-  simple_flow        = false
   vpn                = ["1"]
   target_direction   = "all"
   sequences = [
     {
       sequence_id = 1
       name        = "RULE_1"
-      base_action = "accept"
       protocol    = "ipv4"
+      base_action = "accept"
       matches = [
         {
           dscp          = 1
@@ -27,40 +26,27 @@ resource "sdwan_application_priority_traffic_policy_profile_parcel" "example" {
           log     = false
           sla_class = [
             {
-              preferred_color       = ["default"]
-              strict_drop           = true
-              fallback_to_best_path = false
+              preferred_color = ["default"]
             }
           ]
-          backup_sla_preferred_color = ["default"]
           sets = [
             {
-              dscp                              = 1
-              local_tloc_list_color             = ["default"]
-              local_tloc_restrict               = "false"
-              local_tloc_list_encapsulation     = "gre"
-              tloc_ip                           = "1.2.3.4"
-              tloc_color                        = ["default"]
-              tloc_encapsulation                = "gre"
-              service_type                      = "FW"
-              service_color                     = ["default"]
-              service_encapsulation             = "ipsec"
-              service_tloc_ip                   = "1.2.3.4"
-              service_chain_local               = false
-              service_chain_fallback_to_routing = false
-              service_chain_tloc                = ["default"]
-              service_chain_encapsulation       = "ipsec"
-              service_chain_id                  = "1.2.3.4"
-              next_hop                          = "1.2.3.4"
-              next_hop_ipv6                     = "2001:0:0:1::/64"
-              vpn                               = "1"
+              dscp                          = 1
+              local_tloc_list_color         = ["default"]
+              local_tloc_restrict           = "false"
+              local_tloc_list_encapsulation = "gre"
+              tloc_ip                       = "1.2.3.4"
+              tloc_color                    = ["default"]
+              tloc_encapsulation            = "gre"
+              service_type                  = "FW"
+              service_color                 = ["default"]
+              service_encapsulation         = "ipsec"
+              service_tloc_ip               = "1.2.3.4"
+              next_hop                      = "1.2.3.4"
             }
           ]
           redirect_dns_field  = "redirectDns"
           redirect_dns_value  = "umbrella"
-          dre_optimization    = true
-          service_node_group  = "SNG-APPQOE1"
-          cflowd              = true
           nat_pool            = 2
           nat_vpn             = false
           nat_fallback        = false
