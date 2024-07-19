@@ -20,6 +20,9 @@ package provider
 // Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"context"
+	"encoding/json"
+	"fmt"
+	"strings"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/tidwall/gjson"
@@ -73,7 +76,6 @@ func (data ZoneBasedFirewallPolicyDefinition) getPath() string {
 
 // End of section. //template:end getPath
 
-// Section below is generated&owned by "gen/generator.go". //template:begin toBody
 func (data ZoneBasedFirewallPolicyDefinition) toBody(ctx context.Context) string {
 	body := ""
 	if true {
@@ -122,6 +124,1255 @@ func (data ZoneBasedFirewallPolicyDefinition) toBody(ctx context.Context) string
 			}
 			if true {
 				itemBody, _ = sjson.Set(itemBody, "match.entries", []interface{}{})
+
+				type ServiceDetails struct {
+					Name     string `json:"name"`
+					Protocol string `json:"protocol"`
+					Port     string `json:"port"`
+				}
+
+				type APIResponse struct {
+					Data []map[string]ServiceDetails `json:"data"`
+				}
+
+				protocolMap := map[string]string{
+					"udp":     "17",
+					"tcp":     "6",
+					"tcp udp": "6 17",
+				}
+
+				jsonResponse := `{
+					"data": [
+						{
+							"snmp": {
+								"name": "snmp",
+								"protocol": "17",
+								"port": "161"
+							}
+						},
+						{
+							"tcp": {
+								"name": "tcp",
+								"protocol": "6"
+							}
+						},
+						{
+							"udp": {
+								"name": "udp",
+								"protocol": "17"
+							}
+						},
+						{
+							"icmp": {
+								"name": "icmp",
+								"protocol": "6 17"
+							}
+						},
+						{
+							"echo": {
+								"name": "echo",
+								"protocol": "6 17",
+								"port": "7"
+							}
+						},
+						{
+							"telnet": {
+								"name": "telnet",
+								"protocol": "6",
+								"port": "23"
+							}
+						},
+						{
+							"wins": {
+								"name": "wins",
+								"protocol": "6",
+								"port": "1512"
+							}
+						},
+						{
+							"n2h2server": {
+								"name": "n2h2server",
+								"protocol": "6 17",
+								"port": "9285"
+							}
+						},
+						{
+							"nntp": {
+								"name": "nntp",
+								"protocol": "6",
+								"port": "119"
+							}
+						},
+						{
+							"pptp": {
+								"name": "pptp",
+								"protocol": "6",
+								"port": "1723"
+							}
+						},
+						{
+							"rtsp": {
+								"name": "rtsp",
+								"protocol": "6",
+								"port": "554 8554"
+							}
+						},
+						{
+							"bootpc": {
+								"name": "bootpc",
+								"protocol": "17",
+								"port": "68"
+							}
+						},
+						{
+							"gdoi": {
+								"name": "gdoi",
+								"protocol": "17",
+								"port": "848"
+							}
+						},
+						{
+							"tacacs": {
+								"name": "tacacs",
+								"protocol": "17",
+								"port": "49"
+							}
+						},
+						{
+							"gopher": {
+								"name": "gopher",
+								"protocol": "6",
+								"port": "70"
+							}
+						},
+						{
+							"icabrowser": {
+								"name": "icabrowser",
+								"protocol": "17",
+								"port": "1604"
+							}
+						},
+						{
+							"skinny": {
+								"name": "skinny",
+								"protocol": "6",
+								"port": "2000"
+							}
+						},
+						{
+							"sunrpc": {
+								"name": "sunrpc",
+								"protocol": "6 17",
+								"port": "111"
+							}
+						},
+						{
+							"biff": {
+								"name": "biff",
+								"protocol": "17",
+								"port": "512"
+							}
+						},
+						{
+							"router": {
+								"name": "router",
+								"protocol": "17",
+								"port": "520"
+							}
+						},
+						{
+							"ircs": {
+								"name": "ircs",
+								"protocol": "6",
+								"port": "994"
+							}
+						},
+						{
+							"orasrv": {
+								"name": "orasrv",
+								"protocol": "6",
+								"port": "1525-1529"
+							}
+						},
+						{
+							"ms-cluster-net": {
+								"name": "ms-cluster-net",
+								"protocol": "17",
+								"port": "3343"
+							}
+						},
+						{
+							"kermit": {
+								"name": "kermit",
+								"protocol": "6",
+								"port": "1649"
+							}
+						},
+						{
+							"isakmp": {
+								"name": "isakmp",
+								"protocol": "17",
+								"port": "500"
+							}
+						},
+						{
+							"sshell": {
+								"name": "sshell",
+								"protocol": "6 17",
+								"port": "614"
+							}
+						},
+						{
+							"realsecure": {
+								"name": "realsecure",
+								"protocol": "6",
+								"port": "2998"
+							}
+						},
+						{
+							"ircu": {
+								"name": "ircu",
+								"protocol": "6 17",
+								"port": "6665 6666"
+							}
+						},
+						{
+							"appleqtc": {
+								"name": "appleqtc",
+								"protocol": "17",
+								"port": "458"
+							}
+						},
+						{
+							"pwdgen": {
+								"name": "pwdgen",
+								"protocol": "6 17",
+								"port": "129"
+							}
+						},
+						{
+							"rdb-dbs-disp": {
+								"name": "rdb-dbs-disp",
+								"protocol": "6 17",
+								"port": "1571"
+							}
+						},
+						{
+							"creativepartnr": {
+								"name": "creativepartnr",
+								"protocol": "6 17",
+								"port": "455"
+							}
+						},
+						{
+							"finger": {
+								"name": "finger",
+								"protocol": "6",
+								"port": "79"
+							}
+						},
+						{
+							"ftps": {
+								"name": "ftps",
+								"protocol": "6",
+								"port": "990"
+							}
+						},
+						{
+							"giop": {
+								"name": "giop",
+								"protocol": "6 17",
+								"port": "2481 2482"
+							}
+						},
+						{
+							"rsvd": {
+								"name": "rsvd",
+								"protocol": "6 17",
+								"port": "168"
+							}
+						},
+						{
+							"hp-alarm-mgr": {
+								"name": "hp-alarm-mgr",
+								"protocol": "6 17",
+								"port": "383"
+							}
+						},
+						{
+							"uucp": {
+								"name": "uucp",
+								"protocol": "6 17",
+								"port": "540 541"
+							}
+						},
+						{
+							"kerberos": {
+								"name": "kerberos",
+								"protocol": "6 17",
+								"port": "88 464 749 750"
+							}
+						},
+						{
+							"imap": {
+								"name": "imap",
+								"protocol": "6",
+								"port": "143"
+							}
+						},
+						{
+							"time": {
+								"name": "time",
+								"protocol": "17",
+								"port": "37"
+							}
+						},
+						{
+							"bootps": {
+								"name": "bootps",
+								"protocol": "17",
+								"port": "67"
+							}
+						},
+						{
+							"tftp": {
+								"name": "tftp",
+								"protocol": "17",
+								"port": "69"
+							}
+						},
+						{
+							"oracle": {
+								"name": "oracle",
+								"protocol": "17",
+								"port": "2005"
+							}
+						},
+						{
+							"snmptrap": {
+								"name": "snmptrap",
+								"protocol": "17",
+								"port": "162"
+							}
+						},
+						{
+							"http": {
+								"name": "http",
+								"protocol": "6",
+								"port": "80"
+							}
+						},
+						{
+							"qmtp": {
+								"name": "qmtp",
+								"protocol": "6 17",
+								"port": "209"
+							}
+						},
+						{
+							"radius": {
+								"name": "radius",
+								"protocol": "17",
+								"port": "1812 1813"
+							}
+						},
+						{
+							"oracle-em-vp": {
+								"name": "oracle-em-vp",
+								"protocol": "6 17",
+								"port": "1748 1809"
+							}
+						},
+						{
+							"tarantella": {
+								"name": "tarantella",
+								"protocol": "6",
+								"port": "3144"
+							}
+						},
+						{
+							"pcanywheredata": {
+								"name": "pcanywheredata",
+								"protocol": "6",
+								"port": "5631"
+							}
+						},
+						{
+							"ldap": {
+								"name": "ldap",
+								"protocol": "6",
+								"port": "389"
+							}
+						},
+						{
+							"mgcp": {
+								"name": "mgcp",
+								"protocol": "17",
+								"port": "2427"
+							}
+						},
+						{
+							"sqlsrv": {
+								"name": "sqlsrv",
+								"protocol": "6",
+								"port": "156"
+							}
+						},
+						{
+							"hsrp": {
+								"name": "hsrp",
+								"protocol": "17",
+								"port": "1985"
+							}
+						},
+						{
+							"cisco-net-mgmt": {
+								"name": "cisco-net-mgmt",
+								"protocol": "6 17",
+								"port": "1741 1993"
+							}
+						},
+						{
+							"smtp": {
+								"name": "smtp",
+								"protocol": "6",
+								"port": "25"
+							}
+						},
+						{
+							"pcanywherestat": {
+								"name": "pcanywherestat",
+								"protocol": "17",
+								"port": "5632"
+							}
+						},
+						{
+							"exec": {
+								"name": "exec",
+								"protocol": "6",
+								"port": "512"
+							}
+						},
+						{
+							"send": {
+								"name": "send",
+								"protocol": "6 17",
+								"port": "169"
+							}
+						},
+						{
+							"stun": {
+								"name": "stun",
+								"protocol": "6 17",
+								"port": "1990-1994"
+							}
+						},
+						{
+							"syslog": {
+								"name": "syslog",
+								"protocol": "17",
+								"port": "514"
+							}
+						},
+						{
+							"ms-sql-m": {
+								"name": "ms-sql-m",
+								"protocol": "17",
+								"port": "1434"
+							}
+						},
+						{
+							"citrix": {
+								"name": "citrix",
+								"protocol": "6 17",
+								"port": "2512-2897"
+							}
+						},
+						{
+							"creativeserver": {
+								"name": "creativeserver",
+								"protocol": "6 17",
+								"port": "453"
+							}
+						},
+						{
+							"cifs": {
+								"name": "cifs",
+								"protocol": "6 17",
+								"port": "3020"
+							}
+						},
+						{
+							"cisco-sys": {
+								"name": "cisco-sys",
+								"protocol": "6 17",
+								"port": "132"
+							}
+						},
+						{
+							"cisco-tna": {
+								"name": "cisco-tna",
+								"protocol": "6 17",
+								"port": "131"
+							}
+						},
+						{
+							"ms-dotnetster": {
+								"name": "ms-dotnetster",
+								"protocol": "6 17",
+								"port": "3126"
+							}
+						},
+						{
+							"gtpv1": {
+								"name": "gtpv1",
+								"protocol": "6 17",
+								"port": "2123"
+							}
+						},
+						{
+							"gtpv0": {
+								"name": "gtpv0",
+								"protocol": "6 17",
+								"port": "3386"
+							}
+						},
+						{
+							"imap3": {
+								"name": "imap3",
+								"protocol": "6",
+								"port": "220"
+							}
+						},
+						{
+							"fcip-port": {
+								"name": "fcip-port",
+								"protocol": "6",
+								"port": "3225"
+							}
+						},
+						{
+							"netbios-dgm": {
+								"name": "netbios-dgm",
+								"protocol": "6 17",
+								"port": "138"
+							}
+						},
+						{
+							"sip-tls": {
+								"name": "sip-tls",
+								"protocol": "6 17",
+								"port": "5061"
+							}
+						},
+						{
+							"pop3s": {
+								"name": "pop3s",
+								"protocol": "6",
+								"port": "995"
+							}
+						},
+						{
+							"cisco-fna": {
+								"name": "cisco-fna",
+								"protocol": "6 17",
+								"port": "130"
+							}
+						},
+						{
+							"802-11-iapp": {
+								"name": "802-11-iapp",
+								"protocol": "6 17",
+								"port": "3517"
+							}
+						},
+						{
+							"oem-agent": {
+								"name": "oem-agent",
+								"protocol": "6 17",
+								"port": "3872"
+							}
+						},
+						{
+							"cisco-tdp": {
+								"name": "cisco-tdp",
+								"protocol": "6 17",
+								"port": "711"
+							}
+						},
+						{
+							"tr-rsrb": {
+								"name": "tr-rsrb",
+								"protocol": "6 17",
+								"port": "1987-1996"
+							}
+						},
+						{
+							"r-winsock": {
+								"name": "r-winsock",
+								"protocol": "17",
+								"port": "1745"
+							}
+						},
+						{
+							"sql-net": {
+								"name": "sql-net",
+								"protocol": "6",
+								"port": "1521 150"
+							}
+						},
+						{
+							"syslog-conn": {
+								"name": "syslog-conn",
+								"protocol": "6",
+								"port": "601"
+							}
+						},
+						{
+							"tacacs-ds": {
+								"name": "tacacs-ds",
+								"protocol": "6",
+								"port": "65"
+							}
+						},
+						{
+							"h225ras": {
+								"name": "h225ras",
+								"protocol": "17",
+								"port": "1719"
+							}
+						},
+						{
+							"ace-svr": {
+								"name": "ace-svr",
+								"protocol": "6 17",
+								"port": "2475 2476"
+							}
+						},
+						{
+							"dhcp-failover": {
+								"name": "dhcp-failover",
+								"protocol": "6",
+								"port": "647"
+							}
+						},
+						{
+							"igmpv3lite": {
+								"name": "igmpv3lite",
+								"protocol": "17",
+								"port": "465"
+							}
+						},
+						{
+							"irc-serv": {
+								"name": "irc-serv",
+								"protocol": "17",
+								"port": "529"
+							}
+						},
+						{
+							"entrust-svcs": {
+								"name": "entrust-svcs",
+								"protocol": "6 17",
+								"port": "640 680 681"
+							}
+						},
+						{
+							"dbcontrol_agent": {
+								"name": "dbcontrol_agent",
+								"protocol": "6 17",
+								"port": "3938"
+							}
+						},
+						{
+							"cisco-svcs": {
+								"name": "cisco-svcs",
+								"protocol": "6 17",
+								"port": "1986-1999"
+							}
+						},
+						{
+							"ipsec-msft": {
+								"name": "ipsec-msft",
+								"protocol": "17",
+								"port": "4500"
+							}
+						},
+						{
+							"microsoft-ds": {
+								"name": "microsoft-ds",
+								"protocol": "17",
+								"port": "445"
+							}
+						},
+						{
+							"ms-sna": {
+								"name": "ms-sna",
+								"protocol": "6",
+								"port": "1477 1478"
+							}
+						},
+						{
+							"rsvp_tunnel": {
+								"name": "rsvp_tunnel",
+								"protocol": "17",
+								"port": "363"
+							}
+						},
+						{
+							"rsvp-encap": {
+								"name": "rsvp-encap",
+								"protocol": "6 17",
+								"port": "1698 1699"
+							}
+						},
+						{
+							"hp-collector": {
+								"name": "hp-collector",
+								"protocol": "6 17",
+								"port": "381"
+							}
+						},
+						{
+							"netbios-ns": {
+								"name": "netbios-ns",
+								"protocol": "17",
+								"port": "137"
+							}
+						},
+						{
+							"msexch-routing": {
+								"name": "msexch-routing",
+								"protocol": "6",
+								"port": "691"
+							}
+						},
+						{
+							"h323": {
+								"name": "h323",
+								"protocol": "6",
+								"port": "1720"
+							}
+						},
+						{
+							"l2tp": {
+								"name": "l2tp",
+								"protocol": "17",
+								"port": "1701"
+							}
+						},
+						{
+							"ldap-admin": {
+								"name": "ldap-admin",
+								"protocol": "6 17",
+								"port": "3407"
+							}
+						},
+						{
+							"pop3": {
+								"name": "pop3",
+								"protocol": "6",
+								"port": "110"
+							}
+						},
+						{
+							"h323callsigalt": {
+								"name": "h323callsigalt",
+								"protocol": "6 17",
+								"port": "11720"
+							}
+						},
+						{
+							"ms-sql": {
+								"name": "ms-sql",
+								"protocol": "6",
+								"port": "1433"
+							}
+						},
+						{
+							"iscsi-target": {
+								"name": "iscsi-target",
+								"protocol": "6",
+								"port": "3260"
+							}
+						},
+						{
+							"webster": {
+								"name": "webster",
+								"protocol": "6",
+								"port": "765"
+							}
+						},
+						{
+							"lotusnote": {
+								"name": "lotusnote",
+								"protocol": "6",
+								"port": "1352"
+							}
+						},
+						{
+							"ipx": {
+								"name": "ipx",
+								"protocol": "17",
+								"port": "213"
+							}
+						},
+						{
+							"entrust-svc-hand": {
+								"name": "entrust-svc-hand",
+								"protocol": "6 17",
+								"port": "709 710"
+							}
+						},
+						{
+							"citriximaclient": {
+								"name": "citriximaclient",
+								"protocol": "6",
+								"port": "2598"
+							}
+						},
+						{
+							"rtc-pm-port": {
+								"name": "rtc-pm-port",
+								"protocol": "6 17",
+								"port": "3891"
+							}
+						},
+						{
+							"ftp": {
+								"name": "ftp",
+								"protocol": "6",
+								"port": "21"
+							}
+						},
+						{
+							"aol": {
+								"name": "aol",
+								"protocol": "6 17",
+								"port": "5190"
+							}
+						},
+						{
+							"xdmcp": {
+								"name": "xdmcp",
+								"protocol": "17",
+								"port": "177"
+							}
+						},
+						{
+							"oraclenames": {
+								"name": "oraclenames",
+								"protocol": "6 17",
+								"port": "1575"
+							}
+						},
+						{
+							"login": {
+								"name": "login",
+								"protocol": "6",
+								"port": "513"
+							}
+						},
+						{
+							"iscsi": {
+								"name": "iscsi",
+								"protocol": "6",
+								"port": "860"
+							}
+						},
+						{
+							"ttc": {
+								"name": "ttc",
+								"protocol": "6 17",
+								"port": "2483 2484"
+							}
+						},
+						{
+							"imaps": {
+								"name": "imaps",
+								"protocol": "6",
+								"port": "993"
+							}
+						},
+						{
+							"socks": {
+								"name": "socks",
+								"protocol": "6",
+								"port": "1080"
+							}
+						},
+						{
+							"ssh": {
+								"name": "ssh",
+								"protocol": "6 17",
+								"port": "22"
+							}
+						},
+						{
+							"dnsix": {
+								"name": "dnsix",
+								"protocol": "6",
+								"port": "90"
+							}
+						},
+						{
+							"daytime": {
+								"name": "daytime",
+								"protocol": "6 17",
+								"port": "13"
+							}
+						},
+						{
+							"sip": {
+								"name": "sip",
+								"protocol": "17",
+								"port": "5060"
+							}
+						},
+						{
+							"discard": {
+								"name": "discard",
+								"protocol": "6 17",
+								"port": "9"
+							}
+						},
+						{
+							"ntp": {
+								"name": "ntp",
+								"protocol": "17",
+								"port": "123"
+							}
+						},
+						{
+							"ldaps": {
+								"name": "ldaps",
+								"protocol": "6 17",
+								"port": "636"
+							}
+						},
+						{
+							"https": {
+								"name": "https",
+								"protocol": "6",
+								"port": "443"
+							}
+						},
+						{
+							"vdolive": {
+								"name": "vdolive",
+								"protocol": "6",
+								"port": "7000"
+							}
+						},
+						{
+							"ica": {
+								"name": "ica",
+								"protocol": "6",
+								"port": "1494"
+							}
+						},
+						{
+							"net8-cman": {
+								"name": "net8-cman",
+								"protocol": "6 17",
+								"port": "1630 1830"
+							}
+						},
+						{
+							"cuseeme": {
+								"name": "cuseeme",
+								"protocol": "6",
+								"port": "7648"
+							}
+						},
+						{
+							"netstat": {
+								"name": "netstat",
+								"protocol": "6 17",
+								"port": "15"
+							}
+						},
+						{
+							"sms": {
+								"name": "sms",
+								"protocol": "6 17",
+								"port": "2701-2703"
+							}
+						},
+						{
+							"streamworks": {
+								"name": "streamworks",
+								"protocol": "17",
+								"port": "1558"
+							}
+						},
+						{
+							"rtelnet": {
+								"name": "rtelnet",
+								"protocol": "6",
+								"port": "107"
+							}
+						},
+						{
+							"who": {
+								"name": "who",
+								"protocol": "17",
+								"port": "513"
+							}
+						},
+						{
+							"kazaa": {
+								"name": "kazaa",
+								"protocol": "6",
+								"port": "1214"
+							}
+						},
+						{
+							"ssp": {
+								"name": "ssp",
+								"protocol": "6 17",
+								"port": "3249"
+							}
+						},
+						{
+							"dbase": {
+								"name": "dbase",
+								"protocol": "6 17",
+								"port": "217"
+							}
+						},
+						{
+							"timed": {
+								"name": "timed",
+								"protocol": "17",
+								"port": "525"
+							}
+						},
+						{
+							"cddbp": {
+								"name": "cddbp",
+								"protocol": "6",
+								"port": "888"
+							}
+						},
+						{
+							"telnets": {
+								"name": "telnets",
+								"protocol": "6",
+								"port": "992"
+							}
+						},
+						{
+							"ymsgr": {
+								"name": "ymsgr",
+								"protocol": "6",
+								"port": "5050"
+							}
+						},
+						{
+							"ident": {
+								"name": "ident",
+								"protocol": "6",
+								"port": "113"
+							}
+						},
+						{
+							"bgp": {
+								"name": "bgp",
+								"protocol": "6",
+								"port": "179"
+							}
+						},
+						{
+							"ddns-v3": {
+								"name": "ddns-v3",
+								"protocol": "6 17",
+								"port": "2164"
+							}
+						},
+						{
+							"vqp": {
+								"name": "vqp",
+								"protocol": "6 17",
+								"port": "1589"
+							}
+						},
+						{
+							"irc": {
+								"name": "irc",
+								"protocol": "6",
+								"port": "194"
+							}
+						},
+						{
+							"ipass": {
+								"name": "ipass",
+								"protocol": "6 17",
+								"port": "2549"
+							}
+						},
+						{
+							"x11": {
+								"name": "x11",
+								"protocol": "6",
+								"port": "6000"
+							}
+						},
+						{
+							"dns": {
+								"name": "dns",
+								"protocol": "6 17",
+								"port": "53"
+							}
+						},
+						{
+							"lotusmtap": {
+								"name": "lotusmtap",
+								"protocol": "6 17",
+								"port": "3007"
+							}
+						},
+						{
+							"mysql": {
+								"name": "mysql",
+								"protocol": "6 17",
+								"port": "3306"
+							}
+						},
+						{
+							"nfs": {
+								"name": "nfs",
+								"protocol": "6 17",
+								"port": "2049"
+							}
+						},
+						{
+							"msnmsgr": {
+								"name": "msnmsgr",
+								"protocol": "6",
+								"port": "1863"
+							}
+						},
+						{
+							"netshow": {
+								"name": "netshow",
+								"protocol": "6",
+								"port": "1755"
+							}
+						},
+						{
+							"sqlserv": {
+								"name": "sqlserv",
+								"protocol": "6 17",
+								"port": "118"
+							}
+						},
+						{
+							"hp-managed-node": {
+								"name": "hp-managed-node",
+								"protocol": "6 17",
+								"port": "382"
+							}
+						},
+						{
+							"ncp": {
+								"name": "ncp",
+								"protocol": "6 17",
+								"port": "524"
+							}
+						},
+						{
+							"shell": {
+								"name": "shell",
+								"protocol": "6",
+								"port": "514"
+							}
+						},
+						{
+							"realmedia": {
+								"name": "realmedia",
+								"protocol": "6",
+								"port": "7070"
+							}
+						},
+						{
+							"msrpc": {
+								"name": "msrpc",
+								"protocol": "6",
+								"port": "135"
+							}
+						},
+						{
+							"clp": {
+								"name": "clp",
+								"protocol": "6 17",
+								"port": "2567"
+							}
+						}
+						]
+					}`
+
+				var response APIResponse
+				err := json.Unmarshal([]byte(jsonResponse), &response)
+				if err != nil {
+					fmt.Println("HANDLE ERROR", err) // HANDLE ERROR
+				}
+
+				protocols, protocolNums, ports := "", "", ""
+
+				for _, childItem := range item.MatchEntries {
+					if !childItem.Type.IsNull() && childItem.Type.ValueString() == "protocolName" {
+
+						for _, serviceMap := range response.Data {
+							for _, serviceDetails := range serviceMap {
+
+								for _, i := range strings.Split(childItem.Value.ValueString(), " ") {
+									if serviceDetails.Name == i {
+
+										if protocols == "" {
+											protocols += serviceDetails.Name
+										} else {
+											protocols += " " + serviceDetails.Name
+										}
+										if protocolNums != "6 17" || protocolNums != "17 6" {
+											if protocolNums == "" {
+												protocolNums += serviceDetails.Protocol
+											} else {
+												protocolNums += " " + serviceDetails.Protocol
+											}
+										}
+										if ports == "" {
+											ports += serviceDetails.Port
+										} else {
+											ports += " " + serviceDetails.Port
+										}
+									}
+								}
+							}
+						}
+
+						if protocolNums == "" {
+							fmt.Println("HANDLE ERROR", "a value was not found for protocols, protocolNums, or ports") // HANDLE ERROR
+						}
+
+						if ports != "" {
+							item.MatchEntries = append(item.MatchEntries, ZoneBasedFirewallPolicyDefinitionRulesMatchEntries{
+								Type:         types.StringValue("destinationPort"),
+								ProtocolType: types.StringValue(protocols),
+								Value:        types.StringValue(ports),
+							})
+						}
+
+						if protocols != "" {
+							item.MatchEntries = append(item.MatchEntries, ZoneBasedFirewallPolicyDefinitionRulesMatchEntries{
+								Type:         types.StringValue("protocol"),
+								ProtocolType: types.StringValue(protocols),
+								Value:        types.StringValue(protocolNums),
+							})
+						}
+					}
+				}
+
 				for _, childItem := range item.MatchEntries {
 					itemChildBody := ""
 					if !childItem.Type.IsNull() {
@@ -157,8 +1408,6 @@ func (data ZoneBasedFirewallPolicyDefinition) toBody(ctx context.Context) string
 	}
 	return body
 }
-
-// End of section. //template:end toBody
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBody
 func (data *ZoneBasedFirewallPolicyDefinition) fromBody(ctx context.Context, res gjson.Result) {
