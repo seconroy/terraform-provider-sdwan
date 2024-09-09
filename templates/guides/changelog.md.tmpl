@@ -29,6 +29,7 @@ description: |-
 - Add `sdwan_dns_security_feature_profile` resource and data source
 - Add `sdwan_sig_security_feature_profile` resource and data source
 - Add `sdwan_embedded_security_feature_profile` resource and data source
+- Add `sdwan_dns_security_dns_feature` resource and data source
 
 ## 0.4.1
 
