@@ -102,14 +102,14 @@ func (r *OtherUCSEProfileParcelResource) Schema(ctx context.Context, req resourc
 				Optional:            true,
 			},
 			"access_port_shared_type": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("ge1", "ge2", "ge3", "te2", "te3", "console", "failover").String,
+				MarkdownDescription: helpers.NewAttributeDescription(", Attribute conditional on `access_port_dedicated` being equal to `false`").AddStringEnumDescription("ge1", "ge2", "ge3", "te2", "te3", "console", "failover").String,
 				Required:            true,
 				Validators: []validator.String{
 					stringvalidator.OneOf("ge1", "ge2", "ge3", "te2", "te3", "console", "failover"),
 				},
 			},
 			"access_port_shared_failover_type": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("ge2", "te2").String,
+				MarkdownDescription: helpers.NewAttributeDescription(", Attribute conditional on `access_port_dedicated` being equal to `false`").AddStringEnumDescription("ge2", "te2").String,
 				Required:            true,
 				Validators: []validator.String{
 					stringvalidator.OneOf("ge2", "te2"),
@@ -117,7 +117,7 @@ func (r *OtherUCSEProfileParcelResource) Schema(ctx context.Context, req resourc
 			},
 			"ipv4_address": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Assign IPv4 address").String,
-				Required:            true,
+				Optional:            true,
 				Validators: []validator.String{
 					stringvalidator.RegexMatches(regexp.MustCompile(`(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(/)([0-2]?[0-9]$|[3]?[0-2])`), ""),
 				},
@@ -128,7 +128,7 @@ func (r *OtherUCSEProfileParcelResource) Schema(ctx context.Context, req resourc
 			},
 			"default_gateway": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Assign default gateway").String,
-				Required:            true,
+				Optional:            true,
 			},
 			"default_gateway_variable": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Variable name").String,

@@ -43,13 +43,13 @@ resource "sdwan_other_ucse_feature" "example" {
 
 ### Required
 
-- `access_port_shared_failover_type` (String) - Choices: `ge2`, `te2`
-- `access_port_shared_type` (String) - Choices: `ge1`, `ge2`, `ge3`, `te2`, `te3`, `console`, `failover`
+- `access_port_shared_failover_type` (String) , Attribute conditional on `access_port_dedicated` being equal to `false`
+  - Choices: `ge2`, `te2`
+- `access_port_shared_type` (String) , Attribute conditional on `access_port_dedicated` being equal to `false`
+  - Choices: `ge1`, `ge2`, `ge3`, `te2`, `te3`, `console`, `failover`
 - `bay` (Number) Bay
   - Range: `0`-`2`
-- `default_gateway` (String) Assign default gateway
 - `feature_profile_id` (String) Feature Profile ID
-- `ipv4_address` (String) Assign IPv4 address
 - `name` (String) The name of the Feature
 - `slot` (Number) Slot
   - Range: `0`-`3`
@@ -61,9 +61,11 @@ resource "sdwan_other_ucse_feature" "example" {
 - `assign_priority` (Number) Assign priority
   - Range: `0`-`7`
 - `assign_priority_variable` (String) Variable name
+- `default_gateway` (String) Assign default gateway
 - `default_gateway_variable` (String) Variable name
 - `description` (String) The description of the Feature
 - `interfaces` (Attributes List) Interface name: GigabitEthernet0/<>/<> when present (see [below for nested schema](#nestedatt--interfaces))
+- `ipv4_address` (String) Assign IPv4 address
 - `ipv4_address_variable` (String) Variable name
 - `vlan_id` (Number) Assign Vlan Id
   - Range: `2`-`4095`
