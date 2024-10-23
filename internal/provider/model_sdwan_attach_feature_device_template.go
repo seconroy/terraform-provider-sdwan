@@ -19,12 +19,14 @@ package provider
 
 import (
 	"context"
+	"fmt"
 	"regexp"
 	"strconv"
 	"strings"
 
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/netascode/go-sdwan"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
@@ -110,6 +112,9 @@ func (data AttachFeatureDeviceTemplate) getVariables(ctx context.Context, client
 }
 
 func (data AttachFeatureDeviceTemplate) getAttachedDevices(ctx context.Context, client *sdwan.Client) (map[string]string, error) {
+
+	tflog.Debug(ctx, fmt.Sprintf("%s: ==ID==", data.Id.ValueString()))
+
 	res, err := client.Get("/template/device/config/attached/" + data.Id.ValueString())
 	if err != nil {
 		return nil, err
@@ -216,20 +221,25 @@ func (data *AttachFeatureDeviceTemplate) readVariables(ctx context.Context, clie
 		}
 
 		// Resolve variable names and insert template variable values
-		var templateVariables map[string]string
 		newTemplateVariables := make(map[string]attr.Value)
-		data.Devices[i].Variables.ElementsAs(ctx, &templateVariables, false)
-		for k := range templateVariables {
-			_, ok := variables[k]
-			if ok {
-				newTemplateVariables[k] = types.StringValue(variables[k])
-				continue
-			}
-			templateVariableName, ok := mappings[k]
-			if ok {
-				newTemplateVariables[k] = types.StringValue(variables[templateVariableName])
+		for k := range mappings {
+			if _, ok := variables[mappings[k]]; ok {
+				newTemplateVariables[k] = types.StringValue(variables[mappings[k]])
 			}
 		}
+
+		// var templateVariables map[string]string
+		// newTemplateVariables := make(map[string]attr.Value)
+		// data.Devices[i].Variables.ElementsAs(ctx, &templateVariables, false)
+		// for k := range templateVariables {
+		// 	if _, ok := variables[k]; ok {
+		// 		newTemplateVariables[k] = types.StringValue(variables[k])
+		// 		continue
+		// 	}
+		// 	if templateVariableName, ok := mappings[k]; ok {
+		// 		newTemplateVariables[k] = types.StringValue(variables[templateVariableName])
+		// 	}
+		// }
 		data.Devices[i].Variables = types.MapValueMust(types.StringType, newTemplateVariables)
 	}
 
