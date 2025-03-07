@@ -57,6 +57,8 @@ func TestAccDataSourceSdwanServiceLANVPNInterfaceSVIProfileParcel(t *testing.T) 
 	checks = append(checks, resource.TestCheckResourceAttr("data.sdwan_service_lan_vpn_interface_svi_feature.test", "ipv4_vrrps.0.secondary_addresses.0.address", "2.3.4.5"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.sdwan_service_lan_vpn_interface_svi_feature.test", "ipv4_vrrps.0.tloc_prefix_change", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.sdwan_service_lan_vpn_interface_svi_feature.test", "ipv4_vrrps.0.tloc_prefix_change_value", "100"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.sdwan_service_lan_vpn_interface_svi_feature.test", "ipv4_vrrps.0.tracking_objects.0.track_action", "decrement"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.sdwan_service_lan_vpn_interface_svi_feature.test", "ipv4_vrrps.0.tracking_objects.0.decrement_value", "100"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.sdwan_service_lan_vpn_interface_svi_feature.test", "ipv6_vrrps.0.group_id", "1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.sdwan_service_lan_vpn_interface_svi_feature.test", "ipv6_vrrps.0.priority", "100"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.sdwan_service_lan_vpn_interface_svi_feature.test", "ipv6_vrrps.0.timer", "1000"))
@@ -95,6 +97,89 @@ resource "sdwan_service_lan_vpn_feature" "test" {
   name = "TF_TEST_SLAN"
   feature_profile_id = sdwan_service_feature_profile.test.id
 }
+
+resource "sdwan_service_tracker_feature" "test" {
+  name                  = "TF_TEST_TRACKER"
+  description           = "Terraform test"
+  feature_profile_id    = sdwan_service_feature_profile.test.id
+  tracker_name          = "TRACKER_1"
+  endpoint_api_url      = "google.com"
+  endpoint_dns_name     = "google.com"
+  endpoint_ip           = "1.2.3.4"
+  interval              = 30
+  multiplier            = 3
+  threshold             = 300
+  endpoint_tracker_type = "static-route"
+  tracker_type          = "endpoint"
+}
+
+resource "sdwan_service_ipv4_acl_feature" "test" {
+  name               = "TF_TEST_ACL_IPV4"
+  description        = "Terraform Test"
+  feature_profile_id = sdwan_service_feature_profile.test.id
+  default_action     = "drop"
+  sequences = [
+    {
+      sequence_id   = 1
+      sequence_name = "AccessControlList1"
+      match_entries = [
+        {
+          dscps         = [16]
+          packet_length = 1500
+          protocols     = [1]
+          source_ports = [
+            {
+              port = 8000
+            }
+          ]
+          tcp_state = "syn"
+        }
+      ]
+      actions = [
+        {
+          accept_set_dscp     = 60
+          accept_counter_name = "COUNTER_1"
+          accept_log          = false
+          accept_set_next_hop = "1.2.3.4"
+        }
+      ]
+    }
+  ]
+}
+
+resource "sdwan_service_ipv6_acl_feature" "test" {
+  name               = "TF_TEST_ACL_IPV6"
+  description        = "Terraform Test"
+  feature_profile_id = sdwan_service_feature_profile.test.id
+    default_action     = "drop"
+    sequences = [
+      {
+        sequence_id   = 1
+        sequence_name = "AccessControlList1"
+        match_entries = [
+          {
+            next_header   = 10
+            packet_length = 1500
+            source_ports = [
+              {
+                port = 8000
+              }
+            ]
+            tcp_state     = "syn"
+            traffic_class = [10]
+          }
+        ]
+        actions = [
+          {
+            accept_counter_name  = "COUNTER_1"
+            accept_log           = false
+            accept_set_next_hop  = "2001:0db8:85a3:0000:0000:8a2e:0370:7334"
+            accept_traffic_class = 10
+          }
+        ]
+      }
+    ]
+  }
 `
 
 // End of section. //template:end testPrerequisites
@@ -126,6 +211,8 @@ func testAccDataSourceSdwanServiceLANVPNInterfaceSVIProfileParcelConfig() string
 	config += `	  address = "2001:0:0:1::0"` + "\n"
 	config += `	  vpn = 1` + "\n"
 	config += `	}]` + "\n"
+	config += `	acl_ipv4_egress_feature_id = sdwan_service_ipv4_acl_feature.test.id` + "\n"
+	config += `	acl_ipv6_ingress_feature_id = sdwan_service_ipv6_acl_feature.test.id` + "\n"
 	config += `	arps = [{` + "\n"
 	config += `	  ip_address = "1.2.3.4"` + "\n"
 	config += `	  mac_address = "00-B0-D0-63-C2-26"` + "\n"
@@ -142,6 +229,11 @@ func testAccDataSourceSdwanServiceLANVPNInterfaceSVIProfileParcelConfig() string
 	config += `	}]` + "\n"
 	config += `	  tloc_prefix_change = true` + "\n"
 	config += `	  tloc_prefix_change_value = 100` + "\n"
+	config += `	  tracking_objects = [{` + "\n"
+	config += `		tracker_id = sdwan_service_tracker_feature.test.id` + "\n"
+	config += `		track_action = "decrement"` + "\n"
+	config += `		decrement_value = 100` + "\n"
+	config += `	}]` + "\n"
 	config += `	}]` + "\n"
 	config += `	ipv6_vrrps = [{` + "\n"
 	config += `	  group_id = 1` + "\n"

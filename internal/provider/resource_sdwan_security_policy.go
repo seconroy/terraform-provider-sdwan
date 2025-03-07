@@ -113,6 +113,10 @@ func (r *SecurityPolicyResource) Schema(ctx context.Context, req resource.Schema
 							MarkdownDescription: helpers.NewAttributeDescription("Policy definition ID").String,
 							Required:            true,
 						},
+						"version": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Policy definition version").String,
+							Optional:            true,
+						},
 						"type": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Policy definition type").AddStringEnumDescription("urlFiltering", "zoneBasedFW", "intrusionPrevention", "sslDecryption", "advancedMalwareProtection", "dnsSecurity").String,
 							Required:            true,
@@ -249,7 +253,7 @@ func (r *SecurityPolicyResource) Read(ctx context.Context, req resource.ReadRequ
 		return
 	}
 
-	tflog.Debug(ctx, fmt.Sprintf("%s: Beginning Read", state.Name.String()))
+	tflog.Debug(ctx, fmt.Sprintf("%s: Beginning Read", state.Name.ValueString()))
 
 	res, err := r.client.Get("/template/policy/security/definition/" + url.QueryEscape(state.Id.ValueString()))
 	if strings.Contains(res.Get("error.message").String(), "Failed to find specified resource") || strings.Contains(res.Get("error.message").String(), "Invalid template type") || strings.Contains(res.Get("error.message").String(), "Template definition not found") || strings.Contains(res.Get("error.message").String(), "Invalid Profile Id") || strings.Contains(res.Get("error.message").String(), "Invalid feature Id") || strings.Contains(res.Get("error.message").String(), "Invalid config group passed") {
@@ -261,6 +265,9 @@ func (r *SecurityPolicyResource) Read(ctx context.Context, req resource.ReadRequ
 	}
 
 	state.fromBody(ctx, res)
+	if state.Version.IsNull() {
+		state.Version = types.Int64Value(0)
+	}
 
 	tflog.Debug(ctx, fmt.Sprintf("%s: Read finished successfully", state.Name.ValueString()))
 
@@ -330,6 +337,7 @@ func (r *SecurityPolicyResource) Delete(ctx context.Context, req resource.Delete
 
 	tflog.Debug(ctx, fmt.Sprintf("%s: Beginning Delete", state.Name.ValueString()))
 
+	_, _ = r.client.Get(state.getPath())
 	r.updateMutex.Lock()
 	res, err := r.client.Delete(state.getPath() + url.QueryEscape(state.Id.ValueString()))
 	r.updateMutex.Unlock()

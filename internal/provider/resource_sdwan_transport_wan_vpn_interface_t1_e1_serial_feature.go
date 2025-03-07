@@ -23,6 +23,7 @@ import (
 	"fmt"
 	"net/url"
 	"regexp"
+	"strings"
 	"sync"
 
 	"github.com/CiscoDevNet/terraform-provider-sdwan/internal/provider/helpers"
@@ -547,6 +548,34 @@ func (r *TransportWANVPNInterfaceT1E1SerialProfileParcelResource) Schema(ctx con
 				MarkdownDescription: helpers.NewAttributeDescription("Variable name").String,
 				Optional:            true,
 			},
+			"acl_ipv4_egress_feature_id": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.RegexMatches(regexp.MustCompile(`[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}`), ""),
+				},
+			},
+			"acl_ipv4_ingress_feature_id": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.RegexMatches(regexp.MustCompile(`[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}`), ""),
+				},
+			},
+			"acl_ipv6_egress_feature_id": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.RegexMatches(regexp.MustCompile(`[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}`), ""),
+				},
+			},
+			"acl_ipv6_ingress_feature_id": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.RegexMatches(regexp.MustCompile(`[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}`), ""),
+				},
+			},
 			"tcp_mss": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("TCP MSS on SYN packets, in bytes").AddIntegerRangeDescription(500, 1460).String,
 				Optional:            true,
@@ -662,10 +691,17 @@ func (r *TransportWANVPNInterfaceT1E1SerialProfileParcelResource) Read(ctx conte
 	}
 
 	// If every attribute is set to null we are dealing with an import operation and therefore reading all attributes
-	if state.isNull(ctx, res) {
+	stateCopy := state
+	stateCopy.FeatureProfileId = types.StringNull()
+	stateCopy.TransportWanVpnFeatureId = types.StringNull()
+
+	if stateCopy.isNull(ctx, res) {
 		state.fromBody(ctx, res)
 	} else {
 		state.updateFromBody(ctx, res)
+	}
+	if state.Version.IsNull() {
+		state.Version = types.Int64Value(0)
 	}
 
 	tflog.Debug(ctx, fmt.Sprintf("%s: Read finished successfully", state.Name.ValueString()))
@@ -740,7 +776,20 @@ func (r *TransportWANVPNInterfaceT1E1SerialProfileParcelResource) Delete(ctx con
 
 // Section below is generated&owned by "gen/generator.go". //template:begin import
 func (r *TransportWANVPNInterfaceT1E1SerialProfileParcelResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
+	count := 2
+	parts := strings.SplitN(req.ID, ",", (count + 1))
+
+	pattern := "transport_wan_vpn_interface_t1_e1_serial_feature_id" + ",feature_profile_id" + ",transport_wan_vpn_feature_id"
+	if len(parts) != (count + 1) {
+		resp.Diagnostics.AddError(
+			"Unexpected Import Identifier", fmt.Sprintf("Expected import identifier with the format: %s. Got: %q", pattern, req.ID),
+		)
+		return
+	}
+
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), parts[0])...)
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("feature_profile_id"), parts[1])...)
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("transport_wan_vpn_feature_id"), parts[2])...)
 }
 
 // End of section. //template:end import

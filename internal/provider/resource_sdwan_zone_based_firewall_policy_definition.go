@@ -254,7 +254,7 @@ func (r *ZoneBasedFirewallPolicyDefinitionResource) Read(ctx context.Context, re
 		return
 	}
 
-	tflog.Debug(ctx, fmt.Sprintf("%s: Beginning Read", state.Name.String()))
+	tflog.Debug(ctx, fmt.Sprintf("%s: Beginning Read", state.Name.ValueString()))
 
 	res, err := r.client.Get(state.getPath() + url.QueryEscape(state.Id.ValueString()))
 	if strings.Contains(res.Get("error.message").String(), "Failed to find specified resource") || strings.Contains(res.Get("error.message").String(), "Invalid template type") || strings.Contains(res.Get("error.message").String(), "Template definition not found") || strings.Contains(res.Get("error.message").String(), "Invalid Profile Id") || strings.Contains(res.Get("error.message").String(), "Invalid feature Id") || strings.Contains(res.Get("error.message").String(), "Invalid config group passed") {
@@ -266,6 +266,9 @@ func (r *ZoneBasedFirewallPolicyDefinitionResource) Read(ctx context.Context, re
 	}
 
 	state.fromBody(ctx, res)
+	if state.Version.IsNull() {
+		state.Version = types.Int64Value(0)
+	}
 
 	tflog.Debug(ctx, fmt.Sprintf("%s: Read finished successfully", state.Name.ValueString()))
 
@@ -335,6 +338,7 @@ func (r *ZoneBasedFirewallPolicyDefinitionResource) Delete(ctx context.Context, 
 
 	tflog.Debug(ctx, fmt.Sprintf("%s: Beginning Delete", state.Name.ValueString()))
 
+	_, _ = r.client.Get(state.getPath())
 	res, err := r.client.Delete(state.getPath() + url.QueryEscape(state.Id.ValueString()))
 	if err != nil {
 		resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object (DELETE), got error: %s, %s", err, res.String()))

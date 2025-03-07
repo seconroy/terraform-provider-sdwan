@@ -61,6 +61,10 @@ type ServiceLANVPNInterfaceSVI struct {
 	Ipv6AddressVariable          types.String                                      `tfsdk:"ipv6_address_variable"`
 	Ipv6SecondaryAddresses       []ServiceLANVPNInterfaceSVIIpv6SecondaryAddresses `tfsdk:"ipv6_secondary_addresses"`
 	Ipv6DhcpHelpers              []ServiceLANVPNInterfaceSVIIpv6DhcpHelpers        `tfsdk:"ipv6_dhcp_helpers"`
+	AclIpv4EgressFeatureId       types.String                                      `tfsdk:"acl_ipv4_egress_feature_id"`
+	AclIpv4IngressFeatureId      types.String                                      `tfsdk:"acl_ipv4_ingress_feature_id"`
+	AclIpv6EgressFeatureId       types.String                                      `tfsdk:"acl_ipv6_egress_feature_id"`
+	AclIpv6IngressFeatureId      types.String                                      `tfsdk:"acl_ipv6_ingress_feature_id"`
 	Arps                         []ServiceLANVPNInterfaceSVIArps                   `tfsdk:"arps"`
 	Ipv4Vrrps                    []ServiceLANVPNInterfaceSVIIpv4Vrrps              `tfsdk:"ipv4_vrrps"`
 	Ipv6Vrrps                    []ServiceLANVPNInterfaceSVIIpv6Vrrps              `tfsdk:"ipv6_vrrps"`
@@ -119,6 +123,7 @@ type ServiceLANVPNInterfaceSVIIpv4Vrrps struct {
 	TlocPrefixChange              types.Bool                                             `tfsdk:"tloc_prefix_change"`
 	TlocPrefixChangeValue         types.Int64                                            `tfsdk:"tloc_prefix_change_value"`
 	TlocPrefixChangeValueVariable types.String                                           `tfsdk:"tloc_prefix_change_value_variable"`
+	TrackingObjects               []ServiceLANVPNInterfaceSVIIpv4VrrpsTrackingObjects    `tfsdk:"tracking_objects"`
 }
 
 type ServiceLANVPNInterfaceSVIIpv6Vrrps struct {
@@ -139,6 +144,13 @@ type ServiceLANVPNInterfaceSVIIpv6Vrrps struct {
 type ServiceLANVPNInterfaceSVIIpv4VrrpsSecondaryAddresses struct {
 	Address         types.String `tfsdk:"address"`
 	AddressVariable types.String `tfsdk:"address_variable"`
+}
+type ServiceLANVPNInterfaceSVIIpv4VrrpsTrackingObjects struct {
+	TrackerId              types.String `tfsdk:"tracker_id"`
+	TrackAction            types.String `tfsdk:"track_action"`
+	TrackActionVariable    types.String `tfsdk:"track_action_variable"`
+	DecrementValue         types.Int64  `tfsdk:"decrement_value"`
+	DecrementValueVariable types.String `tfsdk:"decrement_value_variable"`
 }
 
 type ServiceLANVPNInterfaceSVIIpv6VrrpsAddresses struct {
@@ -405,6 +417,30 @@ func (data ServiceLANVPNInterfaceSVI) toBody(ctx context.Context) string {
 			body, _ = sjson.SetRaw(body, path+"ipv6.dhcpHelperV6.-1", itemBody)
 		}
 	}
+	if !data.AclIpv4EgressFeatureId.IsNull() {
+		if true {
+			body, _ = sjson.Set(body, path+"aclQos.ipv4AclEgress.refId.optionType", "global")
+			body, _ = sjson.Set(body, path+"aclQos.ipv4AclEgress.refId.value", data.AclIpv4EgressFeatureId.ValueString())
+		}
+	}
+	if !data.AclIpv4IngressFeatureId.IsNull() {
+		if true {
+			body, _ = sjson.Set(body, path+"aclQos.ipv4AclIngress.refId.optionType", "global")
+			body, _ = sjson.Set(body, path+"aclQos.ipv4AclIngress.refId.value", data.AclIpv4IngressFeatureId.ValueString())
+		}
+	}
+	if !data.AclIpv6EgressFeatureId.IsNull() {
+		if true {
+			body, _ = sjson.Set(body, path+"aclQos.ipv6AclEgress.refId.optionType", "global")
+			body, _ = sjson.Set(body, path+"aclQos.ipv6AclEgress.refId.value", data.AclIpv6EgressFeatureId.ValueString())
+		}
+	}
+	if !data.AclIpv6IngressFeatureId.IsNull() {
+		if true {
+			body, _ = sjson.Set(body, path+"aclQos.ipv6AclIngress.refId.optionType", "global")
+			body, _ = sjson.Set(body, path+"aclQos.ipv6AclIngress.refId.value", data.AclIpv6IngressFeatureId.ValueString())
+		}
+	}
 	if true {
 		body, _ = sjson.Set(body, path+"arp", []interface{}{})
 		for _, item := range data.Arps {
@@ -572,6 +608,43 @@ func (data ServiceLANVPNInterfaceSVI) toBody(ctx context.Context) string {
 				if true {
 					itemBody, _ = sjson.Set(itemBody, "tlocPrefChangeValue.optionType", "global")
 					itemBody, _ = sjson.Set(itemBody, "tlocPrefChangeValue.value", item.TlocPrefixChangeValue.ValueInt64())
+				}
+			}
+			if true {
+				itemBody, _ = sjson.Set(itemBody, "trackingObject", []interface{}{})
+				for _, childItem := range item.TrackingObjects {
+					itemChildBody := ""
+					if !childItem.TrackerId.IsNull() {
+						if true {
+							itemChildBody, _ = sjson.Set(itemChildBody, "trackerId.refId.optionType", "global")
+							itemChildBody, _ = sjson.Set(itemChildBody, "trackerId.refId.value", childItem.TrackerId.ValueString())
+						}
+					}
+
+					if !childItem.TrackActionVariable.IsNull() {
+						if true {
+							itemChildBody, _ = sjson.Set(itemChildBody, "trackAction.optionType", "variable")
+							itemChildBody, _ = sjson.Set(itemChildBody, "trackAction.value", childItem.TrackActionVariable.ValueString())
+						}
+					} else if !childItem.TrackAction.IsNull() {
+						if true {
+							itemChildBody, _ = sjson.Set(itemChildBody, "trackAction.optionType", "global")
+							itemChildBody, _ = sjson.Set(itemChildBody, "trackAction.value", childItem.TrackAction.ValueString())
+						}
+					}
+
+					if !childItem.DecrementValueVariable.IsNull() {
+						if true {
+							itemChildBody, _ = sjson.Set(itemChildBody, "decrementValue.optionType", "variable")
+							itemChildBody, _ = sjson.Set(itemChildBody, "decrementValue.value", childItem.DecrementValueVariable.ValueString())
+						}
+					} else if !childItem.DecrementValue.IsNull() {
+						if true {
+							itemChildBody, _ = sjson.Set(itemChildBody, "decrementValue.optionType", "global")
+							itemChildBody, _ = sjson.Set(itemChildBody, "decrementValue.value", childItem.DecrementValue.ValueInt64())
+						}
+					}
+					itemBody, _ = sjson.SetRaw(itemBody, "trackingObject.-1", itemChildBody)
 				}
 			}
 			body, _ = sjson.SetRaw(body, path+"vrrp.-1", itemBody)
@@ -982,6 +1055,38 @@ func (data *ServiceLANVPNInterfaceSVI) fromBody(ctx context.Context, res gjson.R
 			return true
 		})
 	}
+	data.AclIpv4EgressFeatureId = types.StringNull()
+
+	if t := res.Get(path + "aclQos.ipv4AclEgress.refId.optionType"); t.Exists() {
+		va := res.Get(path + "aclQos.ipv4AclEgress.refId.value")
+		if t.String() == "global" {
+			data.AclIpv4EgressFeatureId = types.StringValue(va.String())
+		}
+	}
+	data.AclIpv4IngressFeatureId = types.StringNull()
+
+	if t := res.Get(path + "aclQos.ipv4AclIngress.refId.optionType"); t.Exists() {
+		va := res.Get(path + "aclQos.ipv4AclIngress.refId.value")
+		if t.String() == "global" {
+			data.AclIpv4IngressFeatureId = types.StringValue(va.String())
+		}
+	}
+	data.AclIpv6EgressFeatureId = types.StringNull()
+
+	if t := res.Get(path + "aclQos.ipv6AclEgress.refId.optionType"); t.Exists() {
+		va := res.Get(path + "aclQos.ipv6AclEgress.refId.value")
+		if t.String() == "global" {
+			data.AclIpv6EgressFeatureId = types.StringValue(va.String())
+		}
+	}
+	data.AclIpv6IngressFeatureId = types.StringNull()
+
+	if t := res.Get(path + "aclQos.ipv6AclIngress.refId.optionType"); t.Exists() {
+		va := res.Get(path + "aclQos.ipv6AclIngress.refId.value")
+		if t.String() == "global" {
+			data.AclIpv6IngressFeatureId = types.StringValue(va.String())
+		}
+	}
 	if value := res.Get(path + "arp"); value.Exists() {
 		data.Arps = make([]ServiceLANVPNInterfaceSVIArps, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
@@ -1109,6 +1214,42 @@ func (data *ServiceLANVPNInterfaceSVI) fromBody(ctx context.Context, res gjson.R
 				} else if t.String() == "global" {
 					item.TlocPrefixChangeValue = types.Int64Value(va.Int())
 				}
+			}
+			if cValue := v.Get("trackingObject"); cValue.Exists() {
+				item.TrackingObjects = make([]ServiceLANVPNInterfaceSVIIpv4VrrpsTrackingObjects, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ServiceLANVPNInterfaceSVIIpv4VrrpsTrackingObjects{}
+					cItem.TrackerId = types.StringNull()
+
+					if t := cv.Get("trackerId.refId.optionType"); t.Exists() {
+						va := cv.Get("trackerId.refId.value")
+						if t.String() == "global" {
+							cItem.TrackerId = types.StringValue(va.String())
+						}
+					}
+					cItem.TrackAction = types.StringNull()
+					cItem.TrackActionVariable = types.StringNull()
+					if t := cv.Get("trackAction.optionType"); t.Exists() {
+						va := cv.Get("trackAction.value")
+						if t.String() == "variable" {
+							cItem.TrackActionVariable = types.StringValue(va.String())
+						} else if t.String() == "global" {
+							cItem.TrackAction = types.StringValue(va.String())
+						}
+					}
+					cItem.DecrementValue = types.Int64Null()
+					cItem.DecrementValueVariable = types.StringNull()
+					if t := cv.Get("decrementValue.optionType"); t.Exists() {
+						va := cv.Get("decrementValue.value")
+						if t.String() == "variable" {
+							cItem.DecrementValueVariable = types.StringValue(va.String())
+						} else if t.String() == "global" {
+							cItem.DecrementValue = types.Int64Value(va.Int())
+						}
+					}
+					item.TrackingObjects = append(item.TrackingObjects, cItem)
+					return true
+				})
 			}
 			data.Ipv4Vrrps = append(data.Ipv4Vrrps, item)
 			return true
@@ -1511,6 +1652,38 @@ func (data *ServiceLANVPNInterfaceSVI) updateFromBody(ctx context.Context, res g
 			}
 		}
 	}
+	data.AclIpv4EgressFeatureId = types.StringNull()
+
+	if t := res.Get(path + "aclQos.ipv4AclEgress.refId.optionType"); t.Exists() {
+		va := res.Get(path + "aclQos.ipv4AclEgress.refId.value")
+		if t.String() == "global" {
+			data.AclIpv4EgressFeatureId = types.StringValue(va.String())
+		}
+	}
+	data.AclIpv4IngressFeatureId = types.StringNull()
+
+	if t := res.Get(path + "aclQos.ipv4AclIngress.refId.optionType"); t.Exists() {
+		va := res.Get(path + "aclQos.ipv4AclIngress.refId.value")
+		if t.String() == "global" {
+			data.AclIpv4IngressFeatureId = types.StringValue(va.String())
+		}
+	}
+	data.AclIpv6EgressFeatureId = types.StringNull()
+
+	if t := res.Get(path + "aclQos.ipv6AclEgress.refId.optionType"); t.Exists() {
+		va := res.Get(path + "aclQos.ipv6AclEgress.refId.value")
+		if t.String() == "global" {
+			data.AclIpv6EgressFeatureId = types.StringValue(va.String())
+		}
+	}
+	data.AclIpv6IngressFeatureId = types.StringNull()
+
+	if t := res.Get(path + "aclQos.ipv6AclIngress.refId.optionType"); t.Exists() {
+		va := res.Get(path + "aclQos.ipv6AclIngress.refId.value")
+		if t.String() == "global" {
+			data.AclIpv6IngressFeatureId = types.StringValue(va.String())
+		}
+	}
 	for i := range data.Arps {
 		keys := [...]string{"ipAddress", "macAddress"}
 		keyValues := [...]string{data.Arps[i].IpAddress.ValueString(), data.Arps[i].MacAddress.ValueString()}
@@ -1706,6 +1879,64 @@ func (data *ServiceLANVPNInterfaceSVI) updateFromBody(ctx context.Context, res g
 				data.Ipv4Vrrps[i].TlocPrefixChangeValueVariable = types.StringValue(va.String())
 			} else if t.String() == "global" {
 				data.Ipv4Vrrps[i].TlocPrefixChangeValue = types.Int64Value(va.Int())
+			}
+		}
+		for ci := range data.Ipv4Vrrps[i].TrackingObjects {
+			keys := [...]string{"trackerId.refId"}
+			keyValues := [...]string{data.Ipv4Vrrps[i].TrackingObjects[ci].TrackerId.ValueString()}
+			keyValuesVariables := [...]string{""}
+
+			var cr gjson.Result
+			r.Get("trackingObject").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						tt := v.Get(keys[ik] + ".optionType")
+						vv := v.Get(keys[ik] + ".value")
+						if tt.Exists() && vv.Exists() {
+							if (tt.String() == "variable" && vv.String() == keyValuesVariables[ik]) || (tt.String() == "global" && vv.String() == keyValues[ik]) {
+								found = true
+								continue
+							}
+							found = false
+							break
+						}
+						continue
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			data.Ipv4Vrrps[i].TrackingObjects[ci].TrackerId = types.StringNull()
+
+			if t := cr.Get("trackerId.refId.optionType"); t.Exists() {
+				va := cr.Get("trackerId.refId.value")
+				if t.String() == "global" {
+					data.Ipv4Vrrps[i].TrackingObjects[ci].TrackerId = types.StringValue(va.String())
+				}
+			}
+			data.Ipv4Vrrps[i].TrackingObjects[ci].TrackAction = types.StringNull()
+			data.Ipv4Vrrps[i].TrackingObjects[ci].TrackActionVariable = types.StringNull()
+			if t := cr.Get("trackAction.optionType"); t.Exists() {
+				va := cr.Get("trackAction.value")
+				if t.String() == "variable" {
+					data.Ipv4Vrrps[i].TrackingObjects[ci].TrackActionVariable = types.StringValue(va.String())
+				} else if t.String() == "global" {
+					data.Ipv4Vrrps[i].TrackingObjects[ci].TrackAction = types.StringValue(va.String())
+				}
+			}
+			data.Ipv4Vrrps[i].TrackingObjects[ci].DecrementValue = types.Int64Null()
+			data.Ipv4Vrrps[i].TrackingObjects[ci].DecrementValueVariable = types.StringNull()
+			if t := cr.Get("decrementValue.optionType"); t.Exists() {
+				va := cr.Get("decrementValue.value")
+				if t.String() == "variable" {
+					data.Ipv4Vrrps[i].TrackingObjects[ci].DecrementValueVariable = types.StringValue(va.String())
+				} else if t.String() == "global" {
+					data.Ipv4Vrrps[i].TrackingObjects[ci].DecrementValue = types.Int64Value(va.Int())
+				}
 			}
 		}
 	}
@@ -2002,6 +2233,18 @@ func (data *ServiceLANVPNInterfaceSVI) isNull(ctx context.Context, res gjson.Res
 		return false
 	}
 	if len(data.Ipv6DhcpHelpers) > 0 {
+		return false
+	}
+	if !data.AclIpv4EgressFeatureId.IsNull() {
+		return false
+	}
+	if !data.AclIpv4IngressFeatureId.IsNull() {
+		return false
+	}
+	if !data.AclIpv6EgressFeatureId.IsNull() {
+		return false
+	}
+	if !data.AclIpv6IngressFeatureId.IsNull() {
 		return false
 	}
 	if len(data.Arps) > 0 {

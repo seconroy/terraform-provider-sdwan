@@ -348,8 +348,8 @@ func (data *DNSSecurityDNS) updateFromBody(ctx context.Context, res gjson.Result
 		}
 	}
 	for i := range data.TargetVpns {
-		keys := [...]string{"umbrellaDefault", "dnsServerIP", "localDomainBypassEnabled", "uid"}
-		keyValues := [...]string{strconv.FormatBool(data.TargetVpns[i].UmbrellaDefault.ValueBool()), data.TargetVpns[i].DnsServerIP.ValueString(), strconv.FormatBool(data.TargetVpns[i].LocalDomainBypassEnabled.ValueBool()), data.TargetVpns[i].Uid.ValueString()}
+		keys := [...]string{"vpns", "umbrellaDefault", "dnsServerIP", "localDomainBypassEnabled", "uid"}
+		keyValues := [...]string{helpers.GetStringFromSet(data.TargetVpns[i].Vpns).ValueString(), strconv.FormatBool(data.TargetVpns[i].UmbrellaDefault.ValueBool()), data.TargetVpns[i].DnsServerIP.ValueString(), strconv.FormatBool(data.TargetVpns[i].LocalDomainBypassEnabled.ValueBool()), data.TargetVpns[i].Uid.ValueString()}
 		keyValuesVariables := [...]string{"", "", "", "", ""}
 
 		var r gjson.Result

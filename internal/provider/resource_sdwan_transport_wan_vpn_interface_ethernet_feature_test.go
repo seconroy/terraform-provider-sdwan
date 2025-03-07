@@ -100,6 +100,8 @@ func TestAccSdwanTransportWANVPNInterfaceEthernetProfileParcel(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("sdwan_transport_wan_vpn_interface_ethernet_feature.test", "static_nat66.0.source_prefix", "2001:0db8:85a3::/48"))
 	checks = append(checks, resource.TestCheckResourceAttr("sdwan_transport_wan_vpn_interface_ethernet_feature.test", "static_nat66.0.translated_source_prefix", "abcd:1234:5678::/48"))
 	checks = append(checks, resource.TestCheckResourceAttr("sdwan_transport_wan_vpn_interface_ethernet_feature.test", "static_nat66.0.source_vpn_id", "4"))
+	checks = append(checks, resource.TestCheckResourceAttr("sdwan_transport_wan_vpn_interface_ethernet_feature.test", "qos_adaptive", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("sdwan_transport_wan_vpn_interface_ethernet_feature.test", "qos_shaping_rate", "16"))
 	checks = append(checks, resource.TestCheckResourceAttr("sdwan_transport_wan_vpn_interface_ethernet_feature.test", "arps.0.ip_address", "1.2.3.4"))
 	checks = append(checks, resource.TestCheckResourceAttr("sdwan_transport_wan_vpn_interface_ethernet_feature.test", "arps.0.mac_address", "00-B0-D0-63-C2-26"))
 	checks = append(checks, resource.TestCheckResourceAttr("sdwan_transport_wan_vpn_interface_ethernet_feature.test", "icmp_redirect_disable", "true"))
@@ -173,7 +175,8 @@ resource "sdwan_transport_wan_vpn_feature" "test" {
   ]
   ipv6_static_routes = [
     {
-      prefix = "2002::/16"
+      prefix  = "2002::/16"
+      gateway = "nextHop"
       next_hops = [
         {
           address                 = "2001:0:0:1::0"
@@ -197,6 +200,73 @@ resource "sdwan_transport_wan_vpn_feature" "test" {
   ]
 }
 
+resource "sdwan_transport_ipv4_acl_feature" "test" {
+  name               = "TF_TEST_ACL_IPV4"
+  description        = "Terraform Test"
+  feature_profile_id = sdwan_transport_feature_profile.test.id
+  default_action     = "drop"
+  sequences = [
+    {
+      sequence_id   = 1
+      sequence_name = "AccessControlList1"
+      match_entries = [
+        {
+          dscps         = [16]
+          packet_length = 1500
+          protocols     = [1]
+          source_ports = [
+            {
+              port = 8000
+            }
+          ]
+          tcp_state = "syn"
+        }
+      ]
+      actions = [
+        {
+          accept_set_dscp     = 60
+          accept_counter_name = "COUNTER_1"
+          accept_log          = false
+          accept_set_next_hop = "1.2.3.4"
+        }
+      ]
+    }
+  ]
+}
+
+resource "sdwan_transport_ipv6_acl_feature" "test" {
+  name               = "TF_TEST_ACL_IPV6"
+  description        = "Terraform Test"
+  feature_profile_id = sdwan_transport_feature_profile.test.id
+  default_action     = "drop"
+  sequences = [
+    {
+      sequence_id   = 1
+      sequence_name = "AccessControlList1"
+      match_entries = [
+        {
+          next_header   = 10
+          packet_length = 1500
+          source_ports = [
+            {
+              port = 8000
+            }
+          ]
+          tcp_state     = "syn"
+          traffic_class = [10]
+        }
+      ]
+      actions = [
+        {
+          accept_counter_name  = "COUNTER_1"
+          accept_log           = false
+          accept_set_next_hop  = "2001:0db8:85a3:0000:0000:8a2e:0370:7334"
+          accept_traffic_class = 10
+        }
+      ]
+    }
+  ]
+}
 `
 
 // End of section. //template:end testPrerequisites
@@ -209,6 +279,7 @@ func testAccSdwanTransportWANVPNInterfaceEthernetProfileParcelConfig_minimum() s
 	config += `	feature_profile_id = sdwan_transport_feature_profile.test.id` + "\n"
 	config += `	transport_wan_vpn_feature_id = sdwan_transport_wan_vpn_feature.test.id` + "\n"
 	config += `	interface_name = "GigabitEthernet1"` + "\n"
+	config += `	ipv4_configuration_type = "static"` + "\n"
 	config += `	ipv4_address = "1.2.3.4"` + "\n"
 	config += `	ipv4_subnet_mask = "0.0.0.0"` + "\n"
 	config += `}` + "\n"
@@ -227,6 +298,7 @@ func testAccSdwanTransportWANVPNInterfaceEthernetProfileParcelConfig_all() strin
 	config += `	shutdown = true` + "\n"
 	config += `	interface_name = "GigabitEthernet1"` + "\n"
 	config += `	interface_description = "WAN"` + "\n"
+	config += `	ipv4_configuration_type = "static"` + "\n"
 	config += `	ipv4_address = "1.2.3.4"` + "\n"
 	config += `	ipv4_subnet_mask = "0.0.0.0"` + "\n"
 	config += `	ipv4_secondary_addresses = [{` + "\n"
@@ -234,6 +306,7 @@ func testAccSdwanTransportWANVPNInterfaceEthernetProfileParcelConfig_all() strin
 	config += `	  subnet_mask = "0.0.0.0"` + "\n"
 	config += `	}]` + "\n"
 	config += `	ipv4_dhcp_helper = ["1.2.3.4"]` + "\n"
+	config += `	ipv6_configuration_type = "static"` + "\n"
 	config += `	iperf_server = "example"` + "\n"
 	config += `	block_non_source_ip = false` + "\n"
 	config += `	service_provider = "example"` + "\n"
@@ -301,6 +374,10 @@ func testAccSdwanTransportWANVPNInterfaceEthernetProfileParcelConfig_all() strin
 	config += `	  translated_source_prefix = "abcd:1234:5678::/48"` + "\n"
 	config += `	  source_vpn_id = 4` + "\n"
 	config += `	}]` + "\n"
+	config += `	qos_adaptive = false` + "\n"
+	config += `	qos_shaping_rate = 16` + "\n"
+	config += `	acl_ipv4_egress_feature_id = sdwan_transport_ipv4_acl_feature.test.id` + "\n"
+	config += `	acl_ipv6_ingress_feature_id = sdwan_transport_ipv6_acl_feature.test.id` + "\n"
 	config += `	arps = [{` + "\n"
 	config += `	  ip_address = "1.2.3.4"` + "\n"
 	config += `	  mac_address = "00-B0-D0-63-C2-26"` + "\n"

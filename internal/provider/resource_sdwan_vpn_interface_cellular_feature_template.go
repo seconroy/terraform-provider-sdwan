@@ -373,10 +373,10 @@ func (r *VPNInterfaceCellularFeatureTemplateResource) Schema(ctx context.Context
 				Optional:            true,
 			},
 			"tunnel_qos_mode": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Set tunnel QoS mode").AddStringEnumDescription("spoke").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Set tunnel QoS mode").AddStringEnumDescription("hub", "spoke").String,
 				Optional:            true,
 				Validators: []validator.String{
-					stringvalidator.OneOf("spoke"),
+					stringvalidator.OneOf("hub", "spoke"),
 				},
 			},
 			"tunnel_qos_mode_variable": schema.StringAttribute{
@@ -1034,6 +1034,9 @@ func (r *VPNInterfaceCellularFeatureTemplateResource) Read(ctx context.Context, 
 	}
 
 	state.fromBody(ctx, res)
+	if state.Version.IsNull() {
+		state.Version = types.Int64Value(0)
+	}
 
 	tflog.Debug(ctx, fmt.Sprintf("%s: Read finished successfully", state.Name.ValueString()))
 
