@@ -1,5 +1,5 @@
 ---
-# Manual resource - Modals toBody and fromBody are manually configured to support 20.13 natLookback changes.
+# Manual resource - Resource and Modal contain manually configured elements to support 20.13 natLookback changes. Specifically Create, Update, Delete, toBody, and fromBody.
 name: Service LAN VPN Interface Ethernet
 rest_endpoint: /v1/feature-profile/sdwan/service/%v/lan/vpn/%s/interface/ethernet
 minimum_version: 20.12.0
