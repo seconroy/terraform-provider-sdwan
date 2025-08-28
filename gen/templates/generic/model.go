@@ -698,7 +698,20 @@ func (data *{{camelCase .Name}}) processImport(ctx context.Context) {
 	}
 	{{- else if eq .Type "Versions"}}
 	if !data.{{toVersionName .TfName}}.IsNull() {
-		data.{{toGoName .TfName}} = types.ListNull(types.StringType)
+		var elements{{toGoName .TfName}} []attr.Value
+		var count{{toGoName .TfName}} int = 0
+		if !(data.{{toVersionName .TfName}}.IsNull() || data.{{toVersionName .TfName}}.IsUnknown()) {
+			count{{toGoName .TfName}} = len(data.{{toVersionName .TfName}}.Elements())
+		}
+		if count{{toGoName .TfName}} > 0 {
+			elements{{toGoName .TfName}} = make([]attr.Value, count{{toGoName .TfName}})
+			for i := 0; i < count{{toGoName .TfName}}; i++ {
+				elements{{toGoName .TfName}}[i] = types.StringValue("0")
+			}
+			data.{{toGoName .TfName}} = types.ListValueMust(types.StringType, elements{{toGoName .TfName}})
+		} else {
+			data.{{toGoName .TfName}} = types.ListValueMust(types.StringType, []attr.Value{})
+		}
 	}
 	{{- else if and (isNestedListSet .) (hasVersionAttribute .Attributes)}}
 	for i := range data.{{toGoName .TfName}} {
@@ -712,7 +725,20 @@ func (data *{{camelCase .Name}}) processImport(ctx context.Context) {
 		}
 		{{- else if eq .Type "Versions"}}
 		if !data.{{$name}}[i].{{toVersionName .TfName}}.IsNull() {
-			data.{{$name}}[i].{{toGoName .TfName}} = types.ListNull(types.StringType)
+			var elements{{toGoName .TfName}} []attr.Value
+			var count{{toGoName .TfName}} int = 0
+			if !(data.{{$name}}[i].{{toVersionName .TfName}}.IsNull() || data.{{$name}}[i].{{toVersionName .TfName}}.IsUnknown()) {
+				count{{toGoName .TfName}} = len(data.{{$name}}[i].{{toVersionName .TfName}}.Elements())
+			}
+			if count{{toGoName .TfName}} > 0 {
+				elements{{toGoName .TfName}} = make([]attr.Value, count{{toGoName .TfName}})
+				for i := 0; i < count{{toGoName .TfName}}; i++ {
+					elements{{toGoName .TfName}}[i] = types.StringValue("0")
+				}
+				data.{{$name}}[i].{{toGoName .TfName}} = types.ListValueMust(types.StringType, elements{{toGoName .TfName}})
+			} else {
+				data.{{$name}}[i].{{toGoName .TfName}} = types.ListValueMust(types.StringType, []attr.Value{})
+			}
 		}
 		{{- else if and (isNestedListSet .) (hasVersionAttribute .Attributes)}}
 		for ii := range data.{{$name}}[i].{{toGoName .TfName}} {
@@ -726,7 +752,20 @@ func (data *{{camelCase .Name}}) processImport(ctx context.Context) {
 			}
 			{{- else if eq .Type "Versions"}}
 			if !data.{{$name}}[i].{{$cname}}[ii].{{toVersionName .TfName}}.IsNull() {
-				data.{{$name}}[i].{{$cname}}[ii].{{toGoName .TfName}} = types.ListNull(types.StringType)
+				var elements{{toGoName .TfName}} []attr.Value
+				var count{{toGoName .TfName}} int = 0
+				if !(data.{{$name}}[i].{{$cname}}[ii].{{toVersionName .TfName}}.IsNull() || data.{{$name}}[i].{{$cname}}[ii].{{toVersionName .TfName}}.IsUnknown()) {
+					count{{toGoName .TfName}} = len(data.{{$name}}[i].{{$cname}}[ii].{{toVersionName .TfName}}.Elements())
+				}
+				if count{{toGoName .TfName}} > 0 {
+					elements{{toGoName .TfName}} = make([]attr.Value, count{{toGoName .TfName}})
+					for i := 0; i < count{{toGoName .TfName}}; i++ {
+						elements{{toGoName .TfName}}[i] = types.StringValue("0")
+					}
+					data.{{$name}}[i].{{$cname}}[ii].{{toGoName .TfName}} = types.ListValueMust(types.StringType, elements{{toGoName .TfName}})
+				} else {
+					data.{{$name}}[i].{{$cname}}[ii].{{toGoName .TfName}} = types.ListValueMust(types.StringType, []attr.Value{})
+				}
 			}
 			{{- else if and (isNestedListSet .) (hasVersionAttribute .Attributes)}}
 			for iii := range data.{{$name}}[i].{{$cname}}[ii].{{toGoName .TfName}} {
@@ -738,7 +777,20 @@ func (data *{{camelCase .Name}}) processImport(ctx context.Context) {
 				}
 				{{- else if eq .Type "Versions"}}
 				if !data.{{$name}}[i].{{$cname}}[ii].{{$ccname}}[iii].{{toVersionName .TfName}}.IsNull() {
-					data.{{$name}}[i].{{$cname}}[ii].{{$ccname}}[iii].{{toGoName .TfName}} = types.ListNull(types.StringType)
+					var elements{{toGoName .TfName}} []attr.Value
+					var count{{toGoName .TfName}} int = 0
+					if !(data.{{$name}}[i].{{$cname}}[ii].{{$ccname}}[iii].{{toVersionName .TfName}}.IsNull() || data.{{$name}}[i].{{$cname}}[ii].{{$ccname}}[iii].{{toVersionName .TfName}}.IsUnknown()) {
+						count{{toGoName .TfName}} = len(data.{{$name}}[i].{{$cname}}[ii].{{$ccname}}[iii].{{toVersionName .TfName}}.Elements())
+					}
+					if count{{toGoName .TfName}} > 0 {
+						elements{{toGoName .TfName}} = make([]attr.Value, count{{toGoName .TfName}})
+						for i := 0; i < count{{toGoName .TfName}}; i++ {
+							elements{{toGoName .TfName}}[i] = types.StringValue("0")
+						}
+						data.{{$name}}[i].{{$cname}}[ii].{{$ccname}}[iii].{{toGoName .TfName}} = types.ListValueMust(types.StringType, elements{{toGoName .TfName}})
+					} else {
+						data.{{$name}}[i].{{$cname}}[ii].{{$ccname}}[iii].{{toGoName .TfName}} = types.ListValueMust(types.StringType, []attr.Value{})
+					}
 				}
 				{{- end}}
 				{{- end}}
