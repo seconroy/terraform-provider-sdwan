@@ -7,6 +7,12 @@ description: |-
 
 # Changelog
 
+## 0.7.2
+
+- Add `sdwan_topology_feature_profile` resource and data source
+- Add `sdwan_topology_mesh_feature` resource and data source
+- Add `sdwan_topology_hub_and_spoke_feature` resource and data source
+
 ## 0.7.1
 
 - Fix issue, where concurrent update of `localized_policy` resources fails with `Failed to update variables` error

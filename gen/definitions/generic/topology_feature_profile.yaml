@@ -1,0 +1,21 @@
+---
+name: Topology Feature Profile
+rest_endpoint: /v1/feature-profile/sdwan/topology/
+id_attribute: id
+doc_category: Feature Profiles
+minimum_version: 20.12.0
+test_tags: [SDWAN_2012]
+attributes:
+  - model_name: name
+    response_model_name: profileName
+    type: String
+    mandatory: true
+    description: The name of the topology feature profile
+    example: TOPOLOGY_FP_1
+  - model_name: description
+    type: String
+    mandatory: true
+    description: Description
+    example: My topology feature profile 1
+
+
